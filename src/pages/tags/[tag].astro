@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  const tags = [...new Set(posts.flatMap(post => post.data.tags || []))];
+  return tags.map(tag => ({
+    params: { tag },
+    props: { tag, posts: posts.filter(p => p.data.tags?.includes(tag)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()) }
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<Base title={`${tag} - RayView`}>
+  <h1 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-6);">标签: {tag}</h1>
+
+  <div>
+    {posts.map((post) => (
+      <article style="margin-bottom: var(--space-3);">
+        <a href={`/posts/${post.slug}`} style="display: block; text-decoration: none;">
+          <h3 style="font-size: var(--text-base); font-weight: 400; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
+            {post.data.title}
+          </h3>
+        </a>
+        <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">
+          <span>{post.data.date.toISOString().split('T')[0]}</span>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <a href="/" style="display: inline-block; margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text-secondary);">← Back</a>
+</Base>
