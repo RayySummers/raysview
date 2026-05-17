@@ -34,7 +34,7 @@ const { Content } = await post.render();
       <span style="margin-left: var(--space-2);">
         {post.data.tags.map((tag: string, i: number) => (
           <>
-            {i > 0 && ', '}
+            {i > 0 && ' '}
             <a href={`${siteBase}/tags/${tag}`} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">#{tag}</a>
           </>
         ))}
