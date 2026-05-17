@@ -1,9 +1,10 @@
 ---
 const currentPath = Astro.url.pathname;
+const base = import.meta.env.BASE_URL;
 ---
 
 <header style={`height: var(--header-height); position: sticky; top: 0; z-index: 100; background: color-mix(in srgb, var(--color-bg) 80%, transparent); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: space-between; padding-left: var(--padding-x); padding-right: var(--padding-x);`}>
-  <a href="/" style="font-size: var(--text-sm); font-weight: 600; letter-spacing: var(--tracking-tight); color: var(--color-text-primary); text-decoration: none;">rayview</a>
+  <a href={`${base}/`} style="font-size: var(--text-sm); font-weight: 600; letter-spacing: var(--tracking-tight); color: var(--color-text-primary); text-decoration: none;">RayView</a>
 
   <div style="display: flex; align-items: center; gap: var(--space-3);">
     <button id="search-toggle" aria-label="Search" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--color-text-secondary);">
@@ -40,6 +41,17 @@ const currentPath = Astro.url.pathname;
 </div>
 
 <script>
+  const base = document.querySelector('html').dataset.base || '';
+
+  function getSystemTheme(): string {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme: string) {
+    const actualTheme = theme === 'system' ? getSystemTheme() : theme;
+    document.documentElement.dataset.theme = actualTheme;
+  }
+
   const toggle = document.getElementById('theme-toggle');
   const sunIcon = document.getElementById('sun-icon');
   const moonIcon = document.getElementById('moon-icon');
@@ -52,8 +64,8 @@ const currentPath = Astro.url.pathname;
   }
 
   function setTheme(theme: string) {
-    document.documentElement.dataset.theme = theme;
     localStorage.setItem('theme', theme);
+    applyTheme(theme);
     updateIcon(theme);
     toggle.style.transform = 'rotate(0deg)';
     void toggle.offsetWidth;
@@ -61,15 +73,23 @@ const currentPath = Astro.url.pathname;
   }
 
   function cycleTheme() {
-    const current = document.documentElement.dataset.theme || 'light';
+    const stored = localStorage.getItem('theme') || 'system';
+    const current = stored === 'system' ? 'system' : document.documentElement.dataset.theme;
     const next = current === 'light' ? 'dark' : current === 'dark' ? 'system' : 'light';
     setTheme(next);
   }
 
   toggle.addEventListener('click', cycleTheme);
 
-  const stored = localStorage.getItem('theme') || 'system';
-  updateIcon(stored);
+  const initialTheme = localStorage.getItem('theme') || 'system';
+  applyTheme(initialTheme);
+  updateIcon(initialTheme);
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    if (localStorage.getItem('theme') === 'system') {
+      applyTheme('system');
+    }
+  });
 
   const searchToggle = document.getElementById('search-toggle');
   const searchOverlay = document.getElementById('search-overlay');
@@ -81,7 +101,7 @@ const currentPath = Astro.url.pathname;
 
   async function loadSearchIndex() {
     if (searchData.length === 0) {
-      const res = await fetch('/search.json');
+      const res = await fetch(`${base}/search.json`);
       searchData = await res.json();
     }
   }
@@ -101,7 +121,7 @@ const currentPath = Astro.url.pathname;
       searchResults.innerHTML = `<p>No posts found for "${query}".</p>`;
     } else {
       searchResults.innerHTML = results.slice(0, 5).map(item => `
-        <a href="${item.url}" style="display: block; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); text-decoration: none;">
+        <a href="${base}${item.url}" style="display: block; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); text-decoration: none;">
           <div style="font-weight: 500; color: var(--color-text-primary);">${item.title}</div>
           <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">${item.date}</div>
         </a>

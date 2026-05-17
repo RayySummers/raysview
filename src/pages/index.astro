@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
+const siteBase = import.meta.env.BASE_URL;
 const posts = (await getCollection('posts')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const grouped = posts.reduce((acc, post) => {
@@ -24,7 +25,7 @@ const grouped = posts.reduce((acc, post) => {
       <div>
         {periodPosts.map((post) => (
           <article style="margin-bottom: var(--space-3);">
-            <a href={`/posts/${post.slug}`} style="display: block; text-decoration: none;">
+            <a href={`${siteBase}/posts/${post.slug}`} style="display: block; text-decoration: none;">
               <h3 style="font-size: var(--text-base); font-weight: 400; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
                 {post.data.title}
               </h3>
@@ -33,11 +34,14 @@ const grouped = posts.reduce((acc, post) => {
               <span>{post.data.date.toISOString().split('T')[0]}</span>
               {post.data.tags && post.data.tags.length > 0 && (
                 <span style="margin-left: var(--space-2);">
-                  {post.data.tags.map(tag => (
-                    <a href={`/tags/${tag}`} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
-                      {tag}
-                    </a>
-                  )).reduce((acc: any, curr: any, i: number) => acc === null ? [curr] : [acc, ', ', curr], null)}
+                  {post.data.tags.map((tag, idx) => (
+                    <>
+                      {idx > 0 && ', '}
+                      <a href={`${siteBase}/tags/${tag}`} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
+                        {tag}
+                      </a>
+                    </>
+                  ))}
                 </span>
               )}
             </div>

@@ -3,14 +3,15 @@ import Base from '../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
+  const base = import.meta.env.BASE_URL;
   const posts = await getCollection('posts');
   return posts.map(post => ({
     params: { slug: post.slug },
-    props: { post }
+    props: { post, base }
   }));
 }
 
-const { post } = Astro.props;
+const { post, base: siteBase } = Astro.props as { post: any; base: string };
 const { Content } = await post.render();
 
 function readingTime(content: string): number {
@@ -40,10 +41,10 @@ const rt = readingTime(post.body);
     <span style="margin-left: var(--space-2);">{rt} min read</span>
     {post.data.tags && post.data.tags.length > 0 && (
       <span style="margin-left: var(--space-2);">
-        {post.data.tags.map((tag, i) => (
+        {post.data.tags.map((tag: string, i: number) => (
           <>
             {i > 0 && ', '}
-            <a href={`/tags/${tag}`} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">{tag}</a>
+            <a href={`${siteBase}/tags/${tag}`} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">{tag}</a>
           </>
         ))}
       </span>
@@ -56,5 +57,5 @@ const rt = readingTime(post.body);
     </article>
   </div>
 
-  <a href="/" style="display: inline-block; margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text-secondary);">← Back</a>
+  <a href={`${siteBase}/`} style="display: inline-block; margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text-secondary);">← Back</a>
 </Base>
