@@ -198,8 +198,8 @@ a:hover {
   to { opacity: 1; }
 }
 
-[data-theme="dark"] img {
-  filter: grayscale(100%) brightness(0.8);
+[data-theme="dark"] .logo {
+  filter: invert(1) brightness(100%);
 }
 
 @media (max-width: 639px) {
