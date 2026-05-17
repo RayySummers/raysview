@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import mediumZoom from 'medium-zoom';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -39,6 +40,16 @@ const base = import.meta.env.BASE_URL;
           const heti = new Heti('.heti');
           heti.auto();
         }
+
+        mediumZoom('[data-zoomable]', {
+          margin: 24,
+          background: 'rgba(0,0,0,0.85)'
+        });
+
+        // Add zoomable to images in articles
+        document.querySelectorAll('article.heti img').forEach(img => {
+          img.setAttribute('data-zoomable', '');
+        });
       });
     </script>
   </head>
