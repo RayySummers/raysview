@@ -156,6 +156,16 @@ html {
   line-height: 1.8;
 }
 
+article.heti p {
+  margin-bottom: 1.2em;
+}
+
+article.heti h2,
+article.heti h3 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
 body {
   min-height: 100vh;
   display: flex;
