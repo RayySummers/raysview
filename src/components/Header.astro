@@ -124,6 +124,9 @@ const base = import.meta.env.BASE_URL;
     closeIcon.style.display = 'block';
     searchInput.focus();
     loadSearchIndex();
+    if (window.innerWidth < 640) {
+      clock.style.display = 'none';
+    }
   }
 
   function closeSearch() {
@@ -136,6 +139,7 @@ const base = import.meta.env.BASE_URL;
     searchResults.innerHTML = '';
     searchIcon.style.display = 'block';
     closeIcon.style.display = 'none';
+    clock.style.display = '';
   }
 
   function search(query: string) {
