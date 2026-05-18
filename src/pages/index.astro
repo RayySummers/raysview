@@ -1,58 +1,29 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getCollection } from 'astro:content';
-
-const siteBase = import.meta.env.BASE_URL;
-const posts = (await getCollection('posts')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-
-const grouped = posts.reduce((acc, post) => {
-  const date = post.data.date;
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const key = `${year}年${month}月`;
-  if (!acc[key]) acc[key] = [];
-  acc[key].push(post);
-  return acc;
-}, {} as Record<string, typeof posts>);
+const base = import.meta.env.BASE_URL;
 ---
 
 <Base title="RayView">
-  <p style="font-size: var(--text-xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--space-2);">Hello, I'm Ray</p>
-  <h1 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-6);">文章</h1>
+  <p style="font-size: var(--text-xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--space-6);">Hello, I'm Ray</p>
 
-  {Object.entries(grouped).map(([period, periodPosts]) => (
-    <div style="margin-bottom: var(--space-6);">
-      <h2 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">{period}</h2>
-      <div>
-        {periodPosts.map((post) => (
-          <article style="margin-bottom: var(--space-3);">
-            <a href={`${siteBase}/posts/${post.slug}`} style="display: block; text-decoration: none;">
-              <h3 style="font-size: var(--text-base); font-weight: 400; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
-                {post.data.title}
-              </h3>
-            </a>
-            <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">
-              <span>{post.data.date.toISOString().split('T')[0]}</span>
-              {post.data.tags && post.data.tags.length > 0 && (
-                <span style="margin-left: var(--space-2);">
-                  {post.data.tags.map((tag, idx) => (
-                    <>
-                      {idx > 0 && ' '}
-                      <a href={`${siteBase}/tags/${tag}`} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
-                        #{tag}
-                      </a>
-                    </>
-                  ))}
-                </span>
-              )}
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
-  ))}
-
-  {posts.length === 0 && (
-    <p style="color: var(--color-text-secondary); text-align: center; padding: var(--space-8) 0;">No posts yet.</p>
-  )}
+  <nav style="display: flex; flex-direction: column; gap: var(--space-3);">
+    <a href={`${base}/articles/`} style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none; position: relative; display: inline-block;">
+      文章
+      <span style="position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--color-text-primary); transition: width 200ms ease-out;"></span>
+    </a>
+    <a href={`${base}/videos/`} style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none; position: relative; display: inline-block;">
+      视频
+      <span style="position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--color-text-primary); transition: width 200ms ease-out;"></span>
+    </a>
+  </nav>
 </Base>
+
+<style>
+  nav a:hover span {
+    width: 100%;
+  }
+  nav a:not(:hover) span {
+    width: 0;
+    transition: width 200ms ease-out;
+  }
+</style>
