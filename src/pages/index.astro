@@ -7,23 +7,34 @@ const base = import.meta.env.BASE_URL;
   <p style="font-size: var(--text-xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--space-6);">Hello, I'm Ray</p>
 
   <nav style="display: flex; flex-direction: column; gap: var(--space-3);">
-    <a href={`${base}/articles/`} style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none; position: relative; display: inline-block;">
+    <a href={`${base}/articles/`} class="nav-link" style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none;">
       文章
-      <span style="position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--color-text-primary); transition: width 200ms ease-out;"></span>
     </a>
-    <a href={`${base}/videos/`} style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none; position: relative; display: inline-block;">
+    <a href={`${base}/videos/`} class="nav-link" style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none;">
       视频
-      <span style="position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--color-text-primary); transition: width 200ms ease-out;"></span>
     </a>
   </nav>
 </Base>
 
 <style>
-  nav a:hover span {
+  .nav-link {
+    position: relative;
+    display: inline-block;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--color-text-primary);
+    transition: width 200ms ease-out;
+  }
+  .nav-link:hover::after {
     width: 100%;
   }
-  nav a:not(:hover) span {
+  .nav-link:not(:hover)::after {
     width: 0;
-    transition: width 200ms ease-out;
   }
 </style>
