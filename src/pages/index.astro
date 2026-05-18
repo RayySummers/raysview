@@ -20,6 +20,8 @@ const base = import.meta.env.BASE_URL;
   .nav-link {
     position: relative;
     display: inline-block;
+    font-weight: 400;
+    transition: font-weight 100ms ease-out;
   }
   .nav-link::after {
     content: '';
@@ -30,6 +32,9 @@ const base = import.meta.env.BASE_URL;
     height: 2px;
     background: var(--color-text-primary);
     transition: width 200ms ease-out;
+  }
+  .nav-link:hover {
+    font-weight: 800;
   }
   .nav-link:hover::after {
     width: 100%;
