@@ -1,7 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
+const base = import.meta.env.BASE_URL;
 ---
 
 <Base title="敬请期待 - RayView">
   <p style="font-size: var(--text-3xl); font-weight: 700; color: var(--color-text-primary); text-align: center; padding: var(--space-8) 0;">敬请期待</p>
+  <a href={`${base}/`} style="display: inline-block; font-size: var(--text-sm); color: var(--color-text-secondary);">← Back</a>
 </Base>
