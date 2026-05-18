@@ -16,6 +16,12 @@ const { Content } = await post.render();
 ---
 
 <Base title={`${post.data.title} - RayView`}>
+  <a href={`${siteBase}/posts/`} class="back-btn" aria-label="Back">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+  </a>
+
   {post.data.banner && (
     <img
       src={post.data.banner}
@@ -49,15 +55,40 @@ const { Content } = await post.render();
     </article>
   </div>
 
-  <a href={`${siteBase}/posts/`} style="display: inline-block; color: var(--color-text-secondary); transition: color var(--transition-fast);" aria-label="Back" class="back-btn">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M19 12H5M12 19l-7-7 7-7"/>
-    </svg>
-  </a>
+  <div style="display: flex; gap: var(--space-4); margin-top: var(--space-6);">
+    <button id="back-btn-bottom" class="back-btn" aria-label="Back to previous page">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+    </button>
+    <button id="scroll-top-btn" class="back-btn" aria-label="Scroll to top">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+    </button>
+  </div>
 </Base>
 
 <style>
+  .back-btn {
+    display: inline-block;
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
   .back-btn:hover {
     color: var(--color-text-primary) !important;
   }
 </style>
+
+<script>
+  document.getElementById('back-btn-bottom')?.addEventListener('click', () => {
+    history.back();
+  });
+  document.getElementById('scroll-top-btn')?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
