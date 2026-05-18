@@ -17,6 +17,11 @@ const grouped = posts.reduce((acc, post) => {
 ---
 
 <Base title="文章 - RayView">
+  <a href={`${siteBase}/`} style="display: inline-block; color: var(--color-text-secondary);" aria-label="Back">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+  </a>
   {Object.entries(grouped).map(([period, periodPosts]) => (
     <div style="margin-bottom: var(--space-6);">
       <h2 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">{period}</h2>
@@ -52,6 +57,4 @@ const grouped = posts.reduce((acc, post) => {
   {posts.length === 0 && (
     <p style="color: var(--color-text-secondary); text-align: center; padding: var(--space-8) 0;">No posts yet.</p>
   )}
-
-  <a href={`${siteBase}/`} style="display: inline-block; margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text-secondary);">← Back</a>
 </Base>

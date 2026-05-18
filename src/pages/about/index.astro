@@ -3,11 +3,15 @@ import Base from '../../layouts/Base.astro';
 ---
 
 <Base title="关于 - RayView">
-  <p style="font-size: var(--text-lg); line-height: 1.8; color: var(--color-text-primary);">
+  <a href={`${import.meta.env.BASE_URL}/`} style="display: inline-block; color: var(--color-text-secondary);" aria-label="Back">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+  </a>
+  <p style="font-size: var(--text-lg); line-height: 1.8; color: var(--color-text-primary); margin-top: var(--space-4);">
     我是 Rayy Summers，您可以叫我 Ray。我来自重庆，目前住在广州。目前就读于广东外语外贸大学英语语言学拔尖人才实验班。
   </p>
   <p style="font-size: var(--text-lg); line-height: 1.8; color: var(--color-text-primary); margin-top: var(--space-4);">
     目前运营微信公众号 @睿见RayView (@RayView365)，主要发布「半月记（Biweekly）」记录每半个月的洞察和思考、「Ray 的设计课（RayDesign）」分享我对设计的见解。
   </p>
-  <a href={`${import.meta.env.BASE_URL}/`} style="display: inline-block; margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text-secondary);">← Back</a>
 </Base>
