@@ -17,6 +17,7 @@ const grouped = posts.reduce((acc, post) => {
 ---
 
 <Base title="RayView">
+  <p style="font-size: var(--text-xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--space-2);">Hello, I'm Ray</p>
   <h1 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-6);">文章</h1>
 
   {Object.entries(grouped).map(([period, periodPosts]) => (
