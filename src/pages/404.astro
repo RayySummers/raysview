@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="404 - Page Not Found">
+  <div style="text-align: center; padding: var(--space-8) 0;">
+    <h1 style="font-size: var(--text-6xl); font-weight: 800; margin-bottom: var(--space-4);">404</h1>
+    <p style="font-size: var(--text-lg); color: var(--color-text-secondary); margin-bottom: var(--space-6);">
+      页面不存在
+    </p>
+    <a href={`${import.meta.env.BASE_URL}/`} style="font-size: var(--text-sm); color: var(--color-text-secondary); text-decoration: underline; text-underline-offset: 3px;">
+      ← 返回首页
+    </a>
+  </div>
+</Base>
