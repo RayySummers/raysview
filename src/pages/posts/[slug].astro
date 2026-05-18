@@ -49,5 +49,15 @@ const { Content } = await post.render();
     </article>
   </div>
 
-  <a href={`${siteBase}/`} style="display: inline-block; margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text-secondary);">← Back</a>
+  <a href={`${siteBase}/posts/`} style="display: inline-block; color: var(--color-text-secondary); transition: color var(--transition-fast);" aria-label="Back" class="back-btn">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M19 12H5M12 19l-7-7 7-7"/>
+    </svg>
+  </a>
 </Base>
+
+<style>
+  .back-btn:hover {
+    color: var(--color-text-primary) !important;
+  }
+</style>
