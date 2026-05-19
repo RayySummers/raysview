@@ -189,17 +189,21 @@ article.heti a::after {
   background: var(--color-text-primary);
   transform: scaleX(1);
   transform-origin: left center;
-  transition: transform 200ms ease-out;
 }
 
 article.heti a:hover::after {
-  animation: underline-refresh 400ms ease-out forwards;
+  animation: underline-refresh 300ms ease-out forwards;
 }
 
 @keyframes underline-refresh {
   0% { transform: scaleX(1); }
-  40% { transform: scaleX(0); }
+  45% { transform: scaleX(0); }
   100% { transform: scaleX(1); }
+}
+
+article.heti a:not(:hover)::after {
+  transition: transform 200ms ease-out;
+  transform: scaleX(0);
 }
 
 body {

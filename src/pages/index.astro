@@ -24,6 +24,8 @@ const base = import.meta.env.BASE_URL;
     position: relative;
     display: inline-block;
     width: fit-content;
+    font-weight: 400;
+    transition: font-weight 100ms ease-out;
   }
   .nav-link::after {
     content: '';
@@ -37,7 +39,13 @@ const base = import.meta.env.BASE_URL;
     transform-origin: left center;
     transition: transform 200ms ease-out;
   }
+  .nav-link:hover {
+    font-weight: 800;
+  }
   .nav-link:hover::after {
     transform: scaleX(1);
+  }
+  .nav-link:not(:hover)::after {
+    transform: scaleX(0);
   }
 </style>
