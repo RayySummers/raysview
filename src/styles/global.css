@@ -178,7 +178,6 @@ article.heti a {
   display: inline;
   text-decoration: none;
   font-weight: 400;
-  transition: font-weight 100ms ease-out;
 }
 
 article.heti a::after {
@@ -186,18 +185,10 @@ article.heti a::after {
   position: absolute;
   bottom: -2px;
   left: 0;
-  width: 0;
+  width: 100%;
   height: 2px;
   background: var(--color-text-primary);
   transition: width 200ms ease-out;
-}
-
-article.heti a:hover {
-  font-weight: 800;
-}
-
-article.heti a:hover::after {
-  width: 100%;
 }
 
 article.heti a:not(:hover)::after {
