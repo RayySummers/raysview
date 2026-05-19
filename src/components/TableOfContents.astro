@@ -4,7 +4,7 @@ interface Props {
 }
 
 const { headings } = Astro.props;
-const filteredHeadings = headings.filter(h => h.depth >= 2 && h.depth <= 3);
+const filteredHeadings = headings.filter(h => h.depth >= 1 && h.depth <= 3);
 ---
 
 {filteredHeadings.length > 0 && (
