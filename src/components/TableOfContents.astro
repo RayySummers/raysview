@@ -177,13 +177,13 @@ const filteredHeadings = headings.filter(h => h.depth >= 1 && h.depth <= 3);
       if (href) {
         const target = document.querySelector(href);
         if (target) {
-          // Use Lenis if available for consistent smooth scroll with navbar offset
+          const NAVBAR_HEIGHT = 48;
+          const targetPosition = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - NAVBAR_HEIGHT;
           if ((window as any).lenis) {
-            (window as any).lenis.scrollTo(target as HTMLElement, { offset: -48 });
+            (window as any).lenis.scrollTo(targetPosition, { offset: 0 });
           } else {
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
           }
-          // Update URL hash without jumping
           history.pushState(null, '', href);
           panel!.hidden = true;
         }
