@@ -131,9 +131,9 @@ Emoji Kitchen（Emoji 厨房）是 Google 于 2020 年 2 月在其输入法 Gboa
 
 # Emojipedia
 
-最后介绍一下 Emojipedia（https://emojipedia.org/），这个网站是 emoji 的百科全书。Emojipedia 里面有所有出了的和没出的 emoji 的介绍和所有 emoji 在各个平台的样式，包含过去的样式和最新的样式。
+最后介绍一下 [Emojipedia](https://emojipedia.org/)，这个网站是 emoji 的百科全书。Emojipedia 里面有所有出了的和没出的 emoji 的介绍和所有 emoji 在各个平台的样式，包含过去的样式和最新的样式。
 
-比如 「🔫」 这个 emoji，曾经显示为真的枪，但现在已经显示为水枪了。
+比如「🔫」这个 emoji，曾经显示为真的枪，但现在已经显示为水枪了。
 
 ![](https://pic1.imgdb.cn/item/6a0c7df6a0971b8b02a470fe.jpg)
 （截图自 Emojipedia）
