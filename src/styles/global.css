@@ -201,11 +201,6 @@ article.heti a:hover::after {
   100% { transform: scaleX(1); }
 }
 
-article.heti a:not(:hover)::after {
-  transition: transform 200ms ease-out;
-  transform: scaleX(0);
-}
-
 body {
   min-height: 100vh;
   display: flex;
