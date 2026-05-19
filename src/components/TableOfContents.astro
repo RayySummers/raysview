@@ -1,0 +1,171 @@
+---
+interface Props {
+  headings: { depth: number; text: string; slug: string }[];
+}
+
+const { headings } = Astro.props;
+const filteredHeadings = headings.filter(h => h.depth >= 2 && h.depth <= 3);
+---
+
+{filteredHeadings.length > 0 && (
+  <div class="toc-container">
+    <button id="toc-toggle" class="toc-btn" aria-label="Table of contents">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+    <div id="toc-panel" class="toc-panel" hidden>
+      <div class="toc-header">
+        <span>目录</span>
+        <button id="toc-close" class="toc-close" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6L6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <nav class="toc-nav">
+        {filteredHeadings.map(h => (
+          <a
+            href={`#${h.slug}`}
+            class={`toc-item depth-${h.depth}`}
+          >
+            {h.text}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </div>
+)}
+
+<style>
+  .toc-container {
+    position: fixed;
+    bottom: var(--space-5);
+    right: var(--space-5);
+    z-index: 100;
+  }
+
+  .toc-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .toc-btn:hover {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+  }
+
+  .toc-panel {
+    position: absolute;
+    bottom: 60px;
+    right: 0;
+    width: 280px;
+    max-height: 400px;
+    overflow-y: auto;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.2s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .toc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .toc-close {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: var(--space-1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition-fast);
+  }
+
+  .toc-close:hover {
+    color: var(--color-text-primary);
+  }
+
+  .toc-nav {
+    padding: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .toc-item {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    line-height: 1.4;
+  }
+
+  .toc-item:hover {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+  }
+
+  .toc-item.depth-3 {
+    padding-left: var(--space-5);
+    font-size: var(--text-xs);
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('toc-toggle');
+  const panel = document.getElementById('toc-panel');
+  const close = document.getElementById('toc-close');
+
+  toggle?.addEventListener('click', () => {
+    if (panel) {
+      panel.hidden = !panel.hidden;
+    }
+  });
+
+  close?.addEventListener('click', () => {
+    if (panel) {
+      panel.hidden = true;
+    }
+  });
+
+  // Close on outside click
+  document.addEventListener('click', (e) => {
+    const container = document.querySelector('.toc-container');
+    if (container && !container.contains(e.target as Node) && panel) {
+      panel.hidden = true;
+    }
+  });
+</script>
