@@ -167,6 +167,12 @@ article.heti h3 {
   margin-bottom: 0.5em;
 }
 
+article.heti img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 body {
   min-height: 100vh;
   display: flex;
