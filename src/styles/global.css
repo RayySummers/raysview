@@ -173,6 +173,37 @@ article.heti img {
   display: block;
 }
 
+article.heti a {
+  position: relative;
+  display: inline;
+  text-decoration: none;
+  font-weight: 400;
+  transition: font-weight 100ms ease-out;
+}
+
+article.heti a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-text-primary);
+  transition: width 200ms ease-out;
+}
+
+article.heti a:hover {
+  font-weight: 800;
+}
+
+article.heti a:hover::after {
+  width: 100%;
+}
+
+article.heti a:not(:hover)::after {
+  width: 0;
+}
+
 body {
   min-height: 100vh;
   display: flex;
