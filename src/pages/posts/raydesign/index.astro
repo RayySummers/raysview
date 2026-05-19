@@ -27,7 +27,7 @@ const posts = allPosts
     {posts.map((post) => (
       <article style="margin-bottom: var(--space-4);">
         {post.data.banner && (
-          <a href={`${siteBase}/posts/${post.slug}`} style="display: block; margin-bottom: var(--space-2);">
+          <a href={`${siteBase}/posts/${post.id}`} style="display: block; margin-bottom: var(--space-2);">
             <img
               src={post.data.banner}
               alt=""
@@ -36,7 +36,7 @@ const posts = allPosts
             />
           </a>
         )}
-        <a href={`${siteBase}/posts/${post.slug}`} style="display: block; text-decoration: none;">
+        <a href={`${siteBase}/posts/${post.id}`} style="display: block; text-decoration: none;">
           <h2 style="font-size: var(--text-base); font-weight: 400; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
             {post.data.title.replace(' | RayDesign', '')}
           </h2>
