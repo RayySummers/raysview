@@ -209,8 +209,6 @@ body {
 
 a {
   color: var(--color-text-primary);
-  text-decoration: underline;
-  text-underline-offset: 3px;
   text-decoration-color: transparent;
   transition: text-decoration-color var(--transition-fast);
 }
