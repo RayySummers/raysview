@@ -22,6 +22,16 @@ const grouped = posts.reduce((acc, post) => {
       <path d="M19 12H5M12 19l-7-7 7-7"/>
     </svg>
   </a>
+
+  <div style="margin-bottom: var(--space-6);">
+    <a href={`${siteBase}/posts/raydesign/`} style="display: inline-block; text-decoration: none;">
+      <span style="font-size: var(--text-sm); font-weight: 400; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
+        Ray 的设计课
+      </span>
+    </a>
+    <span style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-left: var(--space-2);">系列文章</span>
+  </div>
+
   {Object.entries(grouped).map(([period, periodPosts]) => (
     <div style="margin-bottom: var(--space-6);">
       <h2 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">{period}</h2>
