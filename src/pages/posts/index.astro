@@ -26,9 +26,9 @@ const grouped = posts.reduce((acc, post) => {
   <div style="margin-bottom: var(--space-6);">
     <a
       href={`${siteBase}/posts/raydesign/`}
-      class="raydesign-link"
+      class="nav-link"
     >
-      <span style="font-size: var(--text-sm); font-weight: 400; color: var(--color-text-primary);">
+      <span style="font-size: var(--text-sm); color: var(--color-text-primary);">
         Ray 的设计课 / RayDesign
       </span>
     </a>
@@ -74,5 +74,33 @@ const grouped = posts.reduce((acc, post) => {
 <style>
   .back-btn:hover {
     color: var(--color-text-primary) !important;
+  }
+  .nav-link {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    font-weight: 400;
+    transition: font-weight 100ms ease-out;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-text-primary);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 200ms ease-out;
+  }
+  .nav-link:hover {
+    font-weight: 800;
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+  .nav-link:not(:hover)::after {
+    transform: scaleX(0);
   }
 </style>

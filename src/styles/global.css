@@ -219,18 +219,6 @@ a:hover {
   text-decoration-color: currentColor;
 }
 
-.raydesign-link {
-  display: inline-block;
-  text-decoration: underline;
-  text-decoration-color: transparent;
-  text-underline-offset: 3px;
-  transition: text-decoration-color var(--transition-fast);
-}
-
-.raydesign-link:hover {
-  text-decoration-color: currentColor;
-}
-
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 200ms;
