@@ -1,18 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
   const base = import.meta.env.BASE_URL;
   const posts = await getCollection('posts');
   return posts.map(post => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: { post, base }
   }));
 }
 
 const { post, base: siteBase } = Astro.props as { post: any; base: string };
-const { Content } = await post.render();
+const { Content } = await render(post);
 ---
 
 <Base title={`${post.data.title} - RayView`}>

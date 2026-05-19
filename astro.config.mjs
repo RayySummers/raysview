@@ -7,6 +7,11 @@ export default defineConfig({
   build: {
     assets: 'assets'
   },
+  markdown: {
+    smartypants: {
+      quotes: false
+    }
+  },
   vite: {
     build: {
       cssMinify: true
