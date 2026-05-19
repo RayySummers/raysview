@@ -1,15 +1,14 @@
 ---
-title: 关于 Emoji 的一切 | RayDesign
+title: "关于 Emoji 的一切 | RayDesign #1"
 date: 2026-04-25
 tags:
   - RayDesign
   - emoji
 banner: https://pic1.imgdb.cn/item/6a0c6dc3a0971b8b02a43121.png
 excerpt: ""
+modified: 2026-05-19T23:29:18+08:00
+created: 2026-04-23T22:09:57+08:00
 ---
-
-![](https://pic1.imgdb.cn/item/6a0c6dc3a0971b8b02a43121.png)
-
 # 什么是 emoji？
 
 Emoji 和汉字、拉丁字母一样，本质只是字符（Character）。决定其如何显示的，是其采用的字体。比如字体思源黑体显示的"字"，和字体思源宋体显示的"字"，本质上是同一个字符，Unicode 码位是 `U+5B57 ` 。Unicode 码位相当于一个字符的身份证，是独一无二的标识码。关于 Unicode，因为信息量大，可以另开一期讲了，考虑到离题，这里就不细说了。
@@ -81,9 +80,9 @@ Unicode 表情符号小组（ESC）在审核提案时，主要看重以下几个
 
 [Microsoft 样式的 emoji](https://emojipedia.org/microsoft-3D-fluent) 偏现代、简洁、高饱和。
 
-![Microsoft 样式的 emoji](https://pic1.imgdb.cn/item/6a0c6fc8a0971b8b02a43179.jpg)
+![Microsoft 样式的 emoji](https://pic1.imgdb.cn/item/6a0c7016a0971b8b02a43184.jpg)
 
-华为样式的 emoji（[Huawei](https://emojipedia.org/huawei)）类似 Apple 和 Google 的中间态，可爱和写实之间。另外注意，旧版华为设备的操作系统可能仍然使用 Google 样式的 emoji。
+[华为样式的 emoji](https://emojipedia.org/huawei) 类似 Apple 和 Google 的中间态，可爱和写实之间。另外注意，旧版华为设备的操作系统可能仍然使用 Google 样式的 emoji。
 
 ![华为样式的 emoji](https://pic1.imgdb.cn/item/6a0c703ba0971b8b02a4318c.jpg)
 
