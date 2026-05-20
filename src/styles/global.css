@@ -206,6 +206,7 @@ article.heti pre {
   font-size: var(--text-sm);
   line-height: 1.6;
   font-weight: 500;
+  font-family: "Sarasa Mono SC", "JetBrains Mono", Consolas, ui-monospace, monospace;
 }
 
 article.heti code {
@@ -214,6 +215,7 @@ article.heti code {
   border-radius: var(--radius-sm);
   font-size: 0.9em;
   font-weight: 500;
+  font-family: "Sarasa Mono SC", "JetBrains Mono", Consolas, ui-monospace, monospace;
 }
 
 article.heti pre code {
