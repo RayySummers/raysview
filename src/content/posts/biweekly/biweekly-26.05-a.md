@@ -10,21 +10,9 @@ tags:
   - biweekly
 banner: https://pic1.imgdb.cn/item/6a0dcacc95d4b7068ae7fa9c.png
 excerpt: ""
-modified: 2026-05-20T22:53:29+08:00
+modified: 2026-05-20T23:17:00+08:00
 created: 2026-05-17T21:10:12+08:00
 ---
-```table-of-contents
-title: 
-style: nestedList # TOC style (nestedList|nestedOrderedList|inlineFirstLevel)
-minLevel: 0 # Include headings from the specified level
-maxLevel: 0 # Include headings up to the specified level
-include: 
-exclude: 
-includeLinks: true # Make headings clickable
-hideWhenEmpty: false # Hide TOC if no headings are found
-debugInConsole: false # Print debug info in Obsidian console
-```
-
 # 一、AI 的说明书（4D 框架）
 
 我很喜欢翻我感兴趣的公司的官网，看各种边边角角的细节。
@@ -51,7 +39,7 @@ debugInConsole: false # Print debug info in Obsidian console
 
 这次半月记的第一节和第二节就是分享我完成人工智能素养的课程后总结提炼的笔记，希望能帮到你。原课程有配套练习，建议感兴趣的读者学习。
 
-首先，什么是 人工智能素养？根据 Anthropic 的解释，人工智能素养指的是以有效、高效、合乎道德且安全的方式与 AI 互动[^1]。
+首先，什么是人工智能素养？根据 Anthropic 的解释，人工智能素养指的是以有效、高效、合乎道德且安全的方式与 AI 互动[^1]。
 
 其实从我对身边人的观察来看，由于 AI（此处特指聊天机器人）是近几年才出现的新事物，所以许多人并不了解该如何正确与 AI 相处。有的人把 AI 当人，付诸信任和情感；有的人把 AI 当神，盲目崇拜和依赖；有的人把 AI 当工具，却不知道如何正确使用和其能力边界……
 
@@ -219,7 +207,7 @@ Anthropic 称，AI 和人类互相发挥彼此的优势才能创造优秀的作�
 
 尽管目前我用的牙膏已经不是薄荷味的了，但是薄荷味的蛋糕仍然会让我感觉在吃牙膏而非奶油…
 
-让我们为被误解的薄荷“默哀”。🙏
+让我们为被误解的薄荷「默哀」。🙏
 
 # 四、博客网站
 
@@ -271,6 +259,7 @@ NMIXX 在 5 月 11 日发布的新专辑《Heavy Serenade》中，有一首《ID
 ■
 
 ※ **AI 声明**
+
 在创作本期半月记时，我与 OpenCode (MiniMax M2.7)、OpenClaw (MiniMax M2.7)、Kimi (K2.7 Thinking)、DeepSeek (V4 Flash)、豆包（专家）、千问（Qwen 3.6 Plus）协作，协助完成了课程原文翻译、协助理解、用词打磨、排版检查、深度研究薄荷与牙膏的文化背景、为图片添加替代文字等。我确认，所有由 AI 生成或共同创建的内容都经过了彻底的审阅和评估。最终产出物准确反映了我自己的理解、专业知识和意图。尽管 AI 辅助在整个过程中发挥了重要作用，但我对内容、其准确性及其呈现方式承担全部责任。本披露是出于透明的精神，并承认 AI 在创作过程中的作用。
 
 [^1]: 原文：“AI Fluency means engaging with AI systems effectively, efficiently, ethically, and safely” https://anthropic.skilljar.com/ai-fluency-framework-foundations/291863 
