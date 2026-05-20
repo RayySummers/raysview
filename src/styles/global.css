@@ -202,18 +202,34 @@ article.heti pre code {
 article.heti blockquote {
   border-left: 3px solid var(--color-text-secondary);
   padding-left: var(--space-4);
-  margin: var(--space-4) 0;
+  margin: var(--space-2) 0;
   color: var(--color-text-secondary);
-  white-space: pre-line;
 }
 
 article.heti blockquote p {
+  margin-bottom: 0.5em;
+}
+
+article.heti blockquote p:last-child {
   margin-bottom: 0;
 }
 
-article.heti blockquote p:not(:first-child)::before {
-  display: block;
-  content: '';
+article.heti sup a {
+  text-decoration: none !important;
+  position: static;
+}
+
+article.heti sup a::before {
+  content: '[';
+}
+
+article.heti sup a::after {
+  content: ']' !important;
+  display: inline !important;
+}
+
+article.heti sup a:hover {
+  text-decoration: none !important;
 }
 
 article.heti a {
@@ -236,6 +252,14 @@ article.heti a::after {
 
 article.heti a:hover::after {
   animation: underline-refresh 300ms ease-out forwards;
+}
+
+article.heti blockquote p {
+  margin-bottom: 0.5em;
+}
+
+article.heti blockquote p:last-child {
+  margin-bottom: 0;
 }
 
 article.heti sup a {
