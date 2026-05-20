@@ -205,10 +205,11 @@ article.heti blockquote {
   margin: 0.5em 0;
   color: var(--color-text-secondary);
   white-space: pre-line;
+  line-height: 1.4;
 }
 
 article.heti blockquote p {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.3em;
 }
 
 article.heti blockquote p:last-child {
