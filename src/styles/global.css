@@ -208,6 +208,7 @@ article.heti blockquote {
   white-space: pre-line;
   line-height: 1.2;
   text-align: left;
+  font-family: "Noto Serif SC", "Songti SC", SimSun, serif;
 }
 
 article.heti blockquote p {
@@ -216,6 +217,10 @@ article.heti blockquote p {
 
 article.heti blockquote p:last-child {
   margin-bottom: 0;
+}
+
+article.heti {
+  font-feature-settings: "halt" 1, "vhal" 1;
 }
 
 article.heti a {
