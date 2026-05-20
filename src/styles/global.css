@@ -266,6 +266,7 @@ article.heti sup a {
   position: static;
   display: inline !important;
   font-family: var(--font-sans);
+  background-image: none !important;
 }
 
 article.heti sup a::before {
@@ -389,14 +390,12 @@ a:hover {
 
 .footnotes a {
   color: var(--color-text-secondary);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: transparent;
-  transition: text-decoration-color var(--transition-fast);
+  text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
 .footnotes a:hover {
-  text-decoration-color: currentColor;
+  color: var(--color-text-primary);
 }
 
 .footnotes sup {
