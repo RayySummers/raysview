@@ -245,10 +245,13 @@ article.heti sup a {
 
 article.heti sup a::before {
   content: '[';
+  font-weight: normal;
 }
 
 article.heti sup a::after {
   content: ']';
+  font-weight: normal;
+  display: inline !important;
 }
 
 article.heti sup a:hover {
