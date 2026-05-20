@@ -202,7 +202,7 @@ article.heti pre code {
 article.heti blockquote {
   border-left: 3px solid var(--color-text-secondary);
   padding-left: var(--space-4);
-  margin: var(--space-2) 0;
+  margin: var(--space-1) 0;
   color: var(--color-text-secondary);
   white-space: pre-line;
 }

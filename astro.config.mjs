@@ -9,9 +9,7 @@ export default defineConfig({
     assets: 'assets'
   },
   markdown: {
-    smartypants: {
-      quotes: false
-    },
+    smartypants: false,
     remarkPlugins: [gfm]
   },
   vite: {
