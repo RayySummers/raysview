@@ -261,12 +261,14 @@ article.heti sup a:hover::after {
   animation: none !important;
 }
 
-article.heti blockquote p {
-  margin-bottom: 0.5em;
+article.heti ul,
+article.heti ol {
+  margin: var(--space-3) 0;
+  padding-left: var(--space-5);
 }
 
-article.heti blockquote p:last-child {
-  margin-bottom: 0;
+article.heti li {
+  margin-bottom: var(--space-2);
 }
 
 @keyframes underline-refresh {
