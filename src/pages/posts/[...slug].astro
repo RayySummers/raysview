@@ -24,14 +24,12 @@ const { Content, headings } = await render(post);
   </a>
 
   {post.data.banner && (
-    <div style="width: 100vw; margin-left: calc(-50vw + 50%); margin-bottom: var(--space-5);">
-      <img
-        src={post.data.banner}
-        alt=""
-        data-zoomable
-        style="width: 100%; height: auto; display: block;"
-      />
-    </div>
+    <img
+      src={post.data.banner}
+      alt=""
+      data-zoomable
+      style="width: 100%; height: auto; display: block; margin-bottom: var(--space-5);"
+    />
   )}
 
   <h1 style="font-size: var(--text-3xl); font-weight: 800; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-3); line-height: 1.1; font-family: var(--font-display); font-optical-sizing: auto;">
