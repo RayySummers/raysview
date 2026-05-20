@@ -34,6 +34,17 @@ const grouped = posts.reduce((acc, post) => {
     </a>
   </div>
 
+  <div style="margin-bottom: var(--space-6);">
+    <a
+      href={`${siteBase}/posts/biweekly/`}
+      class="nav-link"
+    >
+      <span style="font-size: var(--text-base); color: var(--color-text-primary);">
+        半月记 / Biweekly
+      </span>
+    </a>
+  </div>
+
   {Object.entries(grouped).map(([period, periodPosts]) => (
     <div style="margin-bottom: var(--space-6);">
       <h2 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">{period}</h2>
