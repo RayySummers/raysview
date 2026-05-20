@@ -1,6 +1,6 @@
 ---
 title: AI 的 4D 框架、AI 诚信声明、薄荷是牙膏味的、建站 | 半月记2026.05.A
-date: 2026-05-20
+date: 2026-05-21
 tags:
   - ai
   - anthropic
@@ -10,7 +10,7 @@ tags:
   - biweekly
 banner: https://pic1.imgdb.cn/item/6a0dcacc95d4b7068ae7fa9c.png
 excerpt: ""
-modified: 2026-05-20T23:17:00+08:00
+modified: 2026-05-20T23:58:40+08:00
 created: 2026-05-17T21:10:12+08:00
 ---
 # 一、AI 的说明书（4D 框架）
@@ -45,7 +45,7 @@ created: 2026-05-17T21:10:12+08:00
 
 我认为信息时代的 AI 素养很重要，尤其是新一代人和老一代人，都需要学习如何更好地与 AI 沟通，利用 AI 提升工作效率甚至是生活质量。
 
-Anthropic 提出的 4D 框架就是 AI Fluency 的核心能力。
+Anthropic 提出的 4D 框架就是人工智能素养的核心能力。
 
 ## I. 委派（Delegation）
 
