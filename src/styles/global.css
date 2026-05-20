@@ -238,6 +238,15 @@ article.heti a:hover::after {
   animation: underline-refresh 300ms ease-out forwards;
 }
 
+article.heti sup a {
+  text-decoration: none;
+  position: static;
+}
+
+article.heti sup a::after {
+  display: none;
+}
+
 @keyframes underline-refresh {
   0% { transform: scaleX(1); }
   45% { transform: scaleX(0); }
