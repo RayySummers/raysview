@@ -243,8 +243,12 @@ article.heti sup a {
   position: static;
 }
 
+article.heti sup a::before {
+  content: '[';
+}
+
 article.heti sup a::after {
-  display: none !important;
+  content: ']';
 }
 
 article.heti sup a:hover {
