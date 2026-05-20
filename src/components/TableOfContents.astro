@@ -141,8 +141,12 @@ const filteredHeadings = headings.filter(h => h.depth >= 1 && h.depth <= 3);
   }
 
   .toc-item.depth-3 {
-    padding-left: var(--space-5);
+    padding-left: calc(var(--space-3) + var(--space-4));
     font-size: var(--text-xs);
+  }
+
+  .toc-item.depth-2 {
+    padding-left: var(--space-4);
   }
 </style>
 

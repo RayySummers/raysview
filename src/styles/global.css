@@ -205,14 +205,16 @@ article.heti blockquote {
   margin: var(--space-4) 0;
   color: var(--color-text-secondary);
   font-style: italic;
+  white-space: pre-line;
 }
 
 article.heti blockquote p {
-  margin-bottom: 0.5em;
+  margin-bottom: 0;
 }
 
-article.heti blockquote p:last-child {
-  margin-bottom: 0;
+article.heti blockquote p:not(:first-child)::before {
+  display: block;
+  content: '';
 }
 
 article.heti a {
@@ -345,7 +347,7 @@ a:hover {
 }
 
 .footnotes sup a {
-  text-decoration: none;
+  text-decoration: none !important;
   color: var(--color-text-secondary);
 }
 
