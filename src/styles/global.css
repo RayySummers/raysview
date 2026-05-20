@@ -239,12 +239,16 @@ article.heti a:hover::after {
 }
 
 article.heti sup a {
-  text-decoration: none;
+  text-decoration: none !important;
   position: static;
 }
 
 article.heti sup a::after {
-  display: none;
+  display: none !important;
+}
+
+article.heti sup a:hover {
+  text-decoration: none !important;
 }
 
 @keyframes underline-refresh {
