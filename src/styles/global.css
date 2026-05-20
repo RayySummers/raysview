@@ -218,8 +218,8 @@ article.heti blockquote p:last-child {
   margin-bottom: 0;
 }
 
-article.heti p,
-article.heti li {
+article.heti {
+  font-family: var(--font-sans);
   font-feature-settings: "halt" 1, "vhal" 1, "dlig" 1, "ccnp" 1;
 }
 
