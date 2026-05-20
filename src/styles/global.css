@@ -230,6 +230,7 @@ article.heti a::after {
   background: var(--color-text-primary);
   transform: scaleX(1);
   transform-origin: left center;
+  animation: none;
 }
 
 article.heti a:hover::after {
@@ -248,11 +249,16 @@ article.heti sup a::before {
 
 article.heti sup a::after {
   content: ']';
-  display: inline !important;
+  position: static;
+  width: auto;
+  height: auto;
+  background: none;
+  transform: none;
+  animation: none !important;
 }
 
-article.heti sup a:hover {
-  text-decoration: none !important;
+article.heti sup a:hover::after {
+  animation: none !important;
 }
 
 article.heti blockquote p {
