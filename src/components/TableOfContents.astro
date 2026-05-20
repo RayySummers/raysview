@@ -197,7 +197,7 @@ const filteredHeadings = headings.filter(h => h.depth >= 1 && h.depth <= 3);
   });
 
   // Footnote back-links with offset (avoid navbar)
-  document.querySelectorAll('.footnotes a[href^="#fnref"]').forEach(link => {
+  document.querySelectorAll('a[data-footnote-backref]').forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const href = (link as HTMLAnchorElement).getAttribute('href');
@@ -207,7 +207,29 @@ const filteredHeadings = headings.filter(h => h.depth >= 1 && h.depth <= 3);
           const NAVBAR_HEIGHT = 48;
           const targetPosition = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - NAVBAR_HEIGHT;
           if ((window as any).lenis) {
-            (window as any).lenis.scrollTo(targetPosition, { offset: 0 });
+            (window as any).lenis.scrollTo(targetPosition, { offset: 0, duration: 1.2 });
+          } else {
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+          }
+          history.pushState(null, '', href);
+        }
+      }
+    });
+  });
+
+  // Regular footnote links (not back-links)
+  document.querySelectorAll('.footnotes a[href^="#fnref"]:not([data-footnote-backref])').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const href = (link as HTMLAnchorElement).getAttribute('href');
+      if (href) {
+        const targetId = href.replace('#', '');
+        const target = document.getElementById(targetId) || document.querySelector(`[id="${targetId}"]`);
+        if (target) {
+          const NAVBAR_HEIGHT = 48;
+          const targetPosition = (target as HTMLElement).getBoundingClientRect().top + window.scrollY - NAVBAR_HEIGHT;
+          if ((window as any).lenis) {
+            (window as any).lenis.scrollTo(targetPosition, { offset: 0, duration: 1.2 });
           } else {
             window.scrollTo({ top: targetPosition, behavior: 'smooth' });
           }

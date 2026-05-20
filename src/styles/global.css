@@ -204,7 +204,6 @@ article.heti blockquote {
   padding-left: var(--space-4);
   margin: var(--space-4) 0;
   color: var(--color-text-secondary);
-  font-style: italic;
   white-space: pre-line;
 }
 
@@ -346,13 +345,18 @@ a:hover {
   text-decoration: none;
 }
 
-.footnotes sup a {
+.footnotes a[data-footnote-backref] {
   text-decoration: none !important;
   color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
 }
 
-.footnotes sup a::after {
+.footnotes a[data-footnote-backref]::after {
   display: none !important;
+}
+
+.footnotes a[data-footnote-backref]:hover {
+  color: var(--color-text-primary);
 }
 
 .toc-item.depth-3 {
