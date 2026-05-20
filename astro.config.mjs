@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import gfm from 'remark-gfm';
 
 export default defineConfig({
   site: 'https://rayview.github.io',
@@ -10,7 +11,8 @@ export default defineConfig({
   markdown: {
     smartypants: {
       quotes: false
-    }
+    },
+    remarkPlugins: [gfm]
   },
   vite: {
     build: {

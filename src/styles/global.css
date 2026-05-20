@@ -256,3 +256,24 @@ a:hover {
     --padding-x: var(--space-6);
   }
 }
+
+/* Footnotes */
+.footnotes {
+  margin-top: var(--space-8);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.footnotes ol {
+  padding-left: var(--space-4);
+}
+
+.footnotes li {
+  margin-bottom: var(--space-2);
+}
+
+.footnotes a {
+  color: var(--color-text-secondary);
+}
