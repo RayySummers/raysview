@@ -246,6 +246,7 @@ article.heti sup a {
   text-decoration: none !important;
   position: static;
   display: inline !important;
+  font-family: var(--font-sans);
 }
 
 article.heti sup a::before {
