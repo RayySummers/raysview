@@ -36,9 +36,9 @@
           <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">${o.date}</div>
         </a>
       `).join(""),s.style.display="block"}L.addEventListener("click",()=>{c?r():I()});let y;n.addEventListener("input",()=>{clearTimeout(y),y=setTimeout(()=>$(n.value),150)});document.addEventListener("keydown",e=>{e.key==="/"&&!c&&document.activeElement?.tagName!=="INPUT"&&(e.preventDefault(),I()),e.key==="Escape"&&c&&r()});document.addEventListener("click",e=>{c&&!document.getElementById("search-container").contains(e.target)&&r()});const m=document.getElementById("clock");function k(){const e=new Date,t=String(e.getHours()).padStart(2,"0"),l=String(e.getMinutes()).padStart(2,"0"),o=e.getSeconds()%2===0?":":" ";m.textContent=`${t}${o}${l}`}k();setInterval(k,1e3);</script> <main style="padding-left: var(--padding-x); padding-right: var(--padding-x); padding-top: var(--space-6); padding-bottom: var(--space-6); max-width: var(--max-width); margin: 0 auto; width: 100%;">  <a href="/raysview/posts/" style="display: inline-block; color: var(--color-text-secondary); transition: color var(--transition-fast);" aria-label="Back" class="back-btn" data-astro-cid-rmm47tsk> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-rmm47tsk> <path d="M19 12H5M12 19l-7-7 7-7" data-astro-cid-rmm47tsk></path> </svg> </a> <h1 style="font-size: var(--text-2xl); font-weight: 800; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-2); line-height: 1.1; font-family: var(--font-display); font-optical-sizing: auto;" data-astro-cid-rmm47tsk>
-半月记 Biweekly
+半月记 / Biweekly
 </h1> <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-6);" data-astro-cid-rmm47tsk>
-Biweekly 系列文章
+系列文章
 </p> <div data-astro-cid-rmm47tsk>  </div> <p style="color: var(--color-text-secondary); text-align: center; padding: var(--space-8) 0;" data-astro-cid-rmm47tsk>Biweekly 系列文章陆续更新中。</p> </main> <footer style="height: var(--header-height); display: flex; align-items: center; justify-content: center; font-size: var(--text-xs); color: var(--color-text-secondary);">
 © 2026 RayView
 </footer> </body></html>
