@@ -406,6 +406,7 @@ a:hover {
 
 .footnotes a[data-footnote-backref] {
   text-decoration: none !important;
+  background-image: none !important;
   color: var(--color-text-secondary);
   transition: color var(--transition-fast);
 }
