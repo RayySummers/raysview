@@ -220,7 +220,7 @@ article.heti blockquote p:last-child {
 
 article.heti {
   font-family: var(--font-sans);
-  font-feature-settings: "halt" 1, "vhal" 1, "dlig" 1, "ccnp" 1;
+  font-feature-settings: "kern" 1, "vkrn" 1, "dlig" 1, "ccnp" 1;
 }
 
 article.heti a {
