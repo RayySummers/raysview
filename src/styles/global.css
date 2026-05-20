@@ -214,24 +214,6 @@ article.heti blockquote p:last-child {
   margin-bottom: 0;
 }
 
-article.heti sup a {
-  text-decoration: none !important;
-  position: static;
-}
-
-article.heti sup a::before {
-  content: '[';
-}
-
-article.heti sup a::after {
-  content: ']' !important;
-  display: inline !important;
-}
-
-article.heti sup a:hover {
-  text-decoration: none !important;
-}
-
 article.heti a {
   position: relative;
   display: inline-block;
@@ -254,32 +236,31 @@ article.heti a:hover::after {
   animation: underline-refresh 300ms ease-out forwards;
 }
 
+article.heti sup a {
+  text-decoration: none !important;
+  position: static;
+  display: inline !important;
+}
+
+article.heti sup a::before {
+  content: '[';
+}
+
+article.heti sup a::after {
+  content: ']';
+  display: inline !important;
+}
+
+article.heti sup a:hover {
+  text-decoration: none !important;
+}
+
 article.heti blockquote p {
   margin-bottom: 0.5em;
 }
 
 article.heti blockquote p:last-child {
   margin-bottom: 0;
-}
-
-article.heti sup a {
-  text-decoration: none !important;
-  position: static;
-}
-
-article.heti sup a::before {
-  content: '[';
-  font-weight: normal;
-}
-
-article.heti sup a::after {
-  content: ']';
-  font-weight: normal;
-  display: inline !important;
-}
-
-article.heti sup a:hover {
-  text-decoration: none !important;
 }
 
 @keyframes underline-refresh {
