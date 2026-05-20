@@ -178,7 +178,9 @@ article.heti pre {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: var(--space-4);
-  overflow-x: auto;
+  overflow-x: visible;
+  white-space: pre-wrap;
+  word-break: break-word;
   margin: var(--space-4) 0;
   font-size: var(--text-sm);
   line-height: 1.6;
@@ -205,9 +207,17 @@ article.heti blockquote {
   font-style: italic;
 }
 
+article.heti blockquote p {
+  margin-bottom: 0.5em;
+}
+
+article.heti blockquote p:last-child {
+  margin-bottom: 0;
+}
+
 article.heti a {
   position: relative;
-  display: inline;
+  display: inline-block;
   text-decoration: none;
 }
 
@@ -327,6 +337,14 @@ a:hover {
 
 .footnotes sup {
   text-decoration: none;
+}
+
+.footnotes sup a {
+  text-decoration: none;
+}
+
+.footnotes sup a::after {
+  display: none;
 }
 
 .toc-item.depth-3 {
