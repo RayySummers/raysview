@@ -10,7 +10,7 @@ tags:
   - biweekly
 banner: https://pic1.imgdb.cn/item/6a0dcacc95d4b7068ae7fa9c.png
 excerpt: ""
-modified: 2026-05-21T01:16:30+08:00
+modified: 2026-05-21T01:51:53+08:00
 created: 2026-05-17T21:10:12+08:00
 ---
 # 一、AI 的说明书（4D 框架）
@@ -19,7 +19,7 @@ created: 2026-05-17T21:10:12+08:00
 
 比如多邻国（Duolingo）有公开自己的设计规范，在 `design.duolingo.com` 。里面规定了所有插画都必须使用圆角的图形。对写作风格、字体、颜色也有详细的要求。
 
-![多邻国设计规范页|649](https://pic1.imgdb.cn/item/6a0ab3bcfebbe1263e6e56c4.jpg)
+![多邻国设计规范页](https://pic1.imgdb.cn/item/6a0ab3bcfebbe1263e6e56c4.jpg)
 
 同时 OpenAI 也公布了自己的设计规范，在 `openai.com/brand` 。
 
@@ -215,6 +215,8 @@ Anthropic 称，AI 和人类互相发挥彼此的优势才能创造优秀的作�
 
 现在网站上已经有本期半月记了，未来还会搬运往期内容到网站。
 
+目前网页还在积极建设和调整中。
+
 # 五、这周发生的有趣的事
 
 我忍不住了。有很多想写但篇幅不够成一章，但不写又可惜的东西。思考过后，以后的半月记还是会写这些有趣的小想法的。
@@ -226,26 +228,31 @@ NMIXX 在 5 月 11 日发布的新专辑《Heavy Serenade》中，有一首《ID
 原歌词是：
 
 >  I D-E-S-E-R-V-E I-T
+>  
 >  I deserve i-it
 
 节奏是：
 
 > I-D-E-S-E-R-V-E-I-T
+> 
 > I-de-se-r-ve-it
 
 原文标准的（宽式）国际音标是：
 
 > /ˈaɪ ˈdi ˈi ˈɛs ˈi ˈɑɹ ˈvi ˈi ˈaɪ ˈti/
+> 
 > /ˈaɪ dɪˈzɝv ˈɪt/
 
 去掉重音符号，同时用更粗略的符号表达，类似：
 
 > /aɪ di i ɛs i ɑ vi i aɪ ti/
+> 
 > /aɪ dɪ zɝ ɝ vɪ ɪ/
 
 只留下韵脚，即：
 
 > /aɪ i i ɛ i ɑ i i aɪ i/
+> 
 > /aɪ ɪ ɝ ɝ ɪ ɪ/
 
 假如按现代汉语的规则，其实就是「开口呼(A)-齐齿呼(I)-齐齿呼(I)-开口呼(E)-齐齿呼(I)-开口呼(A)-齐齿呼(I)-齐齿呼(I)-开口呼(A)-齐齿呼(I)-开口呼(A)-齐齿呼(I)-开口呼(ER)-开口呼(ER)-开口呼(E)-开口呼(E)」，好像除了前面都是「开-齐-齐-开-齐」重复 2 次以外没什么规律。
@@ -262,6 +269,6 @@ NMIXX 在 5 月 11 日发布的新专辑《Heavy Serenade》中，有一首《ID
 
 在创作本期半月记时，我与 OpenCode (MiniMax M2.7)、OpenClaw (MiniMax M2.7)、Kimi (K2.7 Thinking)、DeepSeek (V4 Flash)、豆包（专家）、千问（Qwen 3.6 Plus）协作，协助完成了课程原文翻译、协助理解、用词打磨、排版检查、深度研究薄荷与牙膏的文化背景、为图片添加替代文字等。我确认，所有由 AI 生成或共同创建的内容都经过了彻底的审阅和评估。最终产出物准确反映了我自己的理解、专业知识和意图。尽管 AI 辅助在整个过程中发挥了重要作用，但我对内容、其准确性及其呈现方式承担全部责任。本披露是出于透明的精神，并承认 AI 在创作过程中的作用。
 
-[^1]: 原文：“AI Fluency means engaging with AI systems effectively, efficiently, ethically, and safely” https://anthropic.skilljar.com/ai-fluency-framework-foundations/291863 
+[^1]: 原文："AI Fluency means engaging with AI systems effectively, efficiently, ethically, and safely" https://anthropic.skilljar.com/ai-fluency-framework-foundations/291863 
 
 [^2]: 原文： `"In creating this [document/project/content], I collaborated with [AI assistant name] to assist with [specific tasks: drafting, research, editing, etc.]. I affirm that all AI-generated and co-created content underwent thorough review and evaluation. The final output accurately reflects my understanding, expertise, and intended meaning. While AI assistance was instrumental in the process, I maintain full responsibility for the content, its accuracy, and its presentation. This disclosure is made in the spirit of transparency and to acknowledge the role of AI in the creation process."` https://anthropic.skilljar.com/ai-fluency-framework-foundations/291904
