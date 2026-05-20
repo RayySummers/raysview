@@ -204,6 +204,7 @@ article.heti blockquote {
   padding-left: var(--space-4);
   margin: var(--space-2) 0;
   color: var(--color-text-secondary);
+  white-space: pre-line;
 }
 
 article.heti blockquote p {
