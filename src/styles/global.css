@@ -315,6 +315,18 @@ a:hover {
 
 .footnotes a {
   color: var(--color-text-secondary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: transparent;
+  transition: text-decoration-color var(--transition-fast);
+}
+
+.footnotes a:hover {
+  text-decoration-color: currentColor;
+}
+
+.footnotes sup {
+  text-decoration: none;
 }
 
 .toc-item.depth-3 {
