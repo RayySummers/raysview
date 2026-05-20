@@ -23,24 +23,22 @@ const grouped = posts.reduce((acc, post) => {
     </svg>
   </a>
 
-  <div style="margin-bottom: var(--space-6);">
-    <a
-      href={`${siteBase}/posts/raydesign/`}
-      class="nav-link"
-    >
-      <span style="font-size: var(--text-base); color: var(--color-text-primary);">
-        Ray 的设计课 / RayDesign
-      </span>
-    </a>
-  </div>
-
-  <div style="margin-bottom: var(--space-6);">
+  <div style="display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-4);">
     <a
       href={`${siteBase}/posts/biweekly/`}
       class="nav-link"
     >
       <span style="font-size: var(--text-base); color: var(--color-text-primary);">
         半月记 / Biweekly
+      </span>
+    </a>
+
+    <a
+      href={`${siteBase}/posts/raydesign/`}
+      class="nav-link"
+    >
+      <span style="font-size: var(--text-base); color: var(--color-text-primary);">
+        Ray 的设计课 / RayDesign
       </span>
     </a>
   </div>
