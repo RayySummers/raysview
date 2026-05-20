@@ -162,10 +162,30 @@ article.heti p {
   text-align: left;
 }
 
+article.heti h1,
 article.heti h2,
-article.heti h3 {
+article.heti h3,
+article.heti h4,
+article.heti h5,
+article.heti h6 {
+  font-weight: 600;
+  text-align: left;
+  letter-spacing: 0;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
+}
+
+article.heti h1 {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+}
+
+article.heti h2 {
+  font-size: var(--text-xl);
+}
+
+article.heti h3 {
+  font-size: var(--text-lg);
 }
 
 article.heti img {
@@ -218,6 +238,7 @@ article.heti blockquote p {
 article.heti {
   font-family: var(--font-sans);
   font-feature-settings: "kern" 1, "vkrn" 1, "dlig" 1, "ccnp" 1;
+  text-align: left;
 }
 
 article.heti a {
