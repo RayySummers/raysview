@@ -27,11 +27,11 @@ const posts = allPosts
     {posts.map((post) => (
       <article style="margin-bottom: var(--space-4);">
         {post.data.banner && (
-          <a href={`${siteBase}/posts/${post.id}`} style="display: block; margin-bottom: var(--space-2);">
+          <a href={`${siteBase}/posts/${post.id}`} style="display: block; margin-bottom: var(--space-2); overflow: hidden; height: 200px;">
             <img
               src={post.data.banner}
               alt=""
-              style="width: 100%; height: auto; display: block;"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
               data-zoomable
             />
           </a>
