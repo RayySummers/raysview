@@ -214,22 +214,21 @@ article.heti pre {
   position: absolute;
   top: var(--space-2);
   right: var(--space-2);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-sm);
   padding: var(--space-1);
   cursor: pointer;
-  color: var(--color-text-secondary);
-  transition: color var(--transition-fast);
+  color: rgba(255, 255, 255, 0.7);
+  transition: color var(--transition-fast), background var(--transition-fast);
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0.7;
 }
 
 .copy-btn:hover {
-  opacity: 1;
-  color: var(--color-text-primary);
+  background: rgba(0, 0, 0, 0.7);
+  color: #ffffff;
 }
 
 article.heti code {
