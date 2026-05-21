@@ -214,7 +214,7 @@ article.heti pre {
   position: absolute;
   top: var(--space-2);
   right: var(--space-2);
-  background: var(--color-surface);
+  background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: var(--space-1);
@@ -224,9 +224,11 @@ article.heti pre {
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0.7;
 }
 
 .copy-btn:hover {
+  opacity: 1;
   color: var(--color-text-primary);
 }
 
