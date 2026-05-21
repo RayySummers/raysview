@@ -207,6 +207,27 @@ article.heti pre {
   line-height: 1.6;
   font-weight: 500;
   font-family: "Sarasa Mono SC", "JetBrains Mono", Consolas, ui-monospace, monospace;
+  position: relative;
+}
+
+.copy-btn {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-btn:hover {
+  color: var(--color-text-primary);
 }
 
 article.heti code {
