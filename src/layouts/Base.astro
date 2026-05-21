@@ -34,37 +34,10 @@ const base = import.meta.env.BASE_URL;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/heti/umd/heti.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/heti/umd/heti-addon.min.js"></script>
     <script is:inline>
-      document.addEventListener('DOMContentLoaded', () => {
-        const lenis = new Lenis({
-          duration: 0.1,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          smoothWheel: true
-        });
-        // Expose lenis globally for ToC scroll
-        window.lenis = lenis;
-        function raf(time) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        if (document.querySelector('.heti')) {
-          const heti = new Heti('.heti');
-          heti.autoSpacing();
-        }
-
-        mediumZoom('[data-zoomable]', {
-          margin: 24,
-          background: 'rgba(0,0,0,0.85)'
-        });
-
-        // Add zoomable to images in articles
-        document.querySelectorAll('article.heti img').forEach(img => {
-          img.setAttribute('data-zoomable', '');
-        });
-
-        // Copy button for code blocks
+      // Copy button for code blocks - runs immediately
+      function initCopyButtons() {
         document.querySelectorAll('article.heti pre').forEach(pre => {
+          if (pre.querySelector('.copy-btn')) return;
           const btn = document.createElement('button');
           btn.className = 'copy-btn';
           btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
@@ -84,6 +57,33 @@ const base = import.meta.env.BASE_URL;
             }
           });
         });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCopyButtons);
+      } else {
+        initCopyButtons();
+      }
+
+      // Lenis smooth scroll - needs DOMContentLoaded
+      document.addEventListener('DOMContentLoaded', () => {
+        try {
+          const lenis = new Lenis({ duration: 0.1, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+          window.lenis = lenis;
+          function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+          requestAnimationFrame(raf);
+        } catch (e) {}
+
+        if (document.querySelector('.heti')) {
+          const heti = new Heti('.heti');
+          heti.autoSpacing();
+        }
+
+        try {
+          mediumZoom('[data-zoomable]', { margin: 24, background: 'rgba(0,0,0,0.85)' });
+        } catch (e) {}
+
+        document.querySelectorAll('article.heti img').forEach(img => img.setAttribute('data-zoomable', ''));
       });
     </script>
   </head>

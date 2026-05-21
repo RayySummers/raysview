@@ -1,35 +1,8 @@
 <!DOCTYPE html><html lang="zh" data-base="/raysview"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="RayView Blog"><title>敬请期待 - RayView</title><link rel="icon" type="image/png" sizes="64x64" href="/raysview/favicon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/heti/umd/heti.min.css"><script type="module" src="/raysview/assets/Base.astro_astro_type_script_index_0_lang.DXEuRqKB.js"></script><script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const lenis = new Lenis({
-          duration: 0.1,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          smoothWheel: true
-        });
-        // Expose lenis globally for ToC scroll
-        window.lenis = lenis;
-        function raf(time) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        if (document.querySelector('.heti')) {
-          const heti = new Heti('.heti');
-          heti.autoSpacing();
-        }
-
-        mediumZoom('[data-zoomable]', {
-          margin: 24,
-          background: 'rgba(0,0,0,0.85)'
-        });
-
-        // Add zoomable to images in articles
-        document.querySelectorAll('article.heti img').forEach(img => {
-          img.setAttribute('data-zoomable', '');
-        });
-
-        // Copy button for code blocks
+      // Copy button for code blocks - runs immediately
+      function initCopyButtons() {
         document.querySelectorAll('article.heti pre').forEach(pre => {
+          if (pre.querySelector('.copy-btn')) return;
           const btn = document.createElement('button');
           btn.className = 'copy-btn';
           btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>';
@@ -49,6 +22,33 @@
             }
           });
         });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCopyButtons);
+      } else {
+        initCopyButtons();
+      }
+
+      // Lenis smooth scroll - needs DOMContentLoaded
+      document.addEventListener('DOMContentLoaded', () => {
+        try {
+          const lenis = new Lenis({ duration: 0.1, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+          window.lenis = lenis;
+          function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+          requestAnimationFrame(raf);
+        } catch (e) {}
+
+        if (document.querySelector('.heti')) {
+          const heti = new Heti('.heti');
+          heti.autoSpacing();
+        }
+
+        try {
+          mediumZoom('[data-zoomable]', { margin: 24, background: 'rgba(0,0,0,0.85)' });
+        } catch (e) {}
+
+        document.querySelectorAll('article.heti img').forEach(img => img.setAttribute('data-zoomable', ''));
       });
     </script><link rel="stylesheet" href="/raysview/assets/Base.Bq8_hY2b.css">
 <style>.back-btn[data-astro-cid-mzuzgcqu]:hover{color:var(--color-text-primary)!important}
