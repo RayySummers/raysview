@@ -1,19 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL || '/';
+const getHref = (path: string) => base === '/' ? path : `${base}${path}`;
 ---
 
 <Base title="RayView">
   <p style="font-size: var(--text-xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--space-6);">Hello, I'm Ray</p>
 
   <nav style="display: flex; flex-direction: column; gap: var(--space-3);">
-    <a href={`${base}/posts/`} class="nav-link" style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none;">
+    <a href={getHref('/posts/')} class="nav-link" style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none;">
       文章 Posts
     </a>
-    <a href={`${base}/videos/`} class="nav-link" style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none;">
+    <a href={getHref('/videos/')} class="nav-link" style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none;">
       视频 Videos
     </a>
-    <a href={`${base}/about/`} class="nav-link" style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none;">
+    <a href={getHref('/about/')} class="nav-link" style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none;">
       关于 About
     </a>
   </nav>
