@@ -112,7 +112,7 @@ const homeHref = base === '/' ? '/' : `${base}/`;
 
   async function loadSearchIndex() {
     if (searchData.length === 0) {
-      const res = await fetch(`${base}/search.json`);
+      const res = await fetch(base === '/' ? '/search.json' : `${base}/search.json`);
       searchData = await res.json();
     }
   }

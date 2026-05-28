@@ -4,7 +4,7 @@ import { getCollection, render } from 'astro:content';
 import TableOfContents from '../../components/TableOfContents.astro';
 
 export async function getStaticPaths() {
-  const base = import.meta.env.BASE_URL;
+  const base = import.meta.env.BASE_URL || '/';
   const posts = await getCollection('posts');
   return posts.map(post => ({
     params: { slug: post.id },
@@ -12,12 +12,13 @@ export async function getStaticPaths() {
   }));
 }
 
-const { post, base: siteBase } = Astro.props as { post: any; base: string };
+const { post, base } = Astro.props as { post: any; base: string };
+const getHref = (path: string) => base === '/' ? path : `${base}${path}`;
 const { Content, headings } = await render(post);
 ---
 
 <Base title={`${post.data.title} - RayView`}>
-  <a href={`${siteBase}/posts/`} class="back-btn" aria-label="Back">
+  <a href={getHref('/posts/')} class="back-btn" aria-label="Back">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M19 12H5M12 19l-7-7 7-7"/>
     </svg>
@@ -43,7 +44,7 @@ const { Content, headings } = await render(post);
         {post.data.tags.map((tag: string, i: number) => (
           <>
             {i > 0 && ' '}
-            <a href={`${siteBase}/tags/${tag}`} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">#{tag}</a>
+            <a href={getHref(`/tags/${tag}`)} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">#{tag}</a>
           </>
         ))}
       </span>

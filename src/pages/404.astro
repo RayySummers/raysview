@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+const base = import.meta.env.BASE_URL || '/';
 ---
 
 <Base title="404 - Page Not Found">
@@ -8,7 +9,7 @@ import Base from '../layouts/Base.astro';
     <p style="font-size: var(--text-xl); color: var(--color-text-secondary); margin-bottom: var(--space-6);">
       页面不存在
     </p>
-    <a href={`${import.meta.env.BASE_URL}/`} style="font-size: var(--text-sm); color: var(--color-text-secondary); text-decoration: underline; text-underline-offset: 3px;">
+    <a href={base === '/' ? '/' : `${base}/`} style="font-size: var(--text-sm); color: var(--color-text-secondary); text-decoration: underline; text-underline-offset: 3px;">
       ← 返回首页
     </a>
   </div>

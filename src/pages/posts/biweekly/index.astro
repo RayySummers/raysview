@@ -2,7 +2,8 @@
 import Base from '../../../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-const siteBase = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL || '/';
+const getHref = (path: string) => base === '/' ? path : `${base}${path}`;
 const allPosts = await getCollection('posts');
 const posts = allPosts
   .filter(post => post.data.tags?.includes('biweekly'))
@@ -10,7 +11,7 @@ const posts = allPosts
 ---
 
 <Base title="半月记 Biweekly - RayView">
-  <a href={`${siteBase}/posts/`} style="display: inline-block; color: var(--color-text-secondary); transition: color var(--transition-fast);" aria-label="Back" class="back-btn">
+  <a href={getHref('/posts/')} style="display: inline-block; color: var(--color-text-secondary); transition: color var(--transition-fast);" aria-label="Back" class="back-btn">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M19 12H5M12 19l-7-7 7-7"/>
     </svg>
@@ -27,7 +28,7 @@ const posts = allPosts
     {posts.map((post) => (
       <article style="margin-bottom: var(--space-4);">
         {post.data.banner && (
-          <a href={`${siteBase}/posts/${post.id}`} style="display: block; margin-bottom: var(--space-2); overflow: hidden; height: 200px;">
+          <a href={getHref(`/posts/${post.id}`)} style="display: block; margin-bottom: var(--space-2); overflow: hidden; height: 200px;">
             <img
               src={post.data.banner}
               alt=""
@@ -36,7 +37,7 @@ const posts = allPosts
             />
           </a>
         )}
-        <a href={`${siteBase}/posts/${post.id}`} style="display: block; text-decoration: none;">
+        <a href={getHref(`/posts/${post.id}`)} style="display: block; text-decoration: none;">
           <h2 style="font-size: var(--text-base); font-weight: 400; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
             {post.data.title}
           </h2>
