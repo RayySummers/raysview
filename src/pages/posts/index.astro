@@ -26,6 +26,15 @@ const grouped = posts.reduce((acc, post) => {
 
   <div style="display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-4);">
     <a
+      href={getHref('/posts/justthinking/')}
+      class="nav-link"
+    >
+      <span style="font-size: var(--text-base); color: var(--color-text-primary);">
+        随便想想 / JustThinking
+      </span>
+    </a>
+
+    <a
       href={getHref('/posts/biweekly/')}
       class="nav-link"
     >
