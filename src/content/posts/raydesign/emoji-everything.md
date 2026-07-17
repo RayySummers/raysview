@@ -4,7 +4,7 @@ date: 2026-04-25
 tags:
   - RayDesign
   - emoji
-banner: https://pic1.imgdb.cn/item/6a0c6dc3a0971b8b02a43121.png
+banner: /images/6a0c6dc3a0971b8b02a43121.png
 excerpt: ""
 modified: 2026-05-20T00:06:42+08:00
 created: 2026-04-23T22:09:57+08:00
@@ -13,11 +13,11 @@ created: 2026-04-23T22:09:57+08:00
 
 Emoji 和汉字、拉丁字母一样，本质只是字符（Character）。决定其如何显示的，是其采用的字体。比如字体思源黑体显示的「字」，和字体思源宋体显示的「字」，本质上是同一个字符，Unicode 码位是 `U+5B57 ` 。Unicode 码位相当于一个字符的身份证，是独一无二的标识码。关于 Unicode，因为信息量大，可以另开一期讲了，考虑到离题，这里就不细说了。
 
-![Emoji 在 Android、Windows、iPad 上的不同渲染样式](https://pic1.imgdb.cn/item/6a0c6e46a0971b8b02a43139.png)
+![Emoji 在 Android、Windows、iPad 上的不同渲染样式](/images/6a0c6e46a0971b8b02a43139.png)
 
 所以「💛」在 Android 手机、Windows 电脑、iPad 上显示不同的样式，也只是因为不同操作系统对同一个字符采用了不同的「字体」渲染。
 
-![不同操作系统渲染同一 emoji 的对比图](https://pic1.imgdb.cn/item/6a0c6e59a0971b8b02a4313b.png)
+![不同操作系统渲染同一 emoji 的对比图](/images/6a0c6e59a0971b8b02a4313b.png)
 
 # Emoji 与日本
 
@@ -40,15 +40,15 @@ Unicode 表情符号小组（ESC）在审核提案时，主要看重以下几个
 
 值得注意的是，国内正版软件商「数码荔枝」就曾亲身验证了这套机制的冷酷——他们因品牌与荔枝同名，又发现葡萄🍇、樱桃🍒早已拥有专属 emoji，唯独荔枝缺席，于是决定亲自走一遍 Unicode 的标准流程。
 
-![数码荔枝的荔枝 logo 设计图，展示了品牌形象的视觉稿](https://pic1.imgdb.cn/item/6a0c6e6ea0971b8b02a43142.png)
+![数码荔枝的荔枝 logo 设计图，展示了品牌形象的视觉稿](/images/6a0c6e6ea0971b8b02a43142.png)
 
 由于 Unicode 协会对已被拒绝的 emoji 设有四年冷却期，而此前其他人以"lychee"为名的提案已在 2022 年被驳回，数码荔枝团队便将提案名称改为"litchi"（荔枝的另一英文拼写），以此绕开限制。2025 年上半年，他们由 Li Yichi 和设计师 Aeko Shen 正式向 Unicode 表情符号小组提交了包含彩色与黑白双版本的设计稿，并特别强调其方案能在 18 px 的极限像素下依然保持与其他水果 emoji 的明显区别——这直接对应着委员会对"视觉差异化"的硬性要求。
 
-![数码荔枝提交的荔枝 emoji 提案设计稿，展示了在 18px 极限像素下的黑白款效果](https://pic1.imgdb.cn/item/6a0c6e9da0971b8b02a4314a.png)
+![数码荔枝提交的荔枝 emoji 提案设计稿，展示了在 18px 极限像素下的黑白款效果](/images/6a0c6e9da0971b8b02a4314a.png)
 
 然而，2025 年 11 月底，他们收到的并非编码确认，而是一封来自 Unicode Emoji Standard & Research Working Group 的统一拒信。信中的措辞礼貌但不容商量：「每年收到的提案数量远超可编码的上限，很遗憾您的提案未被选中继续推进。」更残酷的是，邮件明确说明，作为一个「小型志愿者运营的非营利组织」，委员会无法为每个提案提供个性化反馈。
 
-![数码荔枝收到的 Unicode 拒绝邮件截图，邮件正文写道「每年收到的提案数量远超可编码的上限，很遗憾您的提案未被选中继续推进」](https://pic1.imgdb.cn/item/6a0c6ea9a0971b8b02a4314b.png)
+![数码荔枝收到的 Unicode 拒绝邮件截图，邮件正文写道「每年收到的提案数量远超可编码的上限，很遗憾您的提案未被选中继续推进」](/images/6a0c6ea9a0971b8b02a4314b.png)
 
 即便是一个商业团队投入专业设计资源、精确研究规则漏洞、甚至做好了跨平台渲染的适配方案，只要无法同时满足「高频预期、语义多元、视觉独特、填补空缺」这四重标准，依然可能会在最后一轮被统一淘汰。数码荔枝的遭遇也说明，emoji 的编码权本质上是一场全球性的排位赛——当键盘上的每一个空位都永久占用着数十亿设备的字符集时，委员会的吝啬，或许正是对标准严肃性的唯一捍卫。
 
@@ -72,33 +72,33 @@ Unicode 表情符号小组（ESC）在审核提案时，主要看重以下几个
 
 [Apple 样式的 emoji](https://emojipedia.org/apple) 偏写实，精致、克制、简约。
 
-![Apple 样式的 emoji](https://pic1.imgdb.cn/item/6a0c6fc8a0971b8b02a43179.jpg)
+![Apple 样式的 emoji](/images/6a0c6fc8a0971b8b02a43179.jpg)
 
 [Google 样式的 emoji](https://emojipedia.org/google) 偏卡通、可爱。
 
-![Google 样式的 emoji](https://pic1.imgdb.cn/item/6a0c6fefa0971b8b02a4317f.jpg)
+![Google 样式的 emoji](/images/6a0c6fefa0971b8b02a4317f.jpg)
 
 [Microsoft 样式的 emoji](https://emojipedia.org/microsoft-3D-fluent) 偏现代、简洁、高饱和。
 
-![Microsoft 样式的 emoji](https://pic1.imgdb.cn/item/6a0c7016a0971b8b02a43184.jpg)
+![Microsoft 样式的 emoji](/images/6a0c7016a0971b8b02a43184.jpg)
 
 [华为样式的 emoji](https://emojipedia.org/huawei) 类似 Apple 和 Google 的中间态，可爱和写实之间。另外注意，旧版华为设备的操作系统可能仍然使用 Google 样式的 emoji。
 
-![华为样式的 emoji](https://pic1.imgdb.cn/item/6a0c703ba0971b8b02a4318c.jpg)
+![华为样式的 emoji](/images/6a0c703ba0971b8b02a4318c.jpg)
 
 其余样式的 emoji 列在下面，就不多陈述了。
 
 - [Samsung 样式的 emoji](https://emojipedia.org/samsung)
-![Samsung 样式的 emoji](https://pic1.imgdb.cn/item/6a0c7055a0971b8b02a4318f.jpg)
+![Samsung 样式的 emoji](/images/6a0c7055a0971b8b02a4318f.jpg)
 
 - [Facebook 样式的 emoji](https://emojipedia.org/facebook)
-![Facebook 样式的 emoji](https://pic1.imgdb.cn/item/6a0c7111a0971b8b02a431b0.jpg)
+![Facebook 样式的 emoji](/images/6a0c7111a0971b8b02a431b0.jpg)
 
 - [Twitter / X 样式的 emoji](https://emojipedia.org/twitter)（Discord 也用哦）
-![X 样式的 emoji](https://pic1.imgdb.cn/item/6a0c7189a0971b8b02a431cb.jpg)
+![X 样式的 emoji](/images/6a0c7189a0971b8b02a431cb.jpg)
 
 - [WhatsApp 样式的 emoji](https://emojipedia.org/whatsapp)
-![WhatsApp 样式的 emoji](https://pic1.imgdb.cn/item/6a0c716da0971b8b02a431c0.jpg)
+![WhatsApp 样式的 emoji](/images/6a0c716da0971b8b02a431c0.jpg)
 
 许多国内的输入法（搜狗输入法、讯飞输入法、百度输入法、豆包输入法等）采用 Apple 样式的 emoji 在 emoji 键盘，可能会误导大家认为所有 emoji 都长 Apple 样式，实际上 emoji 显示什么样式取决于 app 和操作系统。其他输入法（微信输入法、Gboard、部分系统定制输入法等）就不具备这个问题，使用系统原生 emoji。Ray 比较支持后者的做法，因为前者很可能侵犯版权。
 
@@ -114,17 +114,17 @@ Apple 在 App Store 审核指南第 5.2.5 条中明确规定：「Apps and exten
 
 Emoji Kitchen（Emoji 厨房）是 Google 于 2020 年 2 月在其输入法 Gboard 中推出的一项创新功能。它的核心玩法是：将两个不同的 emoji 组合成一个全新的图片贴纸（sticker）。虽然不能当作 emoji 使用，但是可以当成表情包图片在聊天里使用。例如…
 
-![Emoji Kitchen 示例：🤯 + 🦩 = 脑爆炸粉色火烈鸟组合贴纸](https://pic1.imgdb.cn/item/6a0c7a12a0971b8b02a433b9.jpg)
-![Emoji Kitchen 示例：🥵 + 👹 = 满脸通红冒汗的恶魔贴纸](https://pic1.imgdb.cn/item/6a0c7a2ca0971b8b02a433be.jpg)
+![Emoji Kitchen 示例：🤯 + 🦩 = 脑爆炸粉色火烈鸟组合贴纸](/images/6a0c7a12a0971b8b02a433b9.jpg)
+![Emoji Kitchen 示例：🥵 + 👹 = 满脸通红冒汗的恶魔贴纸](/images/6a0c7a2ca0971b8b02a433be.jpg)
 
 如果你想体验 Emoji Kitchen，可以直接在 [Google 搜索](https://www.google.com/search?q=emoji+kitchen) `emoji kitchen` 玩到哦。
 
-![Google 搜索 emoji kitchen 展示页面的截图，页面显示了众多 emoji 组合选项](https://pic1.imgdb.cn/item/6a0c7a9da0971b8b02a433e2.jpg)
-![Google Emoji Kitchen 在网页版的 unicorn + frog 组合展示，生成了一个头戴彩虹独角的小绿蛙](https://pic1.imgdb.cn/item/6a0c7ab3a0971b8b02a433e6.jpg)
+![Google 搜索 emoji kitchen 展示页面的截图，页面显示了众多 emoji 组合选项](/images/6a0c7a9da0971b8b02a433e2.jpg)
+![Google Emoji Kitchen 在网页版的 unicorn + frog 组合展示，生成了一个头戴彩虹独角的小绿蛙](/images/6a0c7ab3a0971b8b02a433e6.jpg)
 
 这些都不是 AI 做的，是人类设计师亲笔绘制的。而在隔壁 Apple，有 AI 大展身手为你生成属于你的 emoji 的 Genmoji（智绘表情）功能。
 
-![Apple WWDC 24 演示画面，展示了满屏各种 Genmoji 组成的网格，包括人物、动物、食物等各种自定义 emoji](https://pic1.imgdb.cn/item/6a0c7c23a0971b8b02a47071.jpg)
+![Apple WWDC 24 演示画面，展示了满屏各种 Genmoji 组成的网格，包括人物、动物、食物等各种自定义 emoji](/images/6a0c7c23a0971b8b02a47071.jpg)
 （图自 Apple WWDC 24）
 
 虽然中国大陆区还没有上 Apple Intelligence，但 Genmoji 已经在其他地区可用了！Genmoji 可以让用户通过自然语言描述来生成一个 emoji，在 iMessage 这样支持的平台当成 emoji 和文字一起发出去。然而仰赖 Apple 的软件生态，不支持的设备仍然不支持显示这些 emoji。因为本质上 Genmoji 并不是真的 emoji，而是类似刚才 Emoji Kitchen 的贴纸。
@@ -135,7 +135,7 @@ Emoji Kitchen（Emoji 厨房）是 Google 于 2020 年 2 月在其输入法 Gboa
 
 比如「🔫」这个 emoji，曾经显示为真的枪，但现在已经显示为水枪了。
 
-![Emojipedia 页面截图，展示了 🔫 手枪 emoji 在 Apple、Google、Samsung 平台上的演变，从 2012-2015 年的写实左轮手枪变为 2016 年后的彩色水枪](https://pic1.imgdb.cn/item/6a0c7df6a0971b8b02a470fe.jpg)
+![Emojipedia 页面截图，展示了 🔫 手枪 emoji 在 Apple、Google、Samsung 平台上的演变，从 2012-2015 年的写实左轮手枪变为 2016 年后的彩色水枪](/images/6a0c7df6a0971b8b02a470fe.jpg)
 （截图自 Emojipedia）
 
 关于其原因，Ray 推测是反战。☮️

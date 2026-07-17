@@ -8,7 +8,7 @@ tags:
   - toothpaste
   - website
   - biweekly
-banner: https://pic1.imgdb.cn/item/6a0dcacc95d4b7068ae7fa9c.png
+banner: /images/6a0dcacc95d4b7068ae7fa9c.png
 excerpt: ""
 modified: 2026-05-21T01:51:53+08:00
 created: 2026-05-17T21:10:12+08:00
@@ -19,17 +19,17 @@ created: 2026-05-17T21:10:12+08:00
 
 比如多邻国（Duolingo）有公开自己的设计规范，在 `design.duolingo.com` 。里面规定了所有插画都必须使用圆角的图形。对写作风格、字体、颜色也有详细的要求。
 
-![多邻国设计规范页](https://pic1.imgdb.cn/item/6a0ab3bcfebbe1263e6e56c4.jpg)
+![多邻国设计规范页](/images/6a0ab3bcfebbe1263e6e56c4.jpg)
 
 同时 OpenAI 也公布了自己的设计规范，在 `openai.com/brand` 。
 
-![OpenAI 设计规范页](https://pic1.imgdb.cn/item/6a0ab531febbe1263e6e7564.jpg)
+![OpenAI 设计规范页](/images/6a0ab531febbe1263e6e7564.jpg)
 
 规定了 logo（标志）和边缘的间距，使用的字体、对 logo 环境的要求（比如不能用于蒙版、不能给字体加阴影）等。
 
 还有 Apple、OPPO、小米都有自己对环境保护的介绍页。
 
-![Apple 环境责任页](https://pic1.imgdb.cn/item/6a0ab5f8febbe1263e6e7595.jpg)
+![Apple 环境责任页](/images/6a0ab5f8febbe1263e6e7595.jpg)
 
 就像上厕所忘带手机的时候研读沐浴露成分表一样，读感兴趣的公司的网站对我来说也是一种消遣。
 
@@ -81,7 +81,7 @@ Anthropic 提出的 4D 框架就是人工智能素养的核心能力。
 
 我们可以画一个图：
 
-![AI 委派决策矩阵图：四个象限分别是低风险低复杂度、低风险高复杂度、高风险低复杂度、高风险高复杂度，横轴为复杂度，纵轴为风险](https://pic1.imgdb.cn/item/6a0dc13395d4b7068ae7f870.jpg)
+![AI 委派决策矩阵图：四个象限分别是低风险低复杂度、低风险高复杂度、高风险低复杂度、高风险高复杂度，横轴为复杂度，纵轴为风险](/images/6a0dc13395d4b7068ae7f870.jpg)
 
 - **高风险高复杂度** 的任务，应该最小化使用 AI，能不用 AI 就尽量不用。AI 能帮到你的不多，最多给你一些启发和灵感、帮你检查检查、提提建议、帮你改改错别字之类的。决策权和责任都在你。
 - **高风险低复杂度** 的任务，比如你要给老板汇报工作，你不能交给 AI 全自动完成。应该以人为主，AI 为辅。AI 帮你检查措辞和语气是可以的。

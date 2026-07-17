@@ -4,7 +4,7 @@ date: 2026-05-18
 tags:
   - github
   - website
-banner: https://pic1.imgdb.cn/item/6a0abe85febbe1263e6ea5f2.png
+banner: /images/6a0abe85febbe1263e6ea5f2.png
 excerpt: RayView 的第一篇博文
 ---
 
