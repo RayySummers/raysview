@@ -2,8 +2,8 @@ import { defineConfig } from 'astro/config';
 import gfm from 'remark-gfm';
 
 export default defineConfig({
-  site: 'https://rayysummers.github.io',
-  base: '/raysview/',
+  site: 'https://raysview.fun',
+  base: '/',
   output: 'static',
   build: {
     assets: 'assets'
