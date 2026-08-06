@@ -112,10 +112,19 @@ Icon shows current target state, not current active state.
 
 ### Font Stack
 ```css
-font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+/* Latin (variable): */
+--font-sans: "Zhudou Sans", "Roboto Flex Variable", "Source Han Sans SC", ui-sans-serif, system-ui, sans-serif;
+--font-display: "Roboto Flex Variable", ui-sans-serif, system-ui, sans-serif;
 /* Code: */
-font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+--font-mono: "JetBrains Mono", "Sarasa Mono SC", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 ```
+
+### Roboto Flex OpenType Features
+Roboto Flex is a variable font loaded with the `opsz` and `wght` axes (`@fontsource-variable/roboto-flex/opsz.css`).
+
+- **Optical sizing (`opsz`)**: base text uses `font-optical-sizing: auto`; article headings pin explicit values mapped to the type scale (`"opsz" 32` for `--text-2xl`, `"opsz" 24` for `--text-xl`, `"opsz" 18` for `--text-lg`).
+- **Kerning (`kern`)**: enabled on `article.heti`. Features unsupported by Roboto Flex (`vkrn`, `dlig`, `ccnp`) are intentionally not set — Roboto Flex only ships `kern`, `liga`, `locl`, `pnum`, `rvrn`, `mark`, `mkmk`.
+- Weight (`wght`) and width (`wdth`) are available in the font but left at their defaults; grade (`GRAD`) is not used.
 
 ### Type Scale
 
