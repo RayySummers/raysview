@@ -127,7 +127,9 @@ font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 | text-lg | 18px | 400 | 1.65 | Large body, post content |
 | text-xl | 24px | 600 | 1.3 | h3 |
 | text-2xl | 32px | 600 | 1.2 | h2 |
-| text-3xl | 48px | 600 | 1.1 | h1 |
+| text-3xl | 48px | 600 | 1.1 | h1 (hero, e.g. videos 敬请期待) |
+
+> **Article page title** — `--post-title-size: 40px` (page-scoped token in `posts/[...slug].astro`), applied to the article H1 via `.post-title`. Slightly smaller than `--text-3xl` (48px) so the reading page feels calmer; the global token stays 48px for hero contexts.
 
 ### Letter Spacing
 ```css
@@ -140,6 +142,13 @@ For Chinese text, increase line-height to 1.8 for readability:
 ```css
 :lang(zh) {
   line-height: 1.8;
+}
+```
+Article body (reading experience) uses a slightly looser rhythm — 1.9 — scoped to the article so header/cards/code blocks are unaffected:
+```css
+article.heti p:lang(zh),
+article.heti li:lang(zh) {
+  line-height: 1.9;
 }
 ```
 
