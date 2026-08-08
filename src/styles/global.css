@@ -158,6 +158,13 @@ html {
   line-height: 1.8;
 }
 
+/* 文章正文中文行高：1.8 → 1.9，仅作用于文章正文 p/li（blockquote 内的 p 同样命中）。
+   不改全局 :lang(zh)，避免头部/卡片/代码块等其余部分的行高被放大。 */
+article.heti p:lang(zh),
+article.heti li:lang(zh) {
+  line-height: 1.9;
+}
+
 article.heti p {
   margin-bottom: 1.2em;
   text-align: left;

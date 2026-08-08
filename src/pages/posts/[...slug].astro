@@ -33,7 +33,7 @@ const { Content, headings } = await render(post);
     />
   )}
 
-  <h1 style="font-size: var(--text-3xl); font-weight: 800; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-3); line-height: 1.1; font-family: var(--font-display); font-optical-sizing: auto;">
+  <h1 class="post-title" style="font-size: var(--post-title-size); font-weight: 800; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-3); line-height: 1.1; font-family: var(--font-display); font-optical-sizing: auto;">
     {post.data.title}
   </h1>
 
@@ -74,6 +74,10 @@ const { Content, headings } = await render(post);
 </Base>
 
 <style>
+  /* 文章页标题字号：较全局 --text-3xl (48px) 略降 → 40px（页面级 token，仅文章页生效；--text-3xl 保留给 videos 等场景） */
+  .post-title {
+    --post-title-size: 40px;
+  }
   .back-btn {
     display: inline-block;
     color: var(--color-text-secondary);
