@@ -242,16 +242,8 @@ article.heti pre {
   color: #ffffff;
 }
 
-/* 行内代码基础样式：作用于所有页面（含手写 HTML 页面），文章页由下方 article.heti 规则覆盖 */
-code {
-  background: var(--color-surface);
-  padding: 0.1em 0.3em;
-  border-radius: var(--radius-sm);
-  font-size: 0.9em;
-  font-weight: 500;
-  font-family: "Sarasa Mono SC", "JetBrains Mono", Consolas, ui-monospace, monospace;
-}
-
+/* 行内代码基础样式：作用于所有页面（含手写 HTML 页面） */
+code,
 article.heti code {
   background: var(--color-surface);
   padding: 0.1em 0.3em;
