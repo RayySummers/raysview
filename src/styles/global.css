@@ -304,6 +304,12 @@ article.heti sup a {
   display: inline !important;
   font-family: var(--font-sans);
   background-image: none !important;
+  color: #BFB934;
+  transition: color var(--transition-fast);
+}
+
+[data-theme="dark"] article.heti sup a {
+  color: #EED464;
 }
 
 article.heti sup a::before {
@@ -421,7 +427,9 @@ article.heti .footnotes > h2::before {
   content: '▸';
   display: inline-block;
   margin-right: var(--space-2);
-  font-size: 0.8em;
+  font-size: 1.4em;
+  line-height: 1;
+  vertical-align: -0.08em;
   color: var(--color-text-secondary);
   transition: transform 150ms ease-out;
 }
@@ -439,6 +447,40 @@ article.heti .footnotes > h2::before {
 
 .footnotes.collapsed .footnotes-body {
   grid-template-rows: 0fr;
+}
+
+/* 从正文跳转到脚注后的高亮动画：显示约 3 秒后渐隐 */
+@keyframes footnote-flash {
+  0% {
+    background-color: color-mix(in srgb, #BFB934 30%, transparent);
+  }
+  70% {
+    background-color: color-mix(in srgb, #BFB934 30%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes footnote-flash-dark {
+  0% {
+    background-color: color-mix(in srgb, #EED464 30%, transparent);
+  }
+  70% {
+    background-color: color-mix(in srgb, #EED464 30%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+.footnotes li.fn-flash {
+  animation: footnote-flash 3.2s ease-out forwards;
+  border-radius: var(--radius-sm);
+}
+
+[data-theme="dark"] .footnotes li.fn-flash {
+  animation-name: footnote-flash-dark;
 }
 
 /* 覆盖 article.heti ol 的缩进（提高特异性）：与标题文字（含 ▸ 箭头占位）同一左边界 */
@@ -467,14 +509,25 @@ article.heti .footnotes ol {
   margin-bottom: 0;
 }
 
-.footnotes a {
+/* 脚注链接：灰色字体、灰色下划线；hover 时下划线保持灰色、字重 +100、颜色临时变黑（渐入渐出）。
+   用 article.heti .footnotes a 提高特异性，覆盖 article.heti a 的下划线/过渡规则 */
+article.heti .footnotes a {
   color: var(--color-text-secondary);
-  text-decoration: none;
-  transition: color var(--transition-fast);
+  text-decoration: underline;
+  text-decoration-color: var(--color-text-secondary);
+  text-underline-offset: 3px;
+  font-weight: 400;
+  background-image: none; /* 去掉 article.heti a 的黑色渐变下划线 */
+  transition:
+    color var(--transition-base),
+    font-weight var(--transition-base),
+    text-decoration-color var(--transition-base);
 }
 
-.footnotes a:hover {
+article.heti .footnotes a:hover {
   color: var(--color-text-primary);
+  font-weight: 500;
+  text-decoration-color: var(--color-text-secondary);
 }
 
 .footnotes sup {
