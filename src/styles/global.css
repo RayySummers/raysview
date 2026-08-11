@@ -509,7 +509,8 @@ article.heti .footnotes ol {
   margin-bottom: 0;
 }
 
-/* 脚注链接：灰色字体、灰色下划线；hover 时下划线保持灰色、字重 +100、颜色临时变黑（渐入渐出）。
+/* 脚注链接：灰色字体、灰色下划线；hover 时下划线保持灰色、字重加粗（用 GRAD 轴而非 wght，
+   避免字形宽度变化导致网址换行）、颜色临时变黑（渐入渐出）。
    用 article.heti .footnotes a 提高特异性，覆盖 article.heti a 的下划线/过渡规则 */
 article.heti .footnotes a {
   color: var(--color-text-secondary);
@@ -517,16 +518,17 @@ article.heti .footnotes a {
   text-decoration-color: var(--color-text-secondary);
   text-underline-offset: 3px;
   font-weight: 400;
+  font-variation-settings: 'GRAD' 0;
   background-image: none; /* 去掉 article.heti a 的黑色渐变下划线 */
   transition:
     color var(--transition-base),
-    font-weight var(--transition-base),
+    font-variation-settings var(--transition-base),
     text-decoration-color var(--transition-base);
 }
 
 article.heti .footnotes a:hover {
   color: var(--color-text-primary);
-  font-weight: 500;
+  font-variation-settings: 'GRAD' 100;
   text-decoration-color: var(--color-text-secondary);
 }
 
