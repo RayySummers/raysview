@@ -107,10 +107,22 @@ const { Content, headings } = await render(post);
     heading?.addEventListener('click', () => {
       footnotes.classList.toggle('collapsed');
     });
-    // 从正文点击脚注引用时自动展开，确保跳转目标可见
+    // 从正文点击脚注引用时：自动展开 + 目标脚注高亮 3 秒后渐隐
     document.querySelectorAll('a[data-footnote-ref]').forEach(link => {
       link.addEventListener('click', () => {
         footnotes.classList.remove('collapsed');
+        const href = link.getAttribute('href');
+        if (href) {
+          const target = document.querySelector(href);
+          if (target) {
+            target.classList.remove('fn-flash');
+            // 强制 reflow 以重新触发动画
+            void target.offsetWidth;
+            target.classList.add('fn-flash');
+            // 动画结束后移除 class，允许下次重复触发
+            setTimeout(() => target.classList.remove('fn-flash'), 3300);
+          }
+        }
       });
     });
   }
