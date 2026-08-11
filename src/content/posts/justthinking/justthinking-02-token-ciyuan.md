@@ -5,14 +5,14 @@ tags:
   - JustThinking
   - token
   - 词元
-banner: /images/justthinking-02-cover.png
+banner: https://pic1.imgdb.cn/i/0345F7UprQuwvNe3KzbPh1.png
 ---
 
 前段时间 OpenClaw 火了，大家叫它「小龙虾」。随着 OpenClaw 等 Agent 工具走红，越来越多普通用户开始从网页聊天接触到 API Key、模型供应商和按量计费等原本更偏开发者圈子的概念。大众开始更多地主动学习如何让 AI 从会聊天到会办事。面向普通用户的聊天产品往往提供免费额度（例如 ChatGPT、Claude），甚至可以免费使用（例如豆包、DeepSeek、智谱清言），而到了模型平台的后台控制台，我们则会接触到 API Key、余额、用量等设置；通过 API 调用模型时，通常按照实际用量计费（此处不考虑订阅方案）。对于文本大模型，一种常见的标价方式就是以每百万 token 为单位，例如 DeepSeek[^7]、Kimi[^9] 和智谱[^10]等平台。这也让越来越多的人开始接触 token 这一概念，而很多人仍直接沿用它的英文名称——token。
 
 今年 3 月 25 日，全国科学技术名词审定委员会发布公告称优先推荐「token」的标准中文名为「词元」。[^11]人民日报等媒体随后以「Token 中文名定了」等标题报道此事。[^8]该译名之后还将在常态化审定中结合社会推广应用情况最终确认。[^11]「元」指基本单元。在语言模型中，token 是文本经过切分或字节级编码后得到的最小离散单元[^16]，它可能对应一个完整的词、词的一部分、单个字符、空格或标点等，甚至一个汉字、一个 emoji 也可能被编码为多个 token（具体怎样切分，则取决于模型及其 tokenizer）。换句话说，token 是模型定义的计算单位，并不等同于自然语言中本来就存在的「词」。你可以在 OpenAI Platform 的 [Tokenizer](https://platform.openai.com/tokenizer) 工具里玩一玩，观察一段文本如何变成一个个 token。
 
-![OpenAI Platform Tokenizer 网页截图](/images/justthinking-02-tokenizer.png)
+![OpenAI Platform Tokenizer 网页截图](https://pic1.imgdb.cn/i/0345F65p7Myv3bJnGXN721.png)
 
 因此，「token」与「词」挂钩，可能会产生误解。
 
@@ -26,7 +26,7 @@ banner: /images/justthinking-02-cover.png
 
 下图为该网页截图。黄色标注部分为「令牌」义，绿色标注部分为大模型「词元」义。
 
-![词元安全警示中对 token 的混淆（网页截图）](/images/justthinking-02-token-warning.png)
+![词元安全警示中对 token 的混淆（网页截图）](https://pic1.imgdb.cn/i/0345F66hVbYTZwd6MuILtS.png)
 
 本文绝非意在反对中文译名，而是反对把某个专业领域的规范译名进一步变成对所有使用者的语言要求。一个好的规范译名当然可以由专业机构提出；但它能否进一步成为大众通用的叫法，还要接受真实使用的检验。
 
@@ -34,7 +34,7 @@ banner: /images/justthinking-02-cover.png
 - **话费**：和 AI 聊天需要花钱，以 token 计费所以叫「话费」。—— 除了聊天，编程智能体以及图像、音频等多模态系统同样可能涉及 token，「话费」无法精准表达。使用什么模型，消耗的 token 数也不同，使用不同模型产生的 token 数量和单价也可能不同，各大 API 开放平台通常显示的是货币余额，而非所谓「话费」；调用产生 token 用量后，平台再按相应单价折算费用并从余额中扣除。
 - **语素**：有人可能会认为 token 是语言处理中的基本单位，因此想到用「素」来表示；「元素」「像素」等词中的「素」也有基本成分的意味。——但语言学中已有现成的「语素」，指最小的音义结合体，用它指 token 反而容易与既有术语混淆。
 
-![DeepSeek 开放平台用量信息截图（其使用人民币计费）](/images/justthinking-02-deepseek-usage.png)
+![DeepSeek 开放平台用量信息截图（其使用人民币计费）](https://pic1.imgdb.cn/i/0345F66ooqgG42tASYKUL1.png)
 
 与之相对的，表示光源总共发出了多少可见光所用的「流明」（Lumen）就是非常巧妙的翻译：「流」恰好呼应了光通量中「流」的意象，「明」天然让人想到光亮、明亮；同时读音又与 lumen 有一定对应。即使你不知道流明是什么，也大概知道它可能和光有关。还有基因（gene）、幽默（humor），都是非常好的翻译。这种音、义和汉语构词习惯彼此呼应的译名，读来颇有沁人心脾之感，也更容易自然地被语言共同体接受。
 
