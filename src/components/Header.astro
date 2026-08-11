@@ -158,9 +158,8 @@ const homeHref = base === '/' ? '/' : `${base}/`;
     if (results.length === 0) {
       searchResults.innerHTML = `<p style="padding: 12px; color: var(--color-text-secondary); font-size: 12px;">No posts found for "${query}".</p>`;
     } else {
-      const href = base === '/' || base === '' ? item.url : `${base}${item.url}`;
       searchResults.innerHTML = results.slice(0, 5).map(item => `
-        <a href="${href}" style="display: block; padding: 12px; text-decoration: none; border-bottom: 1px solid var(--color-border);">
+        <a href="${base}${item.url}" style="display: block; padding: 12px; text-decoration: none; border-bottom: 1px solid var(--color-border);">
           <div style="font-weight: 500; color: var(--color-text-primary); font-size: 14px;">${item.title}</div>
           <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 4px;">${item.date}</div>
         </a>
