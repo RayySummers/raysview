@@ -513,26 +513,54 @@ article.heti .footnotes ol {
   margin-bottom: 0;
 }
 
+/* 脚注链接 hover 加粗专用字体族（避免网址换行）：
+   Latin（网址）走 Roboto Flex 的 GRAD 轴 —— 加粗笔画但字形宽度不变。
+   该文件已用 fontTools 把 wght 轴钉死在 400（只保留 GRAD 轴），
+   这样浏览器无法通过 font-weight 改变 Latin 字形宽度，彻底杜绝网址换行。
+   CJK（书名/中文）走 wght 轴 —— 中文全角字形本身定宽，wght 变化也不会换行。
+   注意：站点默认加载的 roboto-flex opsz 子集没有 GRAD 轴，必须显式加载 grad 子集。 */
+@font-face {
+  font-family: 'FnHover';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 1000;
+  src: url('/fonts/roboto-flex-latin-gradonly.woff2') format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'FnHover';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 250 900;
+  src: url('https://cdn.jsdelivr.net/npm/@fontpkg/source-han-sans-sc-vf@2.5.3/SourceHanSansSC-VF.ttf.woff2') format('woff2-variations');
+  unicode-range: U+2E80-2EFF, U+3000-303F, U+31C0-31EF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FE30-FE4F, U+FF00-FFEF;
+}
+
 /* 脚注链接：灰色字体、灰色下划线；hover 时下划线保持灰色、字重加粗（用 GRAD 轴而非 wght，
    避免字形宽度变化导致网址换行）、颜色临时变黑（渐入渐出）。
    用 article.heti .footnotes a 提高特异性，覆盖 article.heti a 的下划线/过渡规则 */
 article.heti .footnotes a {
+  font-family: 'FnHover', var(--font-sans);
+  font-weight: 400;
+  font-variation-settings: 'GRAD' 0;
+  font-synthesis: none; /* 不合成假粗体，避免宽度变化 */
   color: var(--color-text-secondary);
   text-decoration: underline;
   text-decoration-color: var(--color-text-secondary);
   text-underline-offset: 3px;
-  font-weight: 400;
-  font-variation-settings: 'GRAD' 0;
   background-image: none; /* 去掉 article.heti a 的黑色渐变下划线 */
   transition:
     color var(--transition-base),
+    font-weight var(--transition-base),
     font-variation-settings var(--transition-base),
     text-decoration-color var(--transition-base);
 }
 
 article.heti .footnotes a:hover {
+  font-weight: 500; /* CJK：wght 500（全角字形定宽，不换行） */
+  font-variation-settings: 'GRAD' 150; /* Latin：GRAD 150（字形宽度不变，不换行） */
   color: var(--color-text-primary);
-  font-variation-settings: 'GRAD' 100;
   text-decoration-color: var(--color-text-secondary);
 }
 
