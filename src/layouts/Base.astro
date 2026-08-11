@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import '@fontsource-variable/geist-mono';
 import '@fontsource-variable/roboto-flex/opsz.css';
-import mediumZoom from 'medium-zoom';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -74,12 +73,277 @@ const base = import.meta.env.BASE_URL || '/';
           heti.autoSpacing();
         }
 
-        try {
-          mediumZoom('[data-zoomable]', { margin: 24, background: 'rgba(0,0,0,0.85)' });
-        } catch (e) {}
-
         document.querySelectorAll('article.heti img').forEach(img => img.setAttribute('data-zoomable', ''));
       });
+    </script>
+
+    <script is:inline>
+      // 图片灯箱：点击 [data-zoomable] 全屏放大；滚轮 / 捏合自由缩放（可超过原始尺寸）、
+      // 拖动平移；右上角 ✕ / ESC / 点击遮罩关闭。桌面端（Pointer Events）与移动端（触摸）统一处理。
+      (function () {
+        var overlay = null;      // 遮罩元素
+        var boxImg = null;       // 灯箱内 <img>
+        var origImg = null;      // 被点击的原图
+        var scale = 1, minScale = 1, tx = 0, ty = 0;
+        var pointers = {};       // pointerId -> {x, y}
+        var lastPos = null;      // 单指拖动基准点
+        var pinch = null;        // 双指捏合基准 {dist, scale, mid}
+        var animating = false;   // 打开动画期间忽略手势
+        var MAX_SCALE = 8;
+        var PAD = 24;            // 灯箱内边距
+        var PAN_MARGIN = 80;     // 平移允许超出视口边界的量（px）
+
+        function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+
+        function apply() {
+          boxImg.style.transform = 'translate3d(' + tx + 'px,' + ty + 'px,0) scale(' + scale + ')';
+        }
+
+        function naturalSize() {
+          var w = origImg.naturalWidth, h = origImg.naturalHeight;
+          if (!w || !h) {
+            var r = origImg.getBoundingClientRect();
+            w = r.width || window.innerWidth;
+            h = r.height || window.innerHeight;
+          }
+          return { w: w, h: h };
+        }
+
+        function fitScale() {
+          var n = naturalSize();
+          return Math.min((window.innerWidth - PAD * 2) / n.w, (window.innerHeight - PAD * 2) / n.h, 1);
+        }
+
+        function panBounds() {
+          var n = naturalSize();
+          var dispW = n.w * scale, dispH = n.h * scale;
+          var vw = window.innerWidth, vh = window.innerHeight;
+          return {
+            x: Math.max(0, (dispW - vw) / 2 + PAN_MARGIN),
+            y: Math.max(0, (dispH - vh) / 2 + PAN_MARGIN)
+          };
+        }
+
+        function clampPan() {
+          var b = panBounds();
+          tx = clamp(tx, -b.x, b.x);
+          ty = clamp(ty, -b.y, b.y);
+        }
+
+        // 以视口内某点为中心缩放（滚轮 / 捏合 / 双击放大共用）
+        function zoomAt(cx, cy, newScale) {
+          var vw = window.innerWidth, vh = window.innerHeight;
+          var lx = (cx - vw / 2 - tx) / scale;
+          var ly = (cy - vh / 2 - ty) / scale;
+          scale = clamp(newScale, minScale, MAX_SCALE);
+          tx = cx - vw / 2 - lx * scale;
+          ty = cy - vh / 2 - ly * scale;
+          clampPan();
+          apply();
+        }
+
+        function panBy(dx, dy) {
+          tx += dx;
+          ty += dy;
+          clampPan();
+          apply();
+        }
+
+        function isOpen() { return !!overlay; }
+
+        function pointerDist() {
+          var pts = [];
+          for (var id in pointers) pts.push(pointers[id]);
+          if (pts.length < 2) return 0;
+          return Math.sqrt(Math.pow(pts[0].x - pts[1].x, 2) + Math.pow(pts[0].y - pts[1].y, 2));
+        }
+
+        function pointerMid() {
+          var pts = [];
+          for (var id in pointers) pts.push(pointers[id]);
+          return { x: (pts[0].x + pts[1].x) / 2, y: (pts[0].y + pts[1].y) / 2 };
+        }
+
+        function open(img) {
+          if (isOpen()) return;
+          origImg = img;
+
+          overlay = document.createElement('div');
+          overlay.className = 'ray-lightbox';
+          overlay.setAttribute('role', 'dialog');
+          overlay.setAttribute('aria-modal', 'true');
+          overlay.setAttribute('aria-label', '图片预览');
+
+          boxImg = document.createElement('img');
+          boxImg.src = img.src;
+          boxImg.alt = img.alt || '';
+          boxImg.draggable = false;
+          boxImg.className = 'ray-lightbox__img';
+
+          var closeBtn = document.createElement('button');
+          closeBtn.type = 'button';
+          closeBtn.className = 'ray-lightbox__close';
+          closeBtn.setAttribute('aria-label', '关闭');
+          closeBtn.textContent = '\u2715'; // ✕
+
+          overlay.appendChild(boxImg);
+          overlay.appendChild(closeBtn);
+          document.body.appendChild(overlay);
+
+          scale = minScale = fitScale();
+          tx = 0; ty = 0;
+
+          // 打开动画：从原图所在位置放大到居中（裁剪显示 / 未就绪的图仅淡入）
+          var r = img.getBoundingClientRect();
+          var n = naturalSize();
+          var morph = r.width > 0 && r.height > 0 &&
+            Math.abs(r.width / r.height - n.w / n.h) < 0.01;
+          if (morph) {
+            boxImg.style.transition = 'none';
+            boxImg.style.transform = 'translate3d(' +
+              (r.left + r.width / 2 - window.innerWidth / 2) + 'px,' +
+              (r.top + r.height / 2 - window.innerHeight / 2) + 'px,0) scale(' +
+              (r.width / n.w) + ')';
+          }
+          overlay.style.opacity = '0';
+          void overlay.offsetWidth; // reflow，触发过渡
+          boxImg.style.transition = 'transform 0.28s cubic-bezier(0.22,1,0.36,1), opacity 0.28s ease';
+          overlay.style.opacity = '1';
+          apply();
+
+          // 锁背景滚动（Lenis + 原生双保险）
+          document.body.style.overflow = 'hidden';
+          if (window.lenis && window.lenis.stop) window.lenis.stop();
+
+          closeBtn.focus();
+          animating = true;
+          setTimeout(function () {
+            animating = false;
+            boxImg.style.transition = 'none';
+          }, 320);
+
+          // 原图懒加载未完成时，初始尺寸按布局兜底；加载完成后校正适配比例
+          boxImg.addEventListener('load', function () {
+            if (!isOpen()) return;
+            var nw = boxImg.naturalWidth, nh = boxImg.naturalHeight;
+            if (!nw || !nh || (origImg.naturalWidth && origImg.naturalHeight)) return;
+            var newMin = Math.min((window.innerWidth - PAD * 2) / nw, (window.innerHeight - PAD * 2) / nh, 1);
+            if (scale <= minScale + 0.001) {
+              minScale = newMin;
+              scale = newMin;
+              tx = 0; ty = 0;
+              apply();
+            } else {
+              minScale = newMin;
+            }
+          });
+
+          // ---- 元素级事件：在 open() 内挂载（元素每次重建，随 close() 移除）----
+
+          // 遮罩点击（overlay 自身，即图片外区域）关闭；✕ 按钮与图片上的点击不受影响
+          overlay.addEventListener('click', function (e) {
+            if (e.target === overlay) close();
+          });
+
+          // 滚轮缩放（整层响应，含图片外区域）
+          overlay.addEventListener('wheel', function (e) {
+            if (animating) return;
+            e.preventDefault();
+            var dy = e.deltaMode === 1 ? e.deltaY * 16 : e.deltaMode === 2 ? e.deltaY * 100 : e.deltaY;
+            zoomAt(e.clientX, e.clientY, scale * Math.exp(-dy * 0.0022));
+          }, { passive: false });
+
+          // 指针：单指/单键拖动平移，双指捏合缩放
+          boxImg.addEventListener('pointerdown', function (e) {
+            if (animating) return;
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            boxImg.setPointerCapture(e.pointerId);
+            pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+            if (Object.keys(pointers).length === 1) {
+              lastPos = { x: e.clientX, y: e.clientY };
+              pinch = null;
+            } else if (Object.keys(pointers).length === 2) {
+              pinch = { dist: pointerDist(), scale: scale };
+              lastPos = null;
+            }
+            e.preventDefault();
+          });
+
+          boxImg.addEventListener('pointermove', function (e) {
+            if (!pointers[e.pointerId]) return;
+            pointers[e.pointerId] = { x: e.clientX, y: e.clientY };
+            if (Object.keys(pointers).length === 1) {
+              if (lastPos) panBy(e.clientX - lastPos.x, e.clientY - lastPos.y);
+              lastPos = { x: e.clientX, y: e.clientY };
+            } else if (Object.keys(pointers).length === 2 && pinch) {
+              var mid = pointerMid();
+              zoomAt(mid.x, mid.y, pinch.scale * (pointerDist() / pinch.dist));
+              if (pinch.mid) panBy(mid.x - pinch.mid.x, mid.y - pinch.mid.y);
+              pinch.mid = mid;
+            }
+          });
+
+          function pointerEnd(e) {
+            delete pointers[e.pointerId];
+            var count = Object.keys(pointers).length;
+            if (count === 1) {
+              for (var id in pointers) lastPos = { x: pointers[id].x, y: pointers[id].y };
+              pinch = null;
+            } else if (count === 0) {
+              lastPos = null;
+              pinch = null;
+            }
+          }
+          boxImg.addEventListener('pointerup', pointerEnd);
+          boxImg.addEventListener('pointercancel', pointerEnd);
+          boxImg.addEventListener('lostpointercapture', pointerEnd);
+
+          // 双击 / 双触：在缩放与复位间切换
+          boxImg.addEventListener('dblclick', function (e) {
+            if (animating) return;
+            if (scale > minScale + 0.01) {
+              scale = minScale; tx = 0; ty = 0;
+              boxImg.style.transition = 'transform 0.25s ease';
+              apply();
+              setTimeout(function () { boxImg.style.transition = 'none'; }, 260);
+            } else {
+              zoomAt(e.clientX, e.clientY, Math.min(minScale * 2.5, MAX_SCALE));
+            }
+          });
+
+          // ✕ 关闭按钮
+          closeBtn.addEventListener('click', close);
+        }
+
+        function close() {
+          if (!isOpen()) return;
+          var o = overlay;
+          overlay = null;
+          pointers = {};
+          lastPos = null;
+          pinch = null;
+          document.body.style.overflow = '';
+          if (window.lenis && window.lenis.start) window.lenis.start();
+          boxImg.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+          boxImg.style.opacity = '0';
+          o.style.opacity = '0';
+          setTimeout(function () { o.remove(); }, 220);
+        }
+
+        // ---- 打开：委托点击（不随 DOM 就绪顺序变化）----
+        document.addEventListener('click', function (e) {
+          if (e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+          var t = e.target;
+          if (!t || t.tagName !== 'IMG' || !t.closest('[data-zoomable]')) return;
+          e.preventDefault(); // 列表卡片图被 <a> 包裹：阻止跳转，只开灯箱
+          open(t);
+        });
+
+        // ---- 关闭：ESC ----
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && isOpen()) close();
+        });
+      })();
     </script>
   </head>
   <body>

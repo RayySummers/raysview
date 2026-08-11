@@ -588,3 +588,65 @@ article.heti .footnotes a:hover {
   padding-left: var(--space-5);
   font-size: var(--text-xs);
 }
+
+/* ===== 图片灯箱（lightbox）：点击 [data-zoomable] 全屏放大 =====
+   元素由 Base.astro 内联脚本动态创建，选择器须为全局样式（Astro 作用域样式
+   不会命中运行时创建的元素）。遮罩始终深色，不随主题切换。 */
+.ray-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  transition: opacity 0.28s ease;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: zoom-out;
+}
+
+.ray-lightbox__img {
+  max-width: none;
+  max-height: none;
+  width: auto;
+  height: auto;
+  transform-origin: 50% 50%;
+  will-change: transform;
+  touch-action: none;
+  cursor: grab;
+  box-shadow: 0 8px 60px rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.ray-lightbox__img:active {
+  cursor: grabbing;
+}
+
+.ray-lightbox__close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.ray-lightbox__close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.24);
+}
