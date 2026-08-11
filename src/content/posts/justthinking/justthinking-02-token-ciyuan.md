@@ -6,6 +6,7 @@ tags:
   - token
   - 词元
 banner: https://pic1.imgdb.cn/i/0345F7UprQuwvNe3KzbPh1.png
+listBanner: https://pic1.imgdb.cn/i/0345LXaizvJdcszNFLfccr.png
 ---
 
 前段时间 OpenClaw 火了，大家叫它「小龙虾」。随着 OpenClaw 等 Agent 工具走红，越来越多普通用户开始从网页聊天接触到 API Key、模型供应商和按量计费等原本更偏开发者圈子的概念。大众开始更多地主动学习如何让 AI 从会聊天到会办事。面向普通用户的聊天产品往往提供免费额度（例如 ChatGPT、Claude），甚至可以免费使用（例如豆包、DeepSeek、智谱清言），而到了模型平台的后台控制台，我们则会接触到 API Key、余额、用量等设置；通过 API 调用模型时，通常按照实际用量计费（此处不考虑订阅方案）。对于文本大模型，一种常见的标价方式就是以每百万 token 为单位，例如 DeepSeek[^7]、Kimi[^9] 和智谱[^10]等平台。这也让越来越多的人开始接触 token 这一概念，而很多人仍直接沿用它的英文名称——token。

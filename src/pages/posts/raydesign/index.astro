@@ -27,10 +27,10 @@ const posts = allPosts
   <div>
     {posts.map((post) => (
       <article style="margin-bottom: var(--space-4);">
-        {post.data.banner && (
+        {(post.data.listBanner ?? post.data.banner) && (
           <a href={getHref(`/posts/${post.id}`)} style="display: block; margin-bottom: var(--space-2); overflow: hidden; height: 200px;">
             <img
-              src={post.data.banner}
+              src={post.data.listBanner ?? post.data.banner}
               alt=""
               style="width: 100%; height: 100%; object-fit: cover; display: block;"
               data-zoomable
