@@ -25,7 +25,7 @@ const { tag, posts, siteBase } = Astro.props as { tag: string; posts: any[]; sit
   <div>
     {posts.map((post) => (
       <article style="margin-bottom: var(--space-3);">
-        <a href={`${siteBase}/posts/${post.slug}`} style="display: block; text-decoration: none;">
+        <a href={`${siteBase}/posts/${post.id}`} style="display: block; text-decoration: none;">
           <h3 style="font-size: var(--text-base); font-weight: 400; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
             {post.data.title}
           </h3>
