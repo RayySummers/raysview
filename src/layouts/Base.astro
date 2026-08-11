@@ -114,6 +114,21 @@ const base = import.meta.env.BASE_URL || '/';
           return Math.min((window.innerWidth - PAD * 2) / n.w, (window.innerHeight - PAD * 2) / n.h, 1);
         }
 
+        // 原图在页面上的矩形 → 灯箱图片所需的变换（scale + 相对视口中心的偏移）：
+        // 等比显示的图按尺寸比例映射；object-fit: cover 裁剪图（栏目卡片）按 cover 比例
+        // 缩放并把自然中心对齐裁框中心（与默认 object-position: 50% 50% 的裁切内容完全重合），
+        // 两种情况下灯箱图片都能在矩形内与页面原图内容对齐，实现「原位打开 / 原位退回」。
+        function originTransform(rect) {
+          if (!rect || rect.width <= 0 || rect.height <= 0) return null;
+          var n = naturalSize();
+          if (!n.w || !n.h) return null;
+          return {
+            s: Math.max(rect.width / n.w, rect.height / n.h),
+            x: rect.left + rect.width / 2 - window.innerWidth / 2,
+            y: rect.top + rect.height / 2 - window.innerHeight / 2
+          };
+        }
+
         function panBounds() {
           var n = naturalSize();
           var dispW = n.w * scale, dispH = n.h * scale;
@@ -193,17 +208,11 @@ const base = import.meta.env.BASE_URL || '/';
           scale = minScale = fitScale();
           tx = 0; ty = 0;
 
-          // 打开动画：从原图所在位置放大到居中（裁剪显示 / 未就绪的图仅淡入）
-          var r = img.getBoundingClientRect();
-          var n = naturalSize();
-          var morph = r.width > 0 && r.height > 0 &&
-            Math.abs(r.width / r.height - n.w / n.h) < 0.01;
-          if (morph) {
+          // 打开动画：从原图所在位置平滑放大到居中（等比图与 cover 裁剪图均原位打开）
+          var t0 = originTransform(img.getBoundingClientRect());
+          if (t0) {
             boxImg.style.transition = 'none';
-            boxImg.style.transform = 'translate3d(' +
-              (r.left + r.width / 2 - window.innerWidth / 2) + 'px,' +
-              (r.top + r.height / 2 - window.innerHeight / 2) + 'px,0) scale(' +
-              (r.width / n.w) + ')';
+            boxImg.style.transform = 'translate3d(' + t0.x + 'px,' + t0.y + 'px,0) scale(' + t0.s + ')';
           }
           overlay.style.opacity = '0';
           void overlay.offsetWidth; // reflow，触发过渡
@@ -318,16 +327,30 @@ const base = import.meta.env.BASE_URL || '/';
         function close() {
           if (!isOpen()) return;
           var o = overlay;
+          var img = boxImg;
+          var src = origImg;
           overlay = null;
           pointers = {};
           lastPos = null;
           pinch = null;
+          animating = true; // 关闭动画期间忽略手势
           document.body.style.overflow = '';
           if (window.lenis && window.lenis.start) window.lenis.start();
-          boxImg.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
-          boxImg.style.opacity = '0';
+
+          // 原位退回：从当前位置平滑缩回原图所在位置/尺寸，同时淡出
+          var t = originTransform(src.getBoundingClientRect());
+          if (t) {
+            img.style.transition = 'transform 0.25s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease';
+            img.style.transform = 'translate3d(' + t.x + 'px,' + t.y + 'px,0) scale(' + t.s + ')';
+          } else {
+            img.style.transition = 'opacity 0.2s ease';
+          }
+          img.style.opacity = '0';
           o.style.opacity = '0';
-          setTimeout(function () { o.remove(); }, 220);
+          setTimeout(function () {
+            o.remove();
+            animating = false;
+          }, t ? 270 : 220);
         }
 
         // ---- 打开：委托点击（不随 DOM 就绪顺序变化）----
