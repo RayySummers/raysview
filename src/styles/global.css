@@ -430,10 +430,25 @@ article.heti .footnotes > h2::before {
   transform: rotate(90deg);
 }
 
-.footnotes ol {
-  padding-left: 0;
+/* 脚注列表容器：用于展开/折叠高度过渡动画 */
+.footnotes-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 250ms ease-out;
+}
+
+.footnotes.collapsed .footnotes-body {
+  grid-template-rows: 0fr;
+}
+
+/* 覆盖 article.heti ol 的缩进（提高特异性）：与标题文字（含 ▸ 箭头占位）同一左边界 */
+article.heti .footnotes ol {
+  margin: 0;
+  padding-left: calc(0.8em + var(--space-2));
   list-style: none;
   counter-reset: footnote-counter;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .footnotes li {
@@ -444,6 +459,12 @@ article.heti .footnotes > h2::before {
 .footnotes li::before {
   content: '[' counter(footnote-counter) '] ';
   font-weight: 600;
+}
+
+/* 让 [N] 序号与脚注内容在同一行内流动 */
+.footnotes li p {
+  display: inline;
+  margin-bottom: 0;
 }
 
 .footnotes a {
@@ -460,6 +481,7 @@ article.heti .footnotes > h2::before {
   text-decoration: none;
 }
 
+/* 返回原文箭头：位于 [N] 序号之后、内容之前 */
 .footnotes a[data-footnote-backref] {
   text-decoration: none !important;
   background-image: none !important;
@@ -473,11 +495,6 @@ article.heti .footnotes > h2::before {
 
 .footnotes a[data-footnote-backref]:hover {
   color: var(--color-text-primary);
-}
-
-/* 折叠时隐藏脚注列表，保留标题可点击展开 */
-.footnotes.collapsed ol {
-  display: none;
 }
 
 .toc-item.depth-3 {
