@@ -306,6 +306,8 @@ article.heti sup a {
   background-image: none !important;
   color: #BFB934;
   transition: color var(--transition-fast);
+  /* 固定顶栏高度 48px + 8px 留白：脚注返回正文跳转时不遮挡目标（与 JS offset 双保险） */
+  scroll-margin-top: calc(var(--header-height) + var(--space-2));
 }
 
 [data-theme="dark"] article.heti sup a {
@@ -496,6 +498,8 @@ article.heti .footnotes ol {
 .footnotes li {
   margin-bottom: var(--space-2);
   counter-increment: footnote-counter;
+  /* 固定顶栏高度 48px + 8px 留白：正文点击脚注编号跳转时不遮挡目标 */
+  scroll-margin-top: calc(var(--header-height) + var(--space-2));
 }
 
 .footnotes li::before {
