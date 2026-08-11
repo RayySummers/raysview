@@ -187,7 +187,7 @@ Only two types of motion:
 
 ### Edge Cases
 - No posts: "No posts yet." centered message
-- No search results: "No posts found for 'xxx'."
+- No search results: "未找到与'xxx'相关的文章。"
 - Invalid tag URL: redirect to home
 - Missing banner: no placeholder, just no banner
 - Long titles: normal wrap, no truncation
@@ -215,7 +215,7 @@ Only two types of motion:
 - Font: sm size
 - Border-radius: 0 (sharp corners)
 - Focus: border becomes accent
-- Placeholder: "Search..." (text-secondary)
+- Placeholder: "搜索" (text-secondary)
 
 ### Tag Pill
 - No background, no border
