@@ -52,8 +52,6 @@ banner: /images/justthinking-02-cover.png
 
 ---
 
-#### 引用资料
-
 [^1]: 《国家安全部发布"词元"安全警示：谨防"囤词元能暴富"等骗局》央视网 2026-04-07 https://news.cctv.com/2026/04/07/ARTITEuQKNzYUMSVU4r1T6JP260407.shtml
 [^2]: 《人民锐评：用"Token"还是"词元"，事关科技话语权》人民网 2026-08-05 https://opinion.people.com.cn/n1/2026/0805/c436867-40774551.html
 [^3]: 《光明日报：为科技强国建设增添助力》全国科学技术名词审定委员会 2023-05-29 https://www.cnterm.cn/xwdt/mtgz/202305/t20230529_759550.html

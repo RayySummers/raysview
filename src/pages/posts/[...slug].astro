@@ -37,7 +37,7 @@ const { Content, headings } = await render(post);
     {post.data.title}
   </h1>
 
-  <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-bottom: var(--space-5);">
+  <div style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-5);">
     <span>{post.data.date.toISOString().split('T')[0]}</span>
     {post.data.tags && post.data.tags.length > 0 && (
       <span style="margin-left: var(--space-2);">
@@ -99,4 +99,19 @@ const { Content, headings } = await render(post);
   document.getElementById('scroll-top-btn')?.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+
+  // 引用资料与脚注：可折叠
+  const footnotes = document.querySelector('.footnotes');
+  if (footnotes) {
+    const heading = footnotes.querySelector('h2');
+    heading?.addEventListener('click', () => {
+      footnotes.classList.toggle('collapsed');
+    });
+    // 从正文点击脚注引用时自动展开，确保跳转目标可见
+    document.querySelectorAll('a[data-footnote-ref]').forEach(link => {
+      link.addEventListener('click', () => {
+        footnotes.classList.remove('collapsed');
+      });
+    });
+  }
 </script>
