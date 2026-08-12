@@ -20,10 +20,12 @@ const site = Astro.site ?? new URL('https://raysview.fun');
 const rawPath = Astro.url.pathname;
 const canonicalUrl = new URL(rawPath.endsWith('/') ? rawPath : `${rawPath}/`, site).toString();
 // 摘要：优先 frontmatter excerpt，否则取正文去掉 Markdown 语法后的前 120 字。
+// 空字符串 excerpt（excerpt: ""）视为未提供，回退正文摘要。
 // 链接/图片语法连同 URL 一起剥离（保留链接文字）；只去掉强调标记与行首列表/标题标记，
 // 不再全局删 - _，避免把 og-image 之类的词内连字符破坏掉。
-const summary = post.data.excerpt
-  ?? (post.body
+const summary = post.data.excerpt?.trim()
+  ? post.data.excerpt
+  : (post.body
     ? post.body
         .replace(/```[\s\S]*?```/g, ' ')
         .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
@@ -42,12 +44,18 @@ const bannerUrl = post.data.banner
     ? post.data.banner
     : new URL(post.data.banner, site).toString()
   : undefined;
+// og:image 仅在 banner 位于本站时使用；外部图床（如 imgdb）若有防盗链/限流，
+// 社交卡片会裂图且无回退 —— 此时省略，由 Base 回退到本地 /og-image.png
+const ogCardImage = bannerUrl?.startsWith(site.origin) ? bannerUrl : undefined;
 const articleLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: post.data.title,
   description: summary,
   datePublished: post.data.date.toISOString(),
+  ...(post.data.modified
+    ? { dateModified: post.data.modified.toISOString() }
+    : {}),
   author: {
     '@type': 'Person',
     name: 'Rayy Summers',
@@ -56,7 +64,12 @@ const articleLd = {
   publisher: {
     '@type': 'Organization',
     name: '睿见 RayView',
-    url: 'https://raysview.fun'
+    url: 'https://raysview.fun',
+    // Google 富结果要求 publisher.logo 才能入选（含日期/作者头像展示）
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://raysview.fun/og-image.png'
+    }
   },
   url: canonicalUrl,
   mainEntityOfPage: canonicalUrl,
@@ -69,7 +82,7 @@ const articleLd = {
   description={summary}
   canonical={canonicalUrl}
   ogType="article"
-  ogImage={bannerUrl}
+  ogImage={ogCardImage}
   structuredData={articleLd}
 >
   <a href={getHref('/posts/')} class="back-btn" aria-label="Back">

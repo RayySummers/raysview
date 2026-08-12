@@ -19,9 +19,11 @@ export async function getStaticPaths() {
 const { tag, posts, siteBase } = Astro.props as { tag: string; posts: any[]; siteBase: string };
 // base 为 '/'（站点根部署）时不再拼接前缀，避免拼出协议相对 URL（//posts/…）
 const getHref = (path: string) => siteBase === '/' || siteBase === '' ? path : `${siteBase}${path}`;
+// noindex：tag 归档页内容与文章页重复，主动不索引（保留 canonical 供去重/引用）。
+// 若未来有意做 tag 流量，去掉 noindex 即可。
 ---
 
-<Base title={`${tag} - 睿见 RayView`}>
+<Base title={`${tag} - 睿见 RayView`} noindex>
   <h1 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-6);">标签: {tag}</h1>
 
   <div>
