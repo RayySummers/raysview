@@ -21,7 +21,7 @@ const { tag, posts, siteBase } = Astro.props as { tag: string; posts: any[]; sit
 const getHref = (path: string) => siteBase === '/' || siteBase === '' ? path : `${siteBase}${path}`;
 ---
 
-<Base title={`${tag} - RayView`}>
+<Base title={`${tag} - 睿见 RayView`}>
   <h1 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-6);">标签: {tag}</h1>
 
   <div>
