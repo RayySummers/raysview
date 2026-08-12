@@ -2,10 +2,27 @@
 import Base from '../layouts/Base.astro';
 const base = import.meta.env.BASE_URL || '/';
 const getHref = (path: string) => base === '/' ? path : `${base}${path}`;
+const description = '睿见 RayView 是 Rayy Summers 的个人博客，分享设计、语言学、AI、社会现象与日常观察。';
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: '睿见 RayView',
+  alternateName: 'RayView',
+  url: 'https://raysview.fun',
+  description,
+  inLanguage: 'zh-CN'
+};
 ---
 
-<Base title="RayView">
-  <p style="font-size: var(--text-xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--space-6);">Hello, I'm Ray</p>
+<Base
+  title="睿见 RayView | Ray 的个人博客"
+  description={description}
+  structuredData={websiteLd}
+>
+  <p style="font-size: var(--text-xl); font-weight: 700; color: var(--color-text-primary); margin-bottom: var(--space-2);">Hello, I'm Ray</p>
+  <p style="font-size: var(--text-base); color: var(--color-text-secondary); margin-bottom: var(--space-6);">
+    This is 睿见 RayView — 分享设计、语言学、AI、社会现象与日常观察。
+  </p>
 
   <nav style="display: flex; flex-direction: column; gap: var(--space-3);">
     <a href={getHref('/posts/')} class="nav-link" style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none;">

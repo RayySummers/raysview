@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import gfm from 'remark-gfm';
 import { visit } from 'unist-util-visit';
 
@@ -78,6 +79,7 @@ export default defineConfig({
   build: {
     assets: 'assets'
   },
+  integrations: [sitemap()],
   markdown: {
     smartypants: false,
     remarkPlugins: [gfm],
