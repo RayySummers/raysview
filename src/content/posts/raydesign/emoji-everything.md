@@ -6,7 +6,7 @@ tags:
   - emoji
 banner: https://pic1.imgdb.cn/i/0345F8T0WFQoMOWKIsBepL.png
 excerpt: ""
-modified: 2026-05-20T00:06:42+08:00
+modified: 2026-08-12T08:00:00+08:00
 created: 2026-04-23T22:09:57+08:00
 ---
 # 什么是 emoji？
@@ -151,3 +151,5 @@ Emoji Kitchen（Emoji 厨房）是 Google 于 2020 年 2 月在其输入法 Gboa
 所以下次在你发 emoji 的时候，可以想一下，你按下的，是一套花了二十多年才建立的、涉及十几个利益方的、至今仍在生长的精密系统。那个字里行间里的彩色图案里，藏着人最本真的表达。
 
 ■
+
+**勘误（2026-08-12）**：本文原述「国旗 emoji 由两个地区指示符号加零宽连接符组成」。经核查，国旗 emoji 实为两个地区指示符号（Regional Indicator）直接组合（如 🇨🇳 = U+1F1E8 + U+1F1F3），不含 ZWJ；ZWJ 序列用于家庭、职业等多人组合。
