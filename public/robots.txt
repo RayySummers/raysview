@@ -1,0 +1,8 @@
+# robots.txt — 睿见 RayView (https://raysview.fun)
+# 允许所有搜索引擎抓取本站全部页面
+
+User-agent: *
+Allow: /
+
+# 站点地图（由 @astrojs/sitemap 构建时自动生成）
+Sitemap: https://raysview.fun/sitemap-index.xml

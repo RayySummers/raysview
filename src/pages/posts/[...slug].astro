@@ -15,9 +15,56 @@ export async function getStaticPaths() {
 const { post, base } = Astro.props as { post: any; base: string };
 const getHref = (path: string) => base === '/' ? path : `${base}${path}`;
 const { Content, headings } = await render(post);
+
+const site = Astro.site ?? new URL('https://raysview.fun');
+const rawPath = Astro.url.pathname;
+const canonicalUrl = new URL(rawPath.endsWith('/') ? rawPath : `${rawPath}/`, site).toString();
+// 摘要：优先 frontmatter excerpt，否则取正文去掉 Markdown 语法后的前 120 字
+const summary = post.data.excerpt
+  ?? (post.body
+    ? post.body
+        .replace(/```[\s\S]*?```/g, ' ')
+        .replace(/[#>*`\[\]!|~\-_]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 120) + '…'
+    : undefined);
+// banner 可能是绝对 URL 或站内相对路径，统一转成绝对 URL
+const bannerUrl = post.data.banner
+  ? post.data.banner.startsWith('http')
+    ? post.data.banner
+    : new URL(post.data.banner, site).toString()
+  : undefined;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: summary,
+  datePublished: post.data.date.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: 'Rayy Summers',
+    url: 'https://raysview.fun/about/'
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: '睿见 RayView',
+    url: 'https://raysview.fun'
+  },
+  url: canonicalUrl,
+  mainEntityOfPage: canonicalUrl,
+  ...(bannerUrl ? { image: bannerUrl } : {})
+};
 ---
 
-<Base title={`${post.data.title} - RayView`}>
+<Base
+  title={`${post.data.title} - RayView`}
+  description={summary}
+  canonical={canonicalUrl}
+  ogType="article"
+  ogImage={bannerUrl}
+  structuredData={articleLd}
+>
   <a href={getHref('/posts/')} class="back-btn" aria-label="Back">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M19 12H5M12 19l-7-7 7-7"/>

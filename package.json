@@ -11,6 +11,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/geist-mono": "^5.2.8",
     "@fontsource-variable/roboto-flex": "^5.2.8",
     "astro": "^6.3.5",

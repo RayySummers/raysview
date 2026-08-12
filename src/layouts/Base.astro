@@ -8,10 +8,44 @@ import Footer from '../components/Footer.astro';
 interface Props {
   title: string;
   description?: string;
+  /** 页面规范 URL（绝对地址）；缺省时由当前页面路径 + site 推导 */
+  canonical?: string;
+  /** Open Graph type，默认 website（文章页 article / 关于页 profile） */
+  ogType?: string;
+  /** og:image 绝对 URL；缺省用站点 Logo（public/RayView_transparent.svg） */
+  ogImage?: string;
+  /** 页面级 JSON-LD 结构化数据（一个对象或对象数组，会自动转义） */
+  structuredData?: object | object[];
+  /** 禁止搜索引擎索引（如 404 页） */
+  noindex?: boolean;
 }
 
-const { title, description = 'RayView Blog' } = Astro.props;
+const {
+  title,
+  description = '睿见 RayView 是 Rayy Summers 的个人博客，分享设计、语言学、AI、社会现象与日常观察。',
+  canonical,
+  ogType = 'website',
+  ogImage,
+  structuredData,
+  noindex = false,
+} = Astro.props;
+
 const base = import.meta.env.BASE_URL || '/';
+const site = Astro.site ?? new URL('https://raysview.fun');
+// canonical 缺省推导：site + 当前路径（补尾斜杠，与站点实际生成的目录 URL 一致）
+const rawPath = Astro.url.pathname;
+const canonicalUrl =
+  canonical ??
+  new URL(rawPath.endsWith('/') ? rawPath : `${rawPath}/`, site).toString();
+const siteName = '睿见 RayView';
+const ogImageUrl = ogImage ?? new URL('/RayView_transparent.svg', site).toString();
+const ldBlocks = structuredData
+  ? Array.isArray(structuredData)
+    ? structuredData
+    : [structuredData]
+  : [];
+// JSON-LD 转义：把 < 序列化为 \u003c，防止 </script> 提前闭合破坏页面
+const jsonLd = JSON.stringify(ldBlocks).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
@@ -21,6 +55,22 @@ const base = import.meta.env.BASE_URL || '/';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="zh_CN" />
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    {ldBlocks.length > 0 && <script type="application/ld+json" set:html={jsonLd} />}
     <link rel="icon" type="image/png" sizes="64x64" href={base === '/' ? '/favicon.png' : `${base}/favicon.png`} />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
