@@ -19,12 +19,19 @@ const { Content, headings } = await render(post);
 const site = Astro.site ?? new URL('https://raysview.fun');
 const rawPath = Astro.url.pathname;
 const canonicalUrl = new URL(rawPath.endsWith('/') ? rawPath : `${rawPath}/`, site).toString();
-// 摘要：优先 frontmatter excerpt，否则取正文去掉 Markdown 语法后的前 120 字
+// 摘要：优先 frontmatter excerpt，否则取正文去掉 Markdown 语法后的前 120 字。
+// 链接/图片语法连同 URL 一起剥离（保留链接文字）；只去掉强调标记与行首列表/标题标记，
+// 不再全局删 - _，避免把 og-image 之类的词内连字符破坏掉。
 const summary = post.data.excerpt
   ?? (post.body
     ? post.body
         .replace(/```[\s\S]*?```/g, ' ')
-        .replace(/[#>*`\[\]!|~\-_]/g, ' ')
+        .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+        .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+        .replace(/\*\*([^*]+)\*\*/g, '$1')
+        .replace(/__([^_]+)__/g, '$1')
+        .replace(/^[#>+\-\s]+/gm, '')
+        .replace(/[*_`~]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim()
         .slice(0, 120) + '…'

@@ -12,7 +12,7 @@ interface Props {
   canonical?: string;
   /** Open Graph type，默认 website（文章页 article / 关于页 profile） */
   ogType?: string;
-  /** og:image 绝对 URL；缺省用站点 Logo（public/RayView_transparent.svg） */
+  /** og:image 绝对 URL；缺省用站点 Logo PNG（public/og-image.png，社交平台不支持 SVG 卡片图） */
   ogImage?: string;
   /** 页面级 JSON-LD 结构化数据（一个对象或对象数组，会自动转义） */
   structuredData?: object | object[];
@@ -38,7 +38,8 @@ const canonicalUrl =
   canonical ??
   new URL(rawPath.endsWith('/') ? rawPath : `${rawPath}/`, site).toString();
 const siteName = '睿见 RayView';
-const ogImageUrl = ogImage ?? new URL('/RayView_transparent.svg', site).toString();
+// 社交分享卡片不支持 SVG：用 /og-image.png（由 RayView_transparent.svg 栅格化而来，1200×630）
+const ogImageUrl = ogImage ?? new URL('/og-image.png', site).toString();
 const ldBlocks = structuredData
   ? Array.isArray(structuredData)
     ? structuredData
