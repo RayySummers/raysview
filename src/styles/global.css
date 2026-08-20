@@ -686,4 +686,5 @@ time.font-date,
   font-feature-settings: "ss04" 1, "tnum" 1;
   font-variant-numeric: lining-nums tabular-nums;
   font-variant-ligatures: none;
+  font-synthesis: none;
 }
