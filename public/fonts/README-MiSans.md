@@ -11,7 +11,7 @@ Stage 1 决策纪要（RAY-383）推荐使用官方 VF 单文件 `MiSans-VF.woff
 ```bash
 pip install fonttools brotli
 pyftsubset MiSansVF.ttf \
-  --unicodes="U+2E80-2EFF,U+2F00-2FDF,U+3000-303F,U+31C0-31EF,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FE30-FE4F,U+FF00-FFEF" \
+  --unicodes="U+2013-2014,U+2026,U+2E80-2EFF,U+2F00-2FDF,U+3000-303F,U+31C0-31EF,U+3400-4DBF,U+4E00-9FFF,U+F900-FAFF,U+FE30-FE4F,U+FF00-FFEF" \
   --layout-features="ss04,tnum,liga,kern" \
   --flavor=woff2 --output-file=public/fonts/MiSans-VF.woff2
 
@@ -19,7 +19,9 @@ pyftsubset MiSansVF.ttf \
 # pyftsubset MiSansVF.ttf --unicodes="U+0030-0039,U+002D" --layout-features="ss04" --flavor=woff2 --output-file=public/fonts/MiSans-Date.woff2
 ```
 
-转换后文件应置于 `public/fonts/MiSans-VF.woff2`，`global.css` 已配置 `font-weight: 100 900` + `format('woff2-variations')` + `unicode-range` 隔离。
+> **互补关系**：`--layout-features` 中保留 `ss04,tnum` 是子集化阶段保留 OpenType 特性表（避免被裁），运行时仍需通过 CSS `font-feature-settings: "ss04" 1,"tnum" 1` 与 `font-variant-numeric: lining-nums tabular-nums` 显式开启；两者互补——子集化保留数据，CSS 决定是否启用。
+
+转换后文件应置于 `public/fonts/MiSans-VF.woff2`，`global.css` 已配置 `font-weight: 100 900` + `format('woff2-variations')` + `unicode-range` 隔离（含 `U+2013-2014,U+2026` 破折号/省略号）。
 
 ## 许可
 
