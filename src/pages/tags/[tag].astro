@@ -35,7 +35,7 @@ const getHref = (path: string) => siteBase === '/' || siteBase === '' ? path : `
           </h3>
         </a>
         <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">
-          <span>{post.data.date.toISOString().split('T')[0]}</span>
+          <time class="font-date" datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
         </div>
       </article>
     ))}

@@ -73,6 +73,7 @@ const jsonLd = JSON.stringify(ldBlocks).replace(/</g, '\\u003c');
     <meta name="twitter:image" content={ogImageUrl} />
     {ldBlocks.length > 0 && <script type="application/ld+json" set:html={jsonLd} />}
     <link rel="icon" type="image/png" sizes="64x64" href={base === '/' ? '/favicon.png' : `${base}/favicon.png`} />
+    <link rel="preload" href="/fonts/MiSans-VF.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
