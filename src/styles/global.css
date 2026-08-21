@@ -122,6 +122,8 @@
   --font-sans: "MiSans", "Zhudou Sans", "Roboto Flex Variable", "Geist Sans", "Source Han Sans SC", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Roboto Flex Variable", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", "Sarasa Mono SC", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* RAY-391 已弃用：--font-date 不再驱动 .font-date/time.font-date（纯数字 YYYY-MM-DD 已回退 Roboto Flex Variable，见下方 .font-date 空壳）；
+     仅 .date-cjk 的数字回退显式引用 "MiSans Date"（同一 MiSans-VF.woff2，unicode-range U+0030-0039/U+002D），保留此变量仅为兼容，后续 RAY-382 闭环后可清理。 */
   --font-date: "MiSans Date", "MiSans", ui-sans-serif, system-ui, sans-serif;
 
   /* Spacing (8px grid) */
@@ -681,16 +683,37 @@ article.heti .footnotes a:hover {
   background: rgba(255, 255, 255, 0.24);
 }
 
-/* ===== 日期专用：MiSans + SS04 齐线/等宽数字 =====
-   仅作用于日期元素，不影响正文数字/拉丁（正文仍走 Roboto Flex）。
-   需配合 class="font-date" 或 <time class="font-date"> 使用。 */
+/* ===== 日期样式范围修正（RAY-391 Stage 4）=====
+   - .date-cjk：仅含中文“年/月”的日期分组标题（如“2026年8月”），中文“年/月”与数字均走 MiSans + SS04 等宽
+     作用于文章列表分组标题，需中文与数字同为 MiSans 并启用 ss04/tnum 齐线等宽。
+     font-family 显式包含 MiSans + MiSans Date 回退：中文命中 MiSans（U+4E00-9FFF 等），数字命中 MiSans Date
+     （U+0030-0039 同一 MiSans-VF.woff2 文件，仅 unicode-range 分离），确保与全局 unicode-range 隔离（数字仍默认回退 Roboto）不冲突。
+   - 纯数字 YYYY-MM-DD 已回退至 Roboto Flex Variable（继承 --font-sans / --font-display），不再使用 MiSans Date / ss04。
+     已清理 6 个页面的 time.font-date 绑定，保留 @font-face "MiSans Date" 仅作为 .date-cjk 的数字回退，不再直接用于 time 元素。
+   保留 MiSans 的 unicode-range（U+3400-4DBF/U+4E00-9FFF/U+F900-FAFF 等且排除 U+0030-0039 拉丁）与 font-display:swap / font-synthesis:none 不变。 */
+.date-cjk {
+  font-family: "MiSans", "MiSans Date", "Source Han Sans SC", sans-serif;
+  font-feature-settings: "ss04" 1, "tnum" 1;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-variant-ligatures: none;
+  font-synthesis: none;
+  /* RAY-391 微调：用户反馈“2026年8月”稍大，字号/字重各降一档，保持 MiSans+SS04/tnum 不变 */
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* 纯数字日期 YYYY-MM-DD — RAY-391 回退为 Roboto Flex Variable，不含 ss04 / MiSans Date，与正文数字一致。
+   历史 class="font-date" / time.font-date / .post-date 保留为空壳兼容，避免旧引用报错，实际已不启用 MiSans。 */
 .font-date,
 time.font-date,
 .post-date,
 .archive-date {
-  font-family: var(--font-date);
-  font-feature-settings: "ss04" 1, "tnum" 1;
-  font-variant-numeric: lining-nums tabular-nums;
-  font-variant-ligatures: none;
+  font-family: "Roboto Flex Variable", ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: normal;
+  font-variant-numeric: normal;
+  font-variant-ligatures: normal;
   font-synthesis: none;
 }

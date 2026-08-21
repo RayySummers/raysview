@@ -56,7 +56,7 @@ node scripts/subset-misans.mjs
 
 - `ls -lh public/fonts/MiSans-VF.woff2` 应 <1MB
 - `python3 -c "from fontTools.ttLib import TTFont; f=TTFont('public/fonts/MiSans-VF.woff2'); print([r.FeatureTag for r in f['GSUB'].table.FeatureList.FeatureRecord])"` 应含 `ss04`/`tnum`
-- `pnpm build` 27 pages 通过；`dist/assets/*.css` 含双 `@font-face`（`MiSans`/`MiSans Date`）及 `time.font-date { ss04, tnum }` 未回归
+- `pnpm build` 27 pages 通过；`dist/assets/*.css` 含双 `@font-face`（`MiSans`/`MiSans Date`）但 `time.font-date` 已回退 `Roboto Flex Variable + font-feature-settings: normal / font-variant-numeric: normal`，仅 `.date-cjk` 保留 `MiSans (+ MiSans Date 数字回退) + ss04 1, tnum 1 + lining-nums tabular-nums`
 
 ## 标点回退（RAY-390 新增）
 
@@ -89,6 +89,6 @@ node scripts/subset-misans.mjs
 
 ## 当前状态
 
-本仓库已完成 CSS 与页面侧接入（`src/styles/global.css`、`src/layouts/Base.astro` 预加载、`src/pages/posts/*` 与 `src/pages/tags/[tag].astro` 日期 `time.font-date`）及自动化子集化（`scripts/subset-misans.mjs` + `prebuild`/`predev`）与标点回退（RAY-390）。`public/fonts/MiSans-VF.woff2` 已由 11.6MB 压至 <1MB（约 430–650KB），全角/CJK 标点已回退至 `Source Han Sans SC`、半角保留 `Roboto Flex`，`font-display: swap` + `preload` + `preconnect https://cdn.jsdelivr.net` 就位，`FnHover` 未回归。若字体文件缺失，构建仍通过，浏览器将回退至 `Source Han Sans SC`，待字体到位后中文/汉字即自动切换为 MiSans，日期数字启用 SS04 齐线等宽。
+本仓库已完成 CSS 与页面侧接入（`src/styles/global.css`、`src/layouts/Base.astro` 预加载、`src/pages/posts/*` 与 `src/pages/tags/[tag].astro` 日期样式）及自动化子集化（`scripts/subset-misans.mjs` + `prebuild`/`predev`）与标点回退（RAY-390）与日期范围修正（RAY-391 Stage 4）。`public/fonts/MiSans-VF.woff2` 已由 11.6MB 压至 <1MB（约 430–650KB），全角/CJK 标点已回退至 `Source Han Sans SC`、半角保留 `Roboto Flex`，`font-display: swap` + `preload` + `preconnect https://cdn.jsdelivr.net` 就位，`FnHover` 未回归。若字体文件缺失，构建仍通过，浏览器将回退至 `Source Han Sans SC`，待字体到位后中文/汉字即自动切换为 MiSans，`YYYY年M月`类标题（`.date-cjk`）启用 `SS04` 齐线等宽，纯数字 `YYYY-MM-DD` 已回退 `Roboto Flex Variable`。
 
 回答“是否每次都要重压”：**无需手动**，构建时自动扫描全量文本重压；偶发遗漏字符回退到 `Source Han`，不阻断发布。
