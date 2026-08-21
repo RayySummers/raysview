@@ -697,6 +697,12 @@ article.heti .footnotes a:hover {
   font-variant-numeric: lining-nums tabular-nums;
   font-variant-ligatures: none;
   font-synthesis: none;
+  /* RAY-391 微调：用户反馈“2026年8月”稍大，字号/字重各降一档，保持 MiSans+SS04/tnum 不变 */
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 /* 纯数字日期 YYYY-MM-DD — RAY-391 回退为 Roboto Flex Variable，不含 ss04 / MiSans Date，与正文数字一致。
