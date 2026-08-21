@@ -122,6 +122,8 @@
   --font-sans: "MiSans", "Zhudou Sans", "Roboto Flex Variable", "Geist Sans", "Source Han Sans SC", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Roboto Flex Variable", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", "Sarasa Mono SC", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  /* RAY-391 已弃用：--font-date 不再驱动 .font-date/time.font-date（纯数字 YYYY-MM-DD 已回退 Roboto Flex Variable，见下方 .font-date 空壳）；
+     仅 .date-cjk 的数字回退显式引用 "MiSans Date"（同一 MiSans-VF.woff2，unicode-range U+0030-0039/U+002D），保留此变量仅为兼容，后续 RAY-382 闭环后可清理。 */
   --font-date: "MiSans Date", "MiSans", ui-sans-serif, system-ui, sans-serif;
 
   /* Spacing (8px grid) */
