@@ -47,7 +47,7 @@ pnpm fonts:subset
 node scripts/subset-misans.mjs
 ```
 
-- `package.json` 已配置 `prebuild` 钩子（`node scripts/subset-misans.mjs`），执行 `pnpm build` / `pnpm dev` 前自动重压；写文章后直接构建即可，无需手动。
+- `package.json` 已配置 `prebuild` / `predev` 钩子（`pnpm fonts:subset`），执行 `pnpm build` / `pnpm dev` 前自动重压；写文章后直接构建或开发即自动更新，无需手动。
 - 依赖：`pip install fonttools brotli`（提供 `pyftsubset`）；缺失时脚本会警告并跳过重压，构建仍通过，回退到 `Source Han`。
 - 源字体优先级：`scripts/cache/MiSans-VF.src.woff2` > `MiSansVF.ttf` / `MiSans-VF.ttf` > `public/fonts/MiSans-VF.src.woff2`（旧路径兼容） > `scripts/cache/*` > `MiSans-VF.woff2`；首次运行后 `src.woff2` 即为全量备份，后续增量子集均以其为源，避免已压缩产物丢失新字。
 
@@ -66,6 +66,6 @@ node scripts/subset-misans.mjs
 
 ## 当前状态
 
-本仓库已完成 CSS 与页面侧接入（`src/styles/global.css`、`src/layouts/Base.astro` 预加载、`src/pages/posts/*` 与 `src/pages/tags/[tag].astro` 日期 `time.font-date`）及自动化子集化（`scripts/subset-misans.mjs` + `prebuild`）。`public/fonts/MiSans-VF.woff2` 已由 11.6MB 压至 <1MB（约 440–650KB），`font-display: swap` + `preload` + `preconnect https://cdn.jsdelivr.net` 就位，`FnHover` 未回归。若字体文件缺失，构建仍通过，浏览器将回退至 `Source Han Sans SC`，待字体到位后中文/标点即自动切换为 MiSans，日期数字启用 SS04 齐线等宽。
+本仓库已完成 CSS 与页面侧接入（`src/styles/global.css`、`src/layouts/Base.astro` 预加载、`src/pages/posts/*` 与 `src/pages/tags/[tag].astro` 日期 `time.font-date`）及自动化子集化（`scripts/subset-misans.mjs` + `prebuild`/`predev`）。`public/fonts/MiSans-VF.woff2` 已由 11.6MB 压至 <1MB（约 440–650KB），`font-display: swap` + `preload` + `preconnect https://cdn.jsdelivr.net` 就位，`FnHover` 未回归。若字体文件缺失，构建仍通过，浏览器将回退至 `Source Han Sans SC`，待字体到位后中文/标点即自动切换为 MiSans，日期数字启用 SS04 齐线等宽。
 
 回答“是否每次都要重压”：**无需手动**，构建时自动扫描全量文本重压；偶发遗漏字符回退到 `Source Han`，不阻断发布。
