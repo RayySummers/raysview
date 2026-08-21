@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "fonts:subset": "node scripts/subset-misans.mjs",
-    "prebuild": "node scripts/subset-misans.mjs"
+    "prebuild": "pnpm fonts:subset",
+    "predev": "pnpm fonts:subset"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

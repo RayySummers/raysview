@@ -115,9 +115,9 @@ function findPyftsubset() {
   if (direct.error == null && (direct.status === 0 || direct.status === 1)) return { cmd: 'pyftsubset', argsPrefix: [] };
   // fallback: python -m fontTools.subset
   const py = spawnSync('python3', ['-m', 'fontTools.subset', '--help'], { stdio: 'pipe' });
-  if (py.error == null) return { cmd: 'python3', argsPrefix: ['-m', 'fontTools.subset'] };
+  if (py.error == null && py.status === 0) return { cmd: 'python3', argsPrefix: ['-m', 'fontTools.subset'] };
   const py2 = spawnSync('python', ['-m', 'fontTools.subset', '--help'], { stdio: 'pipe' });
-  if (py2.error == null) return { cmd: 'python', argsPrefix: ['-m', 'fontTools.subset'] };
+  if (py2.error == null && py2.status === 0) return { cmd: 'python', argsPrefix: ['-m', 'fontTools.subset'] };
   return null;
 }
 
