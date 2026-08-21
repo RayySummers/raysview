@@ -1,12 +1,12 @@
 # MiSans VF 字体文件说明
 
-Stage 1 决策纪要（RAY-383）推荐使用官方 VF 单文件 `MiSans-VF.woff2`（`wght 100 900`）自托管于 `/public/fonts/MiSans-VF.woff2`。
+Stage 1 决策纪要（RAY-383）推荐使用官方 VF 单文件 `MiSans-VF.woff2`（`wght 150 700`，`fvar` 实测 150–700）自托管于 `/public/fonts/MiSans-VF.woff2`。Stage 2 已完成 CSS 与页面侧接入，Stage 3（RAY-387）新增按仓库实际用字自动化子集化，11.6MB → <1MB。
 
 ## 获取方式
 
 官方下载页（需人工交互点击）：https://hyperos.mi.com/font/zh/download
 - 选择 MiSans → 下载 VF 版本（10 字重 + VF，约 12–18MB TTF）
-- 本地转换 woff2 子集化（按推荐 unicode-range）：
+- 首次全量 CJK 子集化（按推荐 unicode-range，保留破折号/省略号）：
 
 ```bash
 pip install fonttools brotli
@@ -21,7 +21,41 @@ pyftsubset MiSansVF.ttf \
 
 > **互补关系**：`--layout-features` 中保留 `ss04,tnum` 是子集化阶段保留 OpenType 特性表（避免被裁），运行时仍需通过 CSS `font-feature-settings: "ss04" 1,"tnum" 1` 与 `font-variant-numeric: lining-nums tabular-nums` 显式开启；两者互补——子集化保留数据，CSS 决定是否启用。
 
-转换后文件应置于 `public/fonts/MiSans-VF.woff2`，`global.css` 已配置 `font-weight: 100 900` + `format('woff2-variations')` + `unicode-range` 隔离（含 `U+2013-2014,U+2026` 破折号/省略号）。
+转换后文件应置于 `public/fonts/MiSans-VF.woff2`，`global.css` 已配置 `font-weight: 100 900` + `format('woff2-variations')` + `unicode-range` 隔离（含 `U+2013-2014,U+2026` 破折号/省略号）。首次放置后，自动化脚本会自动备份为 `scripts/cache/MiSans-VF.src.woff2`（不在 `public`，避免被部署）供后续重压使用；旧路径 `public/fonts/MiSans-VF.src.woff2` 亦兼容并自动迁移。
+
+## 自动化子集化（RAY-387 新增）
+
+为将 11.6MB 全量 CJK 压至 <1MB 且“写文章后无需手动重压，新字自动纳入”，仓库新增 `scripts/subset-misans.mjs` 与 `pnpm` 钩子。
+
+### 原理
+
+- 扫描 `src/content/**/*.{md,mdx}` + `src/pages/**/*.{astro,md,mdx}` + `src/components/**/*.{astro,ts}`，提取全量文本去重字符，强制保留 `U+2013`/`U+2014`/`U+2026`（——/……）及数字 `0-9`/`-`，写入临时 `chars.txt`。
+- 以 `scripts/cache/MiSans-VF.src.woff2`（首次运行时由现有 `MiSans-VF.woff2` 自动备份，不在 `public`）或官方 `MiSansVF.ttf` 为输入源，执行：
+  ```bash
+  pyftsubset <source> --text-file=chars.txt --layout-features=ss04,tnum,liga,kern --flavor=woff2 --output-file=public/fonts/MiSans-VF.woff2
+  ```
+  保留 `fvar 150-700` 与 `GSUB ss04/tnum`，其余字形按实际用字裁剪（实测约 435–650KB，<1MB）。
+- 偶发遗漏字符（未被扫描到或生僻字）会回退到 `global.css` 中 `Source Han Sans SC` 兜底，不阻断发布；下次构建时被新文章纳入会自动补齐。
+
+### 使用
+
+```bash
+# 一键重压（本地可复现，输出至 public/fonts/MiSans-VF.woff2）
+pnpm fonts:subset
+
+# 或直接
+node scripts/subset-misans.mjs
+```
+
+- `package.json` 已配置 `prebuild` 钩子（`node scripts/subset-misans.mjs`），执行 `pnpm build` / `pnpm dev` 前自动重压；写文章后直接构建即可，无需手动。
+- 依赖：`pip install fonttools brotli`（提供 `pyftsubset`）；缺失时脚本会警告并跳过重压，构建仍通过，回退到 `Source Han`。
+- 源字体优先级：`scripts/cache/MiSans-VF.src.woff2` > `MiSansVF.ttf` / `MiSans-VF.ttf` > `public/fonts/MiSans-VF.src.woff2`（旧路径兼容） > `scripts/cache/*` > `MiSans-VF.woff2`；首次运行后 `src.woff2` 即为全量备份，后续增量子集均以其为源，避免已压缩产物丢失新字。
+
+### 校验
+
+- `ls -lh public/fonts/MiSans-VF.woff2` 应 <1MB
+- `python3 -c "from fontTools.ttLib import TTFont; f=TTFont('public/fonts/MiSans-VF.woff2'); print([r.FeatureTag for r in f['GSUB'].table.FeatureList.FeatureRecord])"` 应含 `ss04`/`tnum`
+- `pnpm build` 27 pages 通过；`dist/assets/*.css` 含双 `@font-face`（`MiSans`/`MiSans Date`）及 `time.font-date { ss04, tnum }` 未回归
 
 ## 许可
 
@@ -32,4 +66,6 @@ pyftsubset MiSansVF.ttf \
 
 ## 当前状态
 
-本仓库已完成 CSS 与页面侧接入（`src/styles/global.css`、`src/layouts/Base.astro` 预加载、`src/pages/posts/*` 与 `src/pages/tags/[tag].astro` 日期 `time.font-date`），本地 `pnpm build` 已通过。若 `public/fonts/MiSans-VF.woff2` 暂未放置，构建仍通过，浏览器将回退至 `Source Han Sans SC`，待字体文件到位后中文/标点即自动切换为 MiSans，日期数字启用 SS04 齐线等宽。
+本仓库已完成 CSS 与页面侧接入（`src/styles/global.css`、`src/layouts/Base.astro` 预加载、`src/pages/posts/*` 与 `src/pages/tags/[tag].astro` 日期 `time.font-date`）及自动化子集化（`scripts/subset-misans.mjs` + `prebuild`）。`public/fonts/MiSans-VF.woff2` 已由 11.6MB 压至 <1MB（约 440–650KB），`font-display: swap` + `preload` + `preconnect https://cdn.jsdelivr.net` 就位，`FnHover` 未回归。若字体文件缺失，构建仍通过，浏览器将回退至 `Source Han Sans SC`，待字体到位后中文/标点即自动切换为 MiSans，日期数字启用 SS04 齐线等宽。
+
+回答“是否每次都要重压”：**无需手动**，构建时自动扫描全量文本重压；偶发遗漏字符回退到 `Source Han`，不阻断发布。
