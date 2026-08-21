@@ -8,8 +8,12 @@
   unicode-range: U+3000-303F, U+FF00-FFEF, U+2000-206F, U+2190-21FF, U+2600-26FF, U+2700-27BF;
 }
 
-/* MiSans — 中文字符 + 中文标点（含破折号/省略号），VF 100–900，排除数字/拉丁（由 Roboto Flex / Geist 接管）
-   追加 U+2013-2014 (en/em dash) 与 U+2026 (ellipsis) 以覆盖中文 “——”“……” ，其余 General Punctuation 仍由 Zhudou Sans 兜底 */
+/* MiSans — 中文字符（全量 CJK 汉字，不含全角/CJK 标点），VF 100–900
+   排除：数字/拉丁（由 Roboto Flex / Geist 接管）及全角/CJK 标点（回退至 Source Han Sans SC）
+   RAY-390：全角逗号/句号/问号/括号/直角引号/蝌蚪引号/感叹号/省略号/破折号
+   （U+FF01, U+FF08-FF09, U+FF0C, U+FF1F, U+2013-2014, U+2018-2019, U+201C-201D, U+2026, U+3001-3002, U+300C-300F, U+3010-3011）
+   已从 MiSans 排除，fallback 至 --font-sans 中的 Source Han Sans SC；半角标点（U+0021/002C/002E/003F 等）仍走 Roboto Flex/Geist。
+   其余 General Punctuation 仅由 Zhudou Sans 兜底 */
 @font-face {
   font-family: "MiSans";
   src: url("/fonts/MiSans-VF.woff2") format("woff2-variations");
@@ -17,9 +21,9 @@
   font-style: normal;
   font-display: swap;
   unicode-range:
-    U+2013-2014, U+2026, U+2E80-2EFF, U+2F00-2FDF, U+3000-303F, U+31C0-31EF,
+    U+2E80-2EFF, U+2F00-2FDF, U+3000, U+3003-300B, U+3012-303F, U+31C0-31EF,
     U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF,
-    U+FE30-FE4F, U+FF00-FFEF;
+    U+FE30-FE4F, U+FF00, U+FF02-FF07, U+FF0A-FF0B, U+FF0D-FF1E, U+FF20-FFEF;
 }
 
 /* MiSans Date — 仅数字与连字符，用于日期 SS04 齐线/等宽数字 */
@@ -113,8 +117,8 @@
   --color-accent: #000000;
   --color-border: #E0E0E0;
 
-  /* Typography — 顺序：MiSans(CJK+标点含——/……) > Zhudou Sans(标点兜底，重叠段由 MiSans 优先) > Roboto Flex Variable(Latin/数字) > Geist Sans(Latin 备用，不影响 CJK) > Source Han Sans SC(CJK 兜底)
-     与 Cale 示例 MiSans > Roboto Flex > Geist 的差异仅为保留 Zhudou 兜底及将 Geist 置于 Roboto 之后，Latin 仍优先 Roboto。 */
+  /* Typography — 顺序：MiSans(CJK汉字，不含全角标点) > Zhudou Sans(标点兜底) > Roboto Flex Variable(Latin/数字/半角标点) > Geist Sans(Latin 备用) > Source Han Sans SC(CJK 兜底，含全角标点)
+     RAY-390：全角/CJK 标点（，、。？！（）【】「」『』‘’“”…—–）已从 MiSans 排除回退至 Source Han；半角标点（, . ? ! ( )）仍走 Roboto Flex/Geist。 */
   --font-sans: "MiSans", "Zhudou Sans", "Roboto Flex Variable", "Geist Sans", "Source Han Sans SC", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Roboto Flex Variable", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", "Sarasa Mono SC", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
