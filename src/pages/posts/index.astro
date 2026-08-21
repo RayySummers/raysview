@@ -55,7 +55,7 @@ const grouped = posts.reduce((acc, post) => {
 
   {Object.entries(grouped).map(([period, periodPosts]) => (
     <div style="margin-bottom: var(--space-6);">
-      <h2 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">{period}</h2>
+      <h2 class="date-cjk" style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);">{period}</h2>
       <div>
         {periodPosts.map((post) => (
           <article style="margin-bottom: var(--space-3);">
@@ -65,7 +65,7 @@ const grouped = posts.reduce((acc, post) => {
               </h3>
             </a>
             <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">
-              <time class="font-date" datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
+              <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
               {post.data.tags && post.data.tags.length > 0 && (
                 <span style="margin-left: var(--space-2);">
                   {post.data.tags.map((tag, idx) => (
