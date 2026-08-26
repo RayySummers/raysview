@@ -179,6 +179,7 @@ html {
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: 1.65;
+  font-weight: 330; /* RAY-408 精确映射：正文 Regular 400→330（Roboto 400↔MiSans 330） */
   background-color: var(--color-bg);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
@@ -202,18 +203,17 @@ article.heti p {
   text-align: left;
 }
 
-/* RAY-408 回归修复：标题加粗恢复 — 保持 600/800 与 400 正文/日期区分
-   - article.heti h1 800 / h1-h6 600 已恢复（原 400 回归仅影响 .date-cjk，不应全局降权）
-   - 中文 CJK 走 MiSans VF (fvar 150-700，600 在范围内，800 以 700 钳位+Roboto 回退仍呈现加粗)
-   - 拉丁/数字走 Roboto Flex Variable (100-1000 via Base.astro opsz.css) 完整覆盖 600/800
-   - 未设 font-synthesis:none 于标题，允许必要合成；.date-cjk 仍为 400 + SS04/tnum 不动 */
+/* RAY-408 精确映射：中英文同名等重 — 按表 Roboto 400↔330/600↔520/800↔700
+   - article.heti h1 700(Heavy) / h1-h6 520(SemiBold) 精确对应原 800/600 设计值（MiSans 700/520 vs Roboto 800/600）
+   - 中文 CJK 走 MiSans VF fvar 150-700 全覆盖 150/200/250/330/380/520/630/700，拉丁走 Roboto Flex 100-1000 全覆盖
+   - 未设 font-synthesis:none 于标题；.date-cjk 已同步 400→330 + SS04/tnum 保持 */
 article.heti h1,
 article.heti h2,
 article.heti h3,
 article.heti h4,
 article.heti h5,
 article.heti h6 {
-  font-weight: 600;
+  font-weight: 520;
   text-align: left;
   letter-spacing: 0;
   margin-top: 1.5em;
@@ -222,7 +222,7 @@ article.heti h6 {
 
 article.heti h1 {
   font-size: var(--text-2xl);
-  font-weight: 800;
+  font-weight: 700;
   font-variation-settings: "opsz" 32;
 }
 
@@ -253,7 +253,7 @@ article.heti pre {
   margin: var(--space-4) 0;
   font-size: var(--text-sm);
   line-height: 1.6;
-  font-weight: 500;
+  font-weight: 380;
   font-family: "Sarasa Mono SC", "JetBrains Mono", Consolas, ui-monospace, monospace;
   position: relative;
 }
@@ -279,14 +279,14 @@ article.heti pre {
   color: #ffffff;
 }
 
-/* 行内代码基础样式：作用于所有页面（含手写 HTML 页面） */
+/* 行内代码基础样式：作用于所有页面（含手写 HTML 页面） — RAY-408 精确映射 500→380(Medium) */
 code,
 article.heti code {
   background: var(--color-surface);
   padding: 0.1em 0.3em;
   border-radius: var(--radius-sm);
   font-size: 0.9em;
-  font-weight: 500;
+  font-weight: 380;
   font-family: "Sarasa Mono SC", "JetBrains Mono", Consolas, ui-monospace, monospace;
 }
 
@@ -454,7 +454,7 @@ article.heti .footnotes > h2 {
   display: block;
   margin: 0 0 var(--space-2);
   font-size: var(--text-sm);
-  font-weight: 600;
+  font-weight: 520;
   color: var(--color-text-primary);
   cursor: pointer;
   user-select: none;
@@ -541,7 +541,7 @@ article.heti .footnotes ol {
 
 .footnotes li::before {
   content: '[' counter(footnote-counter) '] ';
-  font-weight: 600;
+  font-weight: 520;
 }
 
 /* 让 [N] 序号与脚注内容在同一行内流动 */
@@ -579,7 +579,7 @@ article.heti .footnotes ol {
    用 article.heti .footnotes a 提高特异性，覆盖 article.heti a 的下划线/过渡规则 */
 article.heti .footnotes a {
   font-family: 'FnHover', var(--font-sans);
-  font-weight: 400;
+  font-weight: 330;
   font-variation-settings: 'GRAD' 0;
   font-synthesis: none; /* 不合成假粗体，避免宽度变化 */
   color: var(--color-text-secondary);
@@ -595,7 +595,7 @@ article.heti .footnotes a {
 }
 
 article.heti .footnotes a:hover {
-  font-weight: 500; /* CJK：wght 500（全角字形定宽，不换行） */
+  font-weight: 380; /* RAY-408 精确映射 CJK 500→380（全角字形定宽，不换行） */
   font-variation-settings: 'GRAD' 150; /* Latin：GRAD 150（字形宽度不变，不换行） */
   color: var(--color-text-primary);
   text-decoration-color: var(--color-text-secondary);
@@ -702,9 +702,9 @@ article.heti .footnotes a:hover {
   font-variant-numeric: lining-nums tabular-nums;
   font-variant-ligatures: none;
   font-synthesis: none;
-  /* RAY-408 Stage 5：字重平衡 — .date-cjk 500→400 统一 Regular，与正文/英文 400 对齐（原 RAY-391 为 500）*/
+  /* RAY-408 精确映射：.date-cjk 400→330 Regular（Roboto 400↔MiSans 330），与正文 330 对齐（原 400）*/
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 330;
   line-height: 1.3;
   letter-spacing: 0.05em;
   text-transform: uppercase;
