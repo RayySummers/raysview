@@ -697,9 +697,9 @@ article.heti .footnotes a:hover {
   font-variant-numeric: lining-nums tabular-nums;
   font-variant-ligatures: none;
   font-synthesis: none;
-  /* RAY-391 微调：用户反馈“2026年8月”稍大，字号/字重各降一档，保持 MiSans+SS04/tnum 不变 */
+  /* RAY-408 Stage 5：字重平衡 — .date-cjk 500→400 统一 Regular，与正文/英文 400 对齐（原 RAY-391 为 500）*/
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.3;
   letter-spacing: 0.05em;
   text-transform: uppercase;
