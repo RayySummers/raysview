@@ -38,11 +38,12 @@ const websiteLd = {
 </Base>
 
 <style>
+  /* RAY-408 tab 微调：中英文 400 视觉不均衡（MiSans 中文显重 ~100），rest 400→350 做 VF 微调补偿，hover 800 保持不变 */
   .nav-link {
     position: relative;
     display: inline-block;
     width: fit-content;
-    font-weight: 400;
+    font-weight: 350;
     transition: font-weight 100ms ease-out;
   }
   .nav-link::after {
