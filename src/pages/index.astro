@@ -38,12 +38,12 @@ const websiteLd = {
 </Base>
 
 <style>
-  /* RAY-408 精确映射：首页 3 tab rest 350→330 Regular（400↔330），hover 800→700 Heavy（800↔700，中英文同名等重） */
+  /* RAY-408 精确映射 + RAY-412 校正：首页 3 tab rest 350→320 Regular（400↔320，330→320 微调实现 CJK 与 Roboto 400 视觉等重），hover 800→700 Heavy（800↔700，中英文同名等重） */
   .nav-link {
     position: relative;
     display: inline-block;
     width: fit-content;
-    font-weight: 330;
+    font-weight: 320;
     transition: font-weight 100ms ease-out;
   }
   .nav-link::after {
