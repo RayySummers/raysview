@@ -202,6 +202,11 @@ article.heti p {
   text-align: left;
 }
 
+/* RAY-408 回归修复：标题加粗恢复 — 保持 600/800 与 400 正文/日期区分
+   - article.heti h1 800 / h1-h6 600 已恢复（原 400 回归仅影响 .date-cjk，不应全局降权）
+   - 中文 CJK 走 MiSans VF (fvar 150-700，600 在范围内，800 以 700 钳位+Roboto 回退仍呈现加粗)
+   - 拉丁/数字走 Roboto Flex Variable (100-1000 via Base.astro opsz.css) 完整覆盖 600/800
+   - 未设 font-synthesis:none 于标题，允许必要合成；.date-cjk 仍为 400 + SS04/tnum 不动 */
 article.heti h1,
 article.heti h2,
 article.heti h3,
