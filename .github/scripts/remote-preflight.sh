@@ -67,6 +67,48 @@ echo "rsync: $(command -v rsync || echo '未安装')"
 echo "tar  : $(command -v tar || echo '未安装') $(tar --version 2>/dev/null | head -1)"
 
 echo
-echo "== nginx 站点根目录 =="
-grep -rh "^[[:space:]]*root" /www/server/panel/vhost/nginx/*raysview* 2>/dev/null | head -5 || true
-grep -rh "^[[:space:]]*root" /etc/nginx/conf.d/*raysview* 2>/dev/null | head -5 || true
+echo "== 挂载点 =="
+mount 2>/dev/null | grep -E "www|raysview" || echo "（目标目录不在单独挂载点上）"
+
+echo
+echo "== /www 顶层 =="
+ls -la /www 2>/dev/null | head -30
+for d in /www/raysview /www/wwwroot; do
+  if [[ -e "$d" ]]; then
+    ls -ld "$d"
+    [[ -L "$d" ]] && echo "  -> 指向 $(readlink -f "$d")"
+  else
+    echo "缺失: $d"
+  fi
+done
+if [[ -d /www/raysview ]]; then
+  echo "  /www/raysview 下的目录（前 20 个）:"
+  find /www/raysview -maxdepth 2 -type d 2>/dev/null | head -20
+  echo "  /www/raysview 里的图片:"
+  find /www/raysview -name 'welcome-banner.jpg' 2>/dev/null | head -3
+fi
+
+echo
+echo "== nginx 站点配置 =="
+conf_files=$(grep -rl "raysview.fun" /www/server/panel/vhost/nginx/ /etc/nginx/conf.d/ 2>/dev/null | head -3)
+if [[ -n "$conf_files" ]]; then
+  for f in $conf_files; do
+    echo "--- $f ---"
+    cat "$f"
+  done
+else
+  echo "未找到 raysview.fun 的 vhost 配置文件"
+fi
+
+echo
+echo "== nginx 全量配置里与 images 相关的片段 =="
+nginx -T 2>/dev/null | grep -n -B4 -A8 "images" | head -60 || true
+
+echo
+echo "== 站点访问/错误日志（最后 30 行）=="
+for log in /www/wwwlogs/raysview.fun.error.log /www/wwwlogs/raysview.fun.log; do
+  if [[ -f "$log" ]]; then
+    echo "--- $log ---"
+    tail -30 "$log"
+  fi
+done

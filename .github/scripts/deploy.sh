@@ -33,6 +33,7 @@ if ssh "${SSH_OPTS[@]}" "$REMOTE" 'command -v rsync >/dev/null 2>&1'; then
   # .user.ini 是 aaPanel 站点标记文件，.well-known 留给证书校验，二者都保留
   rsync -az --delete --human-readable --stats \
     --exclude '.user.ini' \
+    --exclude '.htaccess' \
     --exclude '.well-known/' \
     -e "ssh ${SSH_OPTS[*]}" \
     "${DIST_DIR}/" "${REMOTE}:${DEPLOY_TARGET}/"

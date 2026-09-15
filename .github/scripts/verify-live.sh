@@ -19,6 +19,8 @@ check() {
   for ((i = 1; i <= RETRIES; i++)); do
     code=$(curl -s -o /dev/null -m 20 -w '%{http_code}' "$url" || echo "000")
     [[ "$code" == "200" ]] && break
+    # 404 是确定性的"文件不在"，重试没有意义，直接判失败
+    [[ "$code" == "404" ]] && break
     sleep "$RETRY_SLEEP"
   done
   checked=$((checked + 1))
