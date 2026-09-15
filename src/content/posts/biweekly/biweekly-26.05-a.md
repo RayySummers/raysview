@@ -8,7 +8,7 @@ tags:
   - toothpaste
   - website
   - biweekly
-banner: https://pic1.imgdb.cn/i/0345F64m67uSPUQeOogSZy.png
+banner: /images/posts/biweekly-26.05-a-banner.jpg
 excerpt: ""
 modified: 2026-05-21T01:51:53+08:00
 created: 2026-05-17T21:10:12+08:00
