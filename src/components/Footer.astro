@@ -1,8 +1,12 @@
 ---
 /**
- * 全站 footer（RAY-465：英文页面多一行 AI 译文声明）
+ * 全站 footer（RAY-465：英文页面多一段 AI 译文声明）
  *
- * 声明只在英文页面出现，由 `lang` 决定；中文页面 footer 与改动前完全一致。
+ * 英文页面顺序固定为：声明（两行）→ 版权 → 备案；声明只在英文页面出现，
+ * 中文页面 footer 与改动前完全一致。
+ *
+ * 声明的两行是**两个独立的行**（各自 display: block），不是一整段靠容器宽度自动折出来的 ——
+ * 窄屏上单行可能再折，但断句位置始终固定在两句之间。
  */
 import { useTranslations, type Lang } from '../i18n';
 
@@ -17,6 +21,12 @@ const year = new Date().getFullYear();
 ---
 
 <footer class:list={['site-footer', lang === 'en' && 'site-footer--notice']}>
+  {lang === 'en' && (
+    <p class="site-footer__notice">
+      <span class="site-footer__notice-line">{t('footer.aiNoticeFirst')}</span>
+      <span class="site-footer__notice-line">{t('footer.aiNoticeSecond')}</span>
+    </p>
+  )}
   <span>{t('footer.copyright', { year })}</span>
   <a
     href="https://beian.miit.gov.cn/"
@@ -24,7 +34,6 @@ const year = new Date().getFullYear();
     rel="noopener noreferrer"
     class="site-footer__icp">{t('footer.icp')}</a
   >
-  {lang === 'en' && <p class="site-footer__notice">{t('footer.aiNotice')}</p>}
 </footer>
 
 <style>
@@ -40,7 +49,7 @@ const year = new Date().getFullYear();
     color: var(--color-text-secondary);
   }
 
-  /* 英文页面多一行声明：固定高度会把它挤出可视区，改为「至少一行高」+ 上下留白 */
+  /* 英文页面多一段声明：固定高度会把它挤出可视区，改为「至少一行高」+ 上下留白 */
   .site-footer--notice {
     height: auto;
     min-height: var(--header-height);
@@ -57,5 +66,10 @@ const year = new Date().getFullYear();
     text-align: center;
     line-height: 1.6;
     color: var(--color-text-secondary);
+  }
+
+  /* 两个独立的行：断句位置固定，不随容器宽度变化 */
+  .site-footer__notice-line {
+    display: block;
   }
 </style>
