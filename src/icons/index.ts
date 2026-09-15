@@ -20,6 +20,11 @@
  *   - Google 的短链 SVG 接口（fonts.gstatic.com/s/i/short-term/…）只支持 wght，不支持 opsz/GRAD 组合，会全部 404。
  *
  * 注意：Material 里名为 arrow_left 的图标是实心三角，线条箭头必须用 arrow_back。
+ *
+ * RAY-465 补充：语言切换按钮用的 translate（文A，码点 E8E2）同样原样取自素材包，
+ * 参数与上面完全一致（wght 350 / opsz 24 / FILL 0 / GRAD 0、25）。
+ * 它的两个文件坐标已在生成阶段取负（y 落在 viewBox 的负半轴），因此没有 scale(1,-1) 那层 <g>；
+ * 渲染结果与其它图标一致，接入方式不变。
  */
 
 import arrowBackLight from './arrow_back-light.svg?raw';
@@ -36,6 +41,8 @@ import darkModeLight from './dark_mode-light.svg?raw';
 import darkModeDark from './dark_mode-dark.svg?raw';
 import desktopWindowsLight from './desktop_windows-light.svg?raw';
 import desktopWindowsDark from './desktop_windows-dark.svg?raw';
+import translateLight from './translate-light.svg?raw';
+import translateDark from './translate-dark.svg?raw';
 
 export interface MaterialIconPair {
   /** 浅色主题（GRAD 0） */
@@ -52,6 +59,7 @@ export const MATERIAL_ICONS = {
   light_mode: { light: lightModeLight, dark: lightModeDark },
   dark_mode: { light: darkModeLight, dark: darkModeDark },
   desktop_windows: { light: desktopWindowsLight, dark: desktopWindowsDark },
+  translate: { light: translateLight, dark: translateDark },
 } satisfies Record<string, MaterialIconPair>;
 
 export type MaterialIconName = keyof typeof MATERIAL_ICONS;

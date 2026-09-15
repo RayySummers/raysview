@@ -1,0 +1,257 @@
+---
+/**
+ * 文章页（RAY-465：中英共用同一份模板）
+ *
+ * 中文文章来自 `posts`、英文文章来自 `posts-en`，模板同一份；
+ * 页面文件只负责 `getStaticPaths` 从哪个集合取数据。
+ */
+import Base from '../../layouts/Base.astro';
+import { render, type CollectionEntry } from 'astro:content';
+import TableOfContents from '../TableOfContents.astro';
+import Icon from '../Icon.astro';
+import { langFromPath, useTranslations } from '../../i18n';
+import { hrefFor } from '../../i18n/routes';
+
+interface Props {
+  post: CollectionEntry<'posts'> | CollectionEntry<'postsEn'>;
+}
+
+const { post } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const t = useTranslations(lang);
+
+const { Content, headings } = await render(post);
+
+const site = Astro.site ?? new URL('https://raysview.fun');
+const rawPath = Astro.url.pathname;
+const canonicalUrl = new URL(rawPath.endsWith('/') ? rawPath : `${rawPath}/`, site).toString();
+// 摘要：优先 frontmatter excerpt，否则取正文去掉 Markdown 语法后的前 120 字。
+// 空字符串 excerpt（excerpt: ""）视为未提供，回退正文摘要。
+// 链接/图片语法连同 URL 一起剥离（保留链接文字）；只去掉强调标记与行首列表/标题标记，
+// 不再全局删 - _，避免把 og-image 之类的词内连字符破坏掉。
+const summary = post.data.excerpt?.trim()
+  ? post.data.excerpt
+  : (post.body
+    ? post.body
+        .replace(/```[\s\S]*?```/g, ' ')
+        .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+        .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+        .replace(/\*\*([^*]+)\*\*/g, '$1')
+        .replace(/__([^_]+)__/g, '$1')
+        .replace(/^[#>+\-\s]+/gm, '')
+        .replace(/[*_`~]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .slice(0, 120) + '…'
+    : undefined);
+// 封面图可能是绝对 URL 或站内相对路径（如 /images/posts/xxx-banner.jpg），统一转成绝对 URL
+const toAbsoluteUrl = (value?: string) =>
+  value ? (value.startsWith('http') ? value : new URL(value, site).toString()) : undefined;
+const bannerUrl = toAbsoluteUrl(post.data.banner);
+// og:image 优先用 frontmatter ogImage（宽幅封面可另配 1:1 方图），其次 banner。
+// 仅当图片位于本站时使用；外部图床（如 imgdb）若有防盗链/限流，
+// 社交卡片会裂图且无回退 —— 此时省略，由 Base 回退到本地 /og-image.png
+const ogSourceUrl = toAbsoluteUrl(post.data.ogImage) ?? bannerUrl;
+const ogCardImage = ogSourceUrl?.startsWith(site.origin) ? ogSourceUrl : undefined;
+// JSON-LD 的 image 同样优先用本站可稳定抓取的图
+const ldImage = ogCardImage ?? bannerUrl;
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: summary,
+  datePublished: post.data.date.toISOString(),
+  ...(post.data.modified
+    ? { dateModified: post.data.modified.toISOString() }
+    : {}),
+  inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+  author: {
+    '@type': 'Person',
+    name: 'Rayy Summers',
+    url: new URL(hrefFor('/about/', lang), site).toString()
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: t('site.name'),
+    url: 'https://raysview.fun',
+    // Google 富结果要求 publisher.logo 才能入选（含日期/作者头像展示）
+    logo: {
+      '@type': 'ImageObject',
+      url: 'https://raysview.fun/og-image.png'
+    }
+  },
+  url: canonicalUrl,
+  mainEntityOfPage: canonicalUrl,
+  ...(ldImage ? { image: ldImage } : {})
+};
+---
+
+<Base
+  title={`${post.data.title} - ${t('site.name')}`}
+  description={summary}
+  canonical={canonicalUrl}
+  ogType="article"
+  ogImage={ogCardImage}
+  structuredData={articleLd}
+>
+  <a href={hrefFor('/posts/', lang)} class="back-btn" aria-label={t('common.back')}>
+    <Icon name="arrow_back" size={20} />
+  </a>
+
+  {post.data.banner && (
+    <img
+      src={post.data.banner}
+      alt=""
+      data-zoomable
+      style="width: 100%; height: auto; display: block; margin-bottom: var(--space-5);"
+    />
+  )}
+
+  <h1 class="post-title" style="font-size: var(--post-title-size); font-weight: 700; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-3); line-height: 1.1; font-family: var(--font-sans); font-optical-sizing: auto;">
+    {post.data.title}
+  </h1>
+
+  <div style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-5);">
+    <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
+    {post.data.tags && post.data.tags.length > 0 && (
+      <span style="margin-left: var(--space-2);">
+        {post.data.tags.map((tag, i) => (
+          <>
+            {i > 0 && ' '}
+            <a href={hrefFor(`/tags/${tag}/`, lang)} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">#{tag}</a>
+          </>
+        ))}
+      </span>
+    )}
+  </div>
+
+  <div style="max-width: var(--reading-width);">
+    <article class="heti" style="font-size: var(--text-lg); line-height: 1.65;">
+      <Content />
+    </article>
+  </div>
+
+  <TableOfContents headings={headings} />
+
+  <div class="post-actions">
+    <div class="post-actions__group">
+      <button id="back-btn-bottom" class="back-btn" aria-label={t('post.backToPrevious')}>
+        <Icon name="arrow_back" size={20} />
+      </button>
+      <button id="scroll-top-btn" class="back-btn" aria-label={t('post.scrollTop')}>
+        <Icon name="arrow_upward" size={20} />
+      </button>
+    </div>
+
+    {post.data.wechatUrl && (
+      <a
+        class="wechat-link"
+        href={post.data.wechatUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src={hrefFor('/images/wechat-icon.png', lang)}
+          alt={t('post.wechat')}
+          width="19"
+          height="16"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    )}
+  </div>
+</Base>
+
+<style>
+  /* 文章页标题字号：较全局 --text-3xl (48px) 略降 → 40px（页面级 token，仅文章页生效；--text-3xl 保留给 videos 等场景） */
+  .post-title {
+    --post-title-size: 40px;
+  }
+  .back-btn {
+    display: inline-block;
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    /* 去行高，否则按钮会多出基线以下的空档，图标视觉重心比右侧微信标志高 4px */
+    line-height: 0;
+  }
+  .back-btn:hover {
+    color: var(--color-text-primary) !important;
+  }
+  /* 底部操作栏：返回 / 回到顶部靠左，微信公众号入口靠右 —— 两端对齐，中间自动留白 */
+  .post-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-top: var(--space-6);
+  }
+  .post-actions__group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  /* 微信公众号入口：按官方品牌规范（wechat.design/tool/brand）标志要完整、独立、清晰，
+     并保留不可侵入的留白。8px 内边距同时充当留白和触摸目标（36×40px）；
+     负右外边距抵消内边距，让标志右缘与正文右边缘齐平。 */
+  .wechat-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    padding: var(--space-2);
+    margin-right: calc(var(--space-2) * -1);
+    transition: opacity var(--transition-fast);
+  }
+  .wechat-link:hover {
+    opacity: 0.7;
+  }
+  .wechat-link img {
+    display: block;
+    width: auto;
+    /* 微信品牌规范：屏幕显示时标志高度不小于 16px，这里取下限，
+       视觉上与 20px 的线框图标等重（实心色块的光学重量更大）。
+       素材 142×120（比例 1.1833），16px 高对应 19px 宽，占位属性同步。 */
+    height: 16px;
+  }
+</style>
+
+<script>
+  document.getElementById('back-btn-bottom')?.addEventListener('click', () => {
+    history.back();
+  });
+  document.getElementById('scroll-top-btn')?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // 引用资料与脚注：可折叠
+  const footnotes = document.querySelector('.footnotes');
+  if (footnotes) {
+    const heading = footnotes.querySelector('h2');
+    heading?.addEventListener('click', () => {
+      footnotes.classList.toggle('collapsed');
+    });
+    // 从正文点击脚注引用时：自动展开 + 目标脚注高亮 3 秒后渐隐
+    document.querySelectorAll('a[data-footnote-ref]').forEach(link => {
+      link.addEventListener('click', () => {
+        footnotes.classList.remove('collapsed');
+        const href = link.getAttribute('href');
+        if (href) {
+          const target = document.querySelector(href);
+          if (target) {
+            target.classList.remove('fn-flash');
+            // 强制 reflow 以重新触发动画
+            void target.offsetWidth;
+            target.classList.add('fn-flash');
+            // 动画结束后移除 class，允许下次重复触发
+            setTimeout(() => target.classList.remove('fn-flash'), 3300);
+          }
+        }
+      });
+    });
+  }
+</script>

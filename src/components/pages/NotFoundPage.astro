@@ -1,0 +1,24 @@
+---
+/**
+ * 404 页（RAY-465：只有中文版 —— 静态托管只在站点根输出一份 404.html，
+ * 所以语言菜单在 404 页上会把「英文」置灰，见 src/i18n/routes.ts）
+ */
+import Base from '../../layouts/Base.astro';
+import { langFromPath, useTranslations } from '../../i18n';
+import { hrefFor } from '../../i18n/routes';
+
+const lang = langFromPath(Astro.url.pathname);
+const t = useTranslations(lang);
+---
+
+<Base title={t('notFound.title')} noindex>
+  <div style="text-align: center; padding: var(--space-8) 0;">
+    <h1 style="font-size: 120px; font-weight: 700; line-height: 1; margin-bottom: var(--space-4);">404</h1>
+    <p style="font-size: var(--text-xl); color: var(--color-text-secondary); margin-bottom: var(--space-6);">
+      {t('notFound.message')}
+    </p>
+    <a href={hrefFor('/', lang)} style="font-size: var(--text-sm); color: var(--color-text-secondary); text-decoration: underline; text-underline-offset: 3px;">
+      {t('notFound.back')}
+    </a>
+  </div>
+</Base>

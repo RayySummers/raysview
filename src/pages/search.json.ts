@@ -1,17 +1,14 @@
+/**
+ * 站内搜索索引（中文）
+ *
+ * 只索引当前语言的文章：英文站台有自己的 /en/search.json（第一阶段还是空的）。
+ * 地址由 Header 通过 data-search-index 下发给客户端脚本。
+ */
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
+import { buildSearchIndex } from '../search-index';
 
 export const GET: APIRoute = async () => {
-  const posts = await getCollection('posts');
-  const index = posts
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-    .map(post => ({
-      title: post.data.title,
-      // 绝对路径（相对站点根）；base 前缀由客户端拼接，避免 base='/' 时拼出协议相对 URL（//posts/…）
-      url: `/posts/${post.id}`,
-      tags: post.data.tags || [],
-      date: post.data.date.toISOString().split('T')[0]
-    }));
+  const index = await buildSearchIndex('zh');
 
   return new Response(JSON.stringify(index), {
     headers: {

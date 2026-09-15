@@ -1,0 +1,44 @@
+---
+/**
+ * 渲染「关于」页文案里的行内片段（RAY-465）
+ *
+ * 文案在 src/i18n/about.ts 里是结构化的（纯文本 / 链接 / 等宽片段），
+ * 这里把它拼成 HTML —— 文本走 Astro 的正常转义，不碰 set:html。
+ */
+import type { Inline } from '../i18n/about';
+
+interface Props {
+  segments: Inline[];
+  /** 附注类段落（字体许可、备案号）用次要色 + 常驻下划线 */
+  muted?: boolean;
+}
+
+const { segments, muted = false } = Astro.props;
+---
+
+{segments.map(segment =>
+  typeof segment === 'string' ? (
+    segment
+  ) : 'code' in segment ? (
+    <code>{segment.code}</code>
+  ) : (
+    <a
+      href={segment.href}
+      target={segment.external ? '_blank' : undefined}
+      rel={segment.external ? 'noopener' : undefined}
+      class:list={['inline-link', muted && 'inline-link--muted']}>{segment.label}</a
+    >
+  )
+)}
+
+<style>
+  .inline-link {
+    color: var(--color-text-primary);
+  }
+
+  .inline-link--muted {
+    color: var(--color-text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

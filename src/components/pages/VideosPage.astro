@@ -1,0 +1,25 @@
+---
+/**
+ * 视频页（RAY-465：中英共用同一份模板）
+ */
+import Base from '../../layouts/Base.astro';
+import Icon from '../Icon.astro';
+import { langFromPath, useTranslations } from '../../i18n';
+import { hrefFor } from '../../i18n/routes';
+
+const lang = langFromPath(Astro.url.pathname);
+const t = useTranslations(lang);
+---
+
+<Base title={t('videos.title')}>
+  <a href={hrefFor('/', lang)} style="display: inline-block; color: var(--color-text-secondary); transition: color var(--transition-fast);" aria-label={t('common.back')} class="back-btn">
+    <Icon name="arrow_back" size={20} />
+  </a>
+  <p style="font-size: var(--text-3xl); font-weight: 630; color: var(--color-text-primary); text-align: center; padding: var(--space-6) 0 0 0;">{t('videos.placeholder')}</p>
+</Base>
+
+<style>
+  .back-btn:hover {
+    color: var(--color-text-primary) !important;
+  }
+</style>

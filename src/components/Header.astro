@@ -1,13 +1,39 @@
 ---
+/**
+ * 站点头部（RAY-465：加入语言切换按钮，界面文案改为按语言取词条）
+ *
+ * 按钮顺序：搜索 → 语言 → 主题。三个按钮同尺寸（32×32 触摸区、18px 图标）、同色。
+ *
+ * 界面文案不在这里硬编码：`t()` 从 src/i18n/<lang>.json 取；
+ * 搜索索引地址与「无结果」提示通过 data-* 下发给客户端脚本，脚本里不再写死中文。
+ */
 import Icon from './Icon.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { useTranslations, langPrefix, type Lang } from '../i18n';
+import type { LanguageLink } from '../i18n/routes';
+
+interface Props {
+  /** 界面语言 */
+  lang: Lang;
+  /** 语言切换菜单项，可用性由路由层判定 */
+  languageLinks: LanguageLink[];
+}
+
+const { lang, languageLinks } = Astro.props;
+const t = useTranslations(lang);
 
 const currentPath = Astro.url.pathname;
 const base = import.meta.env.BASE_URL || '/';
 const logoSrc = base === '/' ? '/RayView_transparent.svg' : `${base}/RayView_transparent.svg`;
 const homeHref = base === '/' ? '/' : `${base}/`;
+const searchIndexHref = `${langPrefix(lang)}/search.json`;
 ---
 
-<header style={`height: var(--header-height); position: sticky; top: 0; z-index: 100; background: color-mix(in srgb, var(--color-bg) 80%, transparent); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: space-between; padding-left: var(--padding-x); padding-right: var(--padding-x);`}>
+<header
+  data-search-index={searchIndexHref}
+  data-search-empty={t('header.searchEmpty')}
+  style={`height: var(--header-height); position: sticky; top: 0; z-index: 100; background: color-mix(in srgb, var(--color-bg) 80%, transparent); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: space-between; padding-left: var(--padding-x); padding-right: var(--padding-x);`}
+>
   <div style="display: flex; align-items: center;">
     <a href={homeHref} style="display: flex; align-items: center;">
       <img class="logo" src={logoSrc} alt="睿见 RayView" style="height: 32px;" />
@@ -20,18 +46,20 @@ const homeHref = base === '/' ? '/' : `${base}/`;
       <input
         type="text"
         id="search-input"
-        placeholder="搜索"
+        placeholder={t('header.searchPlaceholder')}
         style="width: 0; padding: var(--space-2) 0; border: none; border-bottom: 1px solid var(--color-border); background: transparent; color: var(--color-text-primary); font-size: var(--text-sm); outline: none; transition: width 200ms ease-out, padding 200ms ease-out, opacity 200ms ease-out; opacity: 0;"
       />
       <div id="search-results" style="position: absolute; top: 100%; right: 0; width: 280px; max-height: 300px; overflow-y: auto; background: var(--color-surface); border: 1px solid var(--color-border); display: none; z-index: 200;"></div>
     </div>
 
-    <button id="search-toggle" aria-label="搜索" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--color-text-secondary);">
+    <button id="search-toggle" aria-label={t('header.search')} style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--color-text-secondary);">
       <Icon id="search-icon" name="search" size={18} />
       <Icon id="close-icon" name="close" size={18} hidden />
     </button>
 
-    <button id="theme-toggle" aria-label="Toggle theme" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--color-text-secondary); transition: transform var(--transition-slow);">
+    <LanguageSwitcher lang={lang} links={languageLinks} />
+
+    <button id="theme-toggle" aria-label={t('header.theme')} style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--color-text-secondary); transition: transform var(--transition-slow);">
       <Icon id="sun-icon" name="light_mode" size={18} hidden />
       <Icon id="moon-icon" name="dark_mode" size={18} />
       <Icon id="system-icon" name="desktop_windows" size={18} hidden />
@@ -41,6 +69,17 @@ const homeHref = base === '/' ? '/' : `${base}/`;
 
 <script>
   const base = document.querySelector('html').dataset.base || '';
+  const header = document.querySelector<HTMLElement>('header');
+  // 语言相关的客户端文案与接口地址由服务端下发（见本组件 frontmatter）
+  const searchIndexUrl = header?.dataset.searchIndex || '/search.json';
+  const searchEmptyTemplate = header?.dataset.searchEmpty || '';
+
+  function escapeHtml(value: string): string {
+    return value.replace(
+      /[&<>"']/g,
+      ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch] as string
+    );
+  }
 
   function getSystemTheme(): string {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -101,7 +140,7 @@ const homeHref = base === '/' ? '/' : `${base}/`;
 
   async function loadSearchIndex() {
     if (searchData.length === 0) {
-      const res = await fetch(base === '/' ? '/search.json' : `${base}/search.json`);
+      const res = await fetch(searchIndexUrl);
       searchData = await res.json();
     }
   }
@@ -145,7 +184,9 @@ const homeHref = base === '/' ? '/' : `${base}/`;
       item.date.includes(q)
     );
     if (results.length === 0) {
-      searchResults.innerHTML = `<p style="padding: 12px; color: var(--color-text-secondary); font-size: 12px;">未找到与“${query}”相关的文章。</p>`;
+      // 提示文案来自词条，查询串先转义再插入，避免输入的 < > & 破坏结构
+      const message = searchEmptyTemplate.replace('{query}', escapeHtml(query));
+      searchResults.innerHTML = `<p style="padding: 12px; color: var(--color-text-secondary); font-size: 12px;">${message}</p>`;
     } else {
       searchResults.innerHTML = results.slice(0, 5).map(item => {
         // base 前缀只在非根路径时拼接，避免 base='/' 时拼出协议相对 URL（//posts/…）

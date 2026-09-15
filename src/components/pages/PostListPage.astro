@@ -1,0 +1,128 @@
+---
+/**
+ * 文章索引页（RAY-465：中英共用同一份模板）
+ *
+ * 中文列出 `posts` 集合，英文列出 `posts-en` 集合 —— 后者第一阶段还是空的，
+ * 所以英文版目前会显示「No posts yet.」，等译文进来就自动有内容。
+ */
+import Base from '../../layouts/Base.astro';
+import Icon from '../Icon.astro';
+import { getCollection } from 'astro:content';
+import { langFromPath, useTranslations } from '../../i18n';
+import { hrefFor } from '../../i18n/routes';
+import { SERIES } from '../../series';
+
+const lang = langFromPath(Astro.url.pathname);
+const t = useTranslations(lang);
+
+const posts = (await getCollection(lang === 'zh' ? 'posts' : 'postsEn')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// 分组标题：中文「2026年8月」走 .date-cjk（MiSans + ss04 齐线等宽），英文用 AUGUST 2026（同一套小号大写样式）
+const monthNames = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+const periodOf = (date: Date) =>
+  lang === 'zh'
+    ? `${date.getFullYear()}年${date.getMonth() + 1}月`
+    : `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+
+const grouped = posts.reduce((acc, post) => {
+  const key = periodOf(post.data.date);
+  if (!acc[key]) acc[key] = [];
+  acc[key].push(post);
+  return acc;
+}, {} as Record<string, typeof posts>);
+
+const periodStyle =
+  'font-size: 11px; font-weight: 320; line-height: 1.3; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-3);';
+---
+
+<Base title={t('posts.title')}>
+  <a href={hrefFor('/', lang)} style="display: inline-block; color: var(--color-text-secondary); transition: color var(--transition-fast);" aria-label={t('common.back')} class="back-btn">
+    <Icon name="arrow_back" size={20} />
+  </a>
+
+  <div style="display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-4);">
+    {SERIES.map(series => (
+      <a href={hrefFor(`/posts/${series}/`, lang)} class="nav-link">
+        <span style="font-size: var(--text-base); color: var(--color-text-primary);">
+          {t(`series.${series}.name`)}
+        </span>
+      </a>
+    ))}
+  </div>
+
+  {Object.entries(grouped).map(([period, periodPosts]) => (
+    <div style="margin-bottom: var(--space-6);">
+      <h2 class={lang === 'zh' ? 'date-cjk' : undefined} style={periodStyle}>{period}</h2>
+      <div>
+        {periodPosts.map((post) => (
+          <article style="margin-bottom: var(--space-3);">
+            <a href={hrefFor(`/posts/${post.id}/`, lang)} style="display: block; text-decoration: none;">
+              <h3 style="font-size: var(--text-base); font-weight: 320; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
+                {post.data.title}
+              </h3>
+            </a>
+            <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">
+              <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
+              {post.data.tags && post.data.tags.length > 0 && (
+                <span style="margin-left: var(--space-2);">
+                  {post.data.tags.map((tag, idx) => (
+                    <>
+                      {idx > 0 && ' '}
+                      <a href={hrefFor(`/tags/${tag}/`, lang)} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
+                        #{tag}
+                      </a>
+                    </>
+                  ))}
+                </span>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  ))}
+
+  {posts.length === 0 && (
+    <p style="color: var(--color-text-secondary); text-align: center; padding: var(--space-8) 0;">{t('posts.empty')}</p>
+  )}
+</Base>
+
+<style>
+  .back-btn:hover {
+    color: var(--color-text-primary) !important;
+  }
+  .nav-link {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    font-weight: 320; /* RAY-412: 330→320 与正文同步 */
+    text-decoration: none;
+    transition: font-weight 100ms ease-out;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-text-primary);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 200ms ease-out;
+  }
+  .nav-link:hover {
+    font-weight: 700;
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+  .nav-link:not(:hover)::after {
+    transform: scaleX(0);
+  }
+</style>

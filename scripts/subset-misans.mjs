@@ -38,6 +38,9 @@ const SCAN_CONFIG = [
   { dir: path.join(ROOT, 'src/content'), exts: new Set(['.md', '.mdx']) },
   { dir: path.join(ROOT, 'src/pages'), exts: new Set(['.astro', '.md', '.mdx']) },
   { dir: path.join(ROOT, 'src/components'), exts: new Set(['.astro', '.ts']) },
+  // RAY-465：界面文案与「关于」页文案搬到了 src/i18n（zh.json / about.ts），
+  // 页面文件里不再出现这些汉字 —— 不扫这里会把它们从子集里漏掉。
+  { dir: path.join(ROOT, 'src/i18n'), exts: new Set(['.ts', '.json']) },
 ];
 
 // 强制保留字符：数字与连字符（全角/CJK 标点已回退至 Source Han，不再强制保留 U+2013/U+2014/U+2026）

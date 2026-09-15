@@ -1,0 +1,78 @@
+---
+/**
+ * 首页（RAY-465：中英共用同一份模板，语言从 URL 推导）
+ *
+ * 中文版 `/`、英文版 `/en/` 都渲染这个组件 —— 页面文件只是几行壳子，
+ * 排版改动只需要改一处。
+ */
+import Base from '../../layouts/Base.astro';
+import { langFromPath, useTranslations } from '../../i18n';
+import { hrefFor } from '../../i18n/routes';
+
+const lang = langFromPath(Astro.url.pathname);
+const t = useTranslations(lang);
+
+const description = t('site.description');
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: t('site.name'),
+  alternateName: 'RayView',
+  url: 'https://raysview.fun',
+  description,
+  inLanguage: lang === 'zh' ? 'zh-CN' : 'en'
+};
+
+const nav = [
+  { href: hrefFor('/posts/', lang), label: t('home.nav.posts') },
+  { href: hrefFor('/videos/', lang), label: t('home.nav.videos') },
+  { href: hrefFor('/about/', lang), label: t('home.nav.about') }
+];
+---
+
+<Base title={t('home.title')} description={description} structuredData={websiteLd}>
+  <p style="font-size: var(--text-xl); font-weight: 630; color: var(--color-text-primary); margin-bottom: var(--space-2);">{t('home.greeting')}</p>
+  <p style="font-size: var(--text-base); color: var(--color-text-secondary); margin-bottom: var(--space-6);">
+    {t('home.intro')}
+  </p>
+
+  <nav style="display: flex; flex-direction: column; gap: var(--space-3);">
+    {nav.map(item => (
+      <a href={item.href} class="nav-link" style="font-size: var(--text-xl); color: var(--color-text-primary); text-decoration: none;">
+        {item.label}
+      </a>
+    ))}
+  </nav>
+</Base>
+
+<style>
+  /* RAY-408 精确映射 + RAY-412 校正：首页 3 tab rest 350→320 Regular（400↔320，330→320 微调实现 CJK 与 Roboto 400 视觉等重），hover 800→700 Heavy（800↔700，中英文同名等重） */
+  .nav-link {
+    position: relative;
+    display: inline-block;
+    width: fit-content;
+    font-weight: 320;
+    transition: font-weight 100ms ease-out;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-text-primary);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 200ms ease-out;
+  }
+  .nav-link:hover {
+    font-weight: 700;
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+  }
+  .nav-link:not(:hover)::after {
+    transform: scaleX(0);
+  }
+</style>

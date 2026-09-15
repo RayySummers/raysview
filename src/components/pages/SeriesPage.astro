@@ -1,0 +1,73 @@
+---
+/**
+ * 系列索引页（RAY-465：中英共用同一份模板）
+ *
+ * 一个模板渲染 justthinking / biweekly / raydesign 三个系列的中英两版，
+ * 具体系列由页面文件通过 `series` 传入，文章由页面文件按语言取好。
+ */
+import Base from '../../layouts/Base.astro';
+import Icon from '../Icon.astro';
+import { langFromPath, useTranslations } from '../../i18n';
+import { hrefFor } from '../../i18n/routes';
+import { seriesPostTitle, type Series } from '../../series';
+
+interface Props {
+  series: Series;
+  posts: { id: string; data: { title: string; date: Date; banner?: string; listBanner?: string } }[];
+}
+
+const { series, posts } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const t = useTranslations(lang);
+
+const name = t(`series.${series}.name`);
+const subtitle = t(`series.${series}.subtitle`);
+---
+
+<Base title={`${name} - ${t('site.name')}`}>
+  <a href={hrefFor('/posts/', lang)} style="display: inline-block; color: var(--color-text-secondary); transition: color var(--transition-fast);" aria-label={t('common.back')} class="back-btn">
+    <Icon name="arrow_back" size={20} />
+  </a>
+
+  <h1 style="font-size: var(--text-2xl); font-weight: 700; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-2); line-height: 1.1; font-family: var(--font-sans); font-optical-sizing: auto;">
+    {name}
+  </h1>
+  <p style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-6);">
+    {subtitle}
+  </p>
+
+  <div>
+    {posts.map((post) => (
+      <article style="margin-bottom: var(--space-4);">
+        {(post.data.listBanner ?? post.data.banner) && (
+          <a href={hrefFor(`/posts/${post.id}/`, lang)} style="display: block; margin-bottom: var(--space-2); overflow: hidden; height: 200px;">
+            <img
+              src={post.data.listBanner ?? post.data.banner}
+              alt=""
+              style="width: 100%; height: 100%; object-fit: cover; display: block;"
+              data-zoomable
+            />
+          </a>
+        )}
+        <a href={hrefFor(`/posts/${post.id}/`, lang)} style="display: block; text-decoration: none;">
+          <h2 style="font-size: var(--text-base); font-weight: 320; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
+            {seriesPostTitle(series, post.data.title)}
+          </h2>
+        </a>
+        <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">
+          <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  {posts.length === 0 && (
+    <p style="color: var(--color-text-secondary); text-align: center; padding: var(--space-8) 0;">{t(`series.${series}.empty`)}</p>
+  )}
+</Base>
+
+<style>
+  .back-btn:hover {
+    color: var(--color-text-primary) !important;
+  }
+</style>

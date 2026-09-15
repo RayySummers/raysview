@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { langFromPath, useTranslations } from '../i18n';
 
 interface Props {
   headings: { depth: number; text: string; slug: string }[];
@@ -7,19 +8,22 @@ interface Props {
 
 const { headings } = Astro.props;
 const filteredHeadings = headings.filter(h => h.depth >= 1 && h.depth <= 3);
+
+// 语言从 URL 推导，与 Base / 页面组件同源（RAY-465）
+const t = useTranslations(langFromPath(Astro.url.pathname));
 ---
 
 {filteredHeadings.length > 0 && (
   <div class="toc-container">
-    <button id="toc-toggle" class="toc-btn" aria-label="Table of contents">
+    <button id="toc-toggle" class="toc-btn" aria-label={t('toc.label')}>
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
     </button>
     <div id="toc-panel" class="toc-panel" hidden>
       <div class="toc-header">
-        <span>目录</span>
-        <button id="toc-close" class="toc-close" aria-label="Close">
+        <span>{t('toc.label')}</span>
+        <button id="toc-close" class="toc-close" aria-label={t('toc.close')}>
           <Icon name="close" size={16} />
         </button>
       </div>

@@ -1,0 +1,78 @@
+{
+  "site": {
+    "name": "睿见 RayView",
+    "description": "睿见 RayView 是 Rayy Summers 的个人博客，分享设计、语言学、AI、社会现象与日常观察。"
+  },
+  "common": {
+    "back": "返回"
+  },
+  "header": {
+    "search": "搜索",
+    "searchPlaceholder": "搜索",
+    "searchEmpty": "未找到与“{query}”相关的文章。",
+    "theme": "切换主题",
+    "language": "切换语言",
+    "lang": {
+      "en": "英文",
+      "zh": "简体中文"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} 睿见 RayView",
+    "icp": "渝ICP备2026010610号"
+  },
+  "home": {
+    "title": "睿见 RayView | Ray 的个人博客",
+    "greeting": "Hello, I'm Ray",
+    "intro": "This is 睿见 RayView — 分享设计、语言学、AI、社会现象与日常观察。",
+    "nav": {
+      "posts": "文章 Posts",
+      "videos": "视频 Videos",
+      "about": "关于 About"
+    }
+  },
+  "posts": {
+    "title": "文章 - 睿见 RayView",
+    "empty": "暂无文章。"
+  },
+  "series": {
+    "justthinking": {
+      "name": "随便想想 / JustThinking",
+      "subtitle": "散落的想法",
+      "empty": "随便想想 系列文章陆续更新中。"
+    },
+    "biweekly": {
+      "name": "半月记 / Biweekly",
+      "subtitle": "系列文章",
+      "empty": "Biweekly 系列文章陆续更新中。"
+    },
+    "raydesign": {
+      "name": "Ray 的设计课 / RayDesign",
+      "subtitle": "系列文章",
+      "empty": "RayDesign 系列文章陆续更新中。"
+    }
+  },
+  "tags": {
+    "title": "{tag} - 睿见 RayView",
+    "heading": "标签: {tag}",
+    "back": "← 返回"
+  },
+  "videos": {
+    "title": "敬请期待 - 睿见 RayView",
+    "placeholder": "敬请期待"
+  },
+  "notFound": {
+    "title": "404 - 睿见 RayView",
+    "message": "页面不存在",
+    "back": "← 返回首页"
+  },
+  "post": {
+    "backToPrevious": "回到上一页",
+    "scrollTop": "回到顶部",
+    "wechat": "微信公众号"
+  },
+  "toc": {
+    "label": "目录",
+    "close": "关闭"
+  }
+}
