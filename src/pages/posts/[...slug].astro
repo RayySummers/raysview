@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import { getCollection, render } from 'astro:content';
 import TableOfContents from '../../components/TableOfContents.astro';
+import Icon from '../../components/Icon.astro';
 
 export async function getStaticPaths() {
   const base = import.meta.env.BASE_URL || '/';
@@ -77,6 +78,10 @@ const articleLd = {
   mainEntityOfPage: canonicalUrl,
   ...(ldImage ? { image: ldImage } : {})
 };
+
+// 文章底部微信公众号入口的跳转地址：公众号 @睿见RayView 的主页，
+// 与 /about/ 页用的是同一个链接；要换成某篇具体文章的链接时只改这里。
+const wechatUrl = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzYzNTI3NjQwMg==#wechat_redirect';
 ---
 
 <Base
@@ -88,9 +93,7 @@ const articleLd = {
   structuredData={articleLd}
 >
   <a href={getHref('/posts/')} class="back-btn" aria-label="Back">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M19 12H5M12 19l-7-7 7-7"/>
-    </svg>
+    <Icon name="arrow_back" size={20} />
   </a>
 
   {post.data.banner && (
@@ -128,17 +131,31 @@ const articleLd = {
 
   <TableOfContents headings={headings} />
 
-  <div style="display: flex; gap: var(--space-4); margin-top: var(--space-6);">
-    <button id="back-btn-bottom" class="back-btn" aria-label="Back to previous page">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
-      </svg>
-    </button>
-    <button id="scroll-top-btn" class="back-btn" aria-label="Scroll to top">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 19V5M5 12l7-7 7 7"/>
-      </svg>
-    </button>
+  <div class="post-actions">
+    <div class="post-actions__group">
+      <button id="back-btn-bottom" class="back-btn" aria-label="Back to previous page">
+        <Icon name="arrow_back" size={20} />
+      </button>
+      <button id="scroll-top-btn" class="back-btn" aria-label="Scroll to top">
+        <Icon name="arrow_upward" size={20} />
+      </button>
+    </div>
+
+    <a
+      class="wechat-link"
+      href={wechatUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        src={getHref('/images/wechat-icon.png')}
+        alt="微信公众号"
+        width="24"
+        height="20"
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
   </div>
 </Base>
 
@@ -155,9 +172,44 @@ const articleLd = {
     border: none;
     cursor: pointer;
     padding: 0;
+    /* 去行高，否则按钮会多出基线以下的空档，图标视觉重心比右侧微信标志高 4px */
+    line-height: 0;
   }
   .back-btn:hover {
     color: var(--color-text-primary) !important;
+  }
+  /* 底部操作栏：返回 / 回到顶部靠左，微信公众号入口靠右 —— 两端对齐，中间自动留白 */
+  .post-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-top: var(--space-6);
+  }
+  .post-actions__group {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  /* 微信公众号入口：按官方品牌规范（wechat.design/tool/brand）标志要完整、独立、清晰，
+     并保留不可侵入的留白。8px 内边距同时充当留白和触摸目标（36×40px）；
+     负右外边距抵消内边距，让标志右缘与正文右边缘齐平。 */
+  .wechat-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    padding: var(--space-2);
+    margin-right: calc(var(--space-2) * -1);
+    transition: opacity var(--transition-fast);
+  }
+  .wechat-link:hover {
+    opacity: 0.7;
+  }
+  .wechat-link img {
+    display: block;
+    width: auto;
+    height: 20px;
   }
 </style>
 

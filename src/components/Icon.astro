@@ -1,0 +1,41 @@
+---
+/**
+ * Material Symbols 图标（内联 SVG，RAY-464）
+ *
+ * 同时渲染浅色 / 深色两套 SVG，由 global.css 里的 `.ms-icon` 规则按
+ * html[data-theme] 显示其中一套 —— 无需 JS，主题切换时立即生效。
+ * 尺寸用 CSS 变量 `--ms-icon-size` 下发；颜色继承 currentColor。
+ *
+ * 用法：
+ *   <Icon name="arrow_back" size={20} />
+ *   <Icon id="close-icon" name="close" size={18} hidden />   // hidden 由 JS 接管显隐
+ *
+ * 图标本身是装饰性的（aria-hidden），语义交给外层按钮 / 链接的 aria-label。
+ */
+import { MATERIAL_ICONS, type MaterialIconName } from '../icons';
+
+interface Props {
+  name: MaterialIconName;
+  /** 显示尺寸，px（Material Symbols 设计网格 24px，实际图标活字区 20/24） */
+  size?: number;
+  /** 初始隐藏：给由 JS 切换显隐的图标用，JS 直接改外层 display 即可 */
+  hidden?: boolean;
+  /** 供 JS 定位用的 id */
+  id?: string;
+  class?: string;
+}
+
+const { name, size = 24, hidden = false, id, class: className } = Astro.props;
+const icon = MATERIAL_ICONS[name];
+---
+
+<span
+  class:list={['ms-icon', className]}
+  id={id}
+  data-icon={name}
+  aria-hidden="true"
+  style={`--ms-icon-size:${size}px;${hidden ? 'display:none;' : ''}`}
+>
+  <span class="ms-icon__layer ms-icon__layer--light" set:html={icon.light} />
+  <span class="ms-icon__layer ms-icon__layer--dark" set:html={icon.dark} />
+</span>

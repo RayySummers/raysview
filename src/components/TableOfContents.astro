@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro';
+
 interface Props {
   headings: { depth: number; text: string; slug: string }[];
 }
@@ -18,9 +20,7 @@ const filteredHeadings = headings.filter(h => h.depth >= 1 && h.depth <= 3);
       <div class="toc-header">
         <span>目录</span>
         <button id="toc-close" class="toc-close" aria-label="Close">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 6L6 18M6 6l12 12"/>
-          </svg>
+          <Icon name="close" size={16} />
         </button>
       </div>
       <nav class="toc-nav">

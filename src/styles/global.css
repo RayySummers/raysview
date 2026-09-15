@@ -722,3 +722,44 @@ time.font-date,
   font-variant-ligatures: normal;
   font-synthesis: none;
 }
+
+/* ==========================================================================
+   Material Symbols 图标 — RAY-464
+   由 <Icon> 组件渲染（src/components/Icon.astro）：每个图标同时内联浅色 / 深色两套 SVG，
+   靠 html[data-theme] 切换，不依赖 JS —— 脚本执行前 data-theme 尚未写入时默认走浅色那套。
+   尺寸由组件下发的 --ms-icon-size 决定；颜色继承 currentColor，跟随父级按钮的 color / hover。
+   图标数据与生成参数见 src/icons/index.ts。
+   ========================================================================== */
+.ms-icon {
+  display: inline-block;
+  width: var(--ms-icon-size, 24px);
+  height: var(--ms-icon-size, 24px);
+  flex: none;
+  color: inherit;
+  line-height: 0;
+}
+
+.ms-icon__layer {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ms-icon__layer--dark {
+  display: none;
+}
+
+/* SVG 自带 width/height="24"，用 CSS 覆盖成实际展示尺寸（viewBox 负责缩放） */
+.ms-icon__layer > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+[data-theme="dark"] .ms-icon__layer--light {
+  display: none;
+}
+
+[data-theme="dark"] .ms-icon__layer--dark {
+  display: block;
+}
