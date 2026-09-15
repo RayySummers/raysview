@@ -50,6 +50,8 @@ while IFS= read -r page; do
   rel="${page#"$DIST_DIR"}"          # /posts/xxx/index.html
   path="${rel%/index.html}/"
   html=$(cat "$page")
+  # 只校验文章页：Base 给文章页输出 og:type=article，栏目/列表页是 website（列表页没有自己的 banner）
+  grep -q 'property="og:type" content="article"' <<<"$html" || continue
   og_url=$(printf '%s' "$html" | grep -o '<meta property="og:image" content="[^"]*"' | head -1 | sed 's/.*content="//; s/"$//') || true
   tw_url=$(printf '%s' "$html" | grep -o '<meta name="twitter:image" content="[^"]*"' | head -1 | sed 's/.*content="//; s/"$//') || true
 
@@ -72,6 +74,7 @@ while IFS= read -r page; do
   else
     echo "  ⚠️  ${path} 的 og:image 是站外地址，社交卡片可能抓不到：$og_url"
   fi
+# 文章页 = dist/posts/<栏目>/<slug>/index.html；栏目列表页（dist/posts/<栏目>/index.html）没有 banner，跳过
 done < <(find "$DIST_DIR/posts" -name index.html | sort)
 [[ "$warned_fallback" -eq 0 ]] || echo "  （${warned_fallback} 篇未配 banner，回退到站点默认图）"
 
