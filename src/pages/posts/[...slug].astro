@@ -147,8 +147,8 @@ const articleLd = {
         <img
           src={getHref('/images/wechat-icon.png')}
           alt="微信公众号"
-          width="24"
-          height="20"
+          width="19"
+          height="16"
           loading="lazy"
           decoding="async"
         />
@@ -207,7 +207,10 @@ const articleLd = {
   .wechat-link img {
     display: block;
     width: auto;
-    height: 20px;
+    /* 微信品牌规范：屏幕显示时标志高度不小于 16px，这里取下限，
+       视觉上与 20px 的线框图标等重（实心色块的光学重量更大）。
+       素材 142×120（比例 1.1833），16px 高对应 19px 宽，占位属性同步。 */
+    height: 16px;
   }
 </style>
 
