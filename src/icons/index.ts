@@ -5,7 +5,10 @@
  * 每个图标两套：`-light` 用于浅色主题（GRAD 0），`-dark` 用于深色主题（GRAD 25，
  * 补偿深色背景下描边偏细的视觉减重）。
  *
- * 生成参数：wght 300 / opsz 24 / FILL 0 / GRAD 0 或 25。
+ * 生成参数：wght 350 / opsz 24 / FILL 0 / GRAD 0 或 25。
+ * wght 取值经过一轮实测：Lucide 的 stroke-width 2 在 24 格上等于 Material 的 wght 400
+ * （横杆 80/960 单位），wght 300 只有 75%（60 单位）；Ray 在三档对比后定 350（70 单位，
+ * 略轻于原版，视觉更透气）。
  * 复现方式（详见素材包 README.md）：
  *   1. 下载可变字体 MaterialSymbolsOutlined[FILL,GRAD,opsz,wght].ttf（google/material-design-icons 仓库的 variablefont/ 目录）；
  *   2. fontTools 的 instancer 按上面的轴实例化，SVGPathPen 取 "d" 路径；
