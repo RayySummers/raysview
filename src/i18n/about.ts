@@ -74,7 +74,7 @@ const zh: AboutCopy = {
     [
       '目前运营微信公众号 @睿见 RayView (',
       { href: LINKS.wechat, label: '@RayView365', external: true },
-      ')，主要发布《半月记（Biweekly）》记录每半个月的洞察和思考、《Ray 的设计课（RayDesign）》分享我对设计的见解。',
+      ')，主要发布《半月记（Biweekly）》记录每半个月的洞察和思考、《Ray 的设计课（RayDesign）》分享我对设计的见解、《正在输入中（Typing...）》做语言学科普、《随便想想（JustThinking）》写思辨长文。',
     ],
     [
       '如有需要，您可以通过电子邮件（',
@@ -93,7 +93,7 @@ const zh: AboutCopy = {
   ],
   historyHeading: '关于睿见 RayView',
   history: [
-    ['睿见 RayView 是 Ray 的个人博客，目前在微信公众号和本网站活跃。'],
+    ['睿见 RayView 是 Ray 的个人博客，目前在微信公众号、知乎和本网站活跃。'],
     ['2025 年 10 月 20 日，我在个人朋友圈发布了我的第 1 期周记，其为睿见 RayView 事实上的首篇文章。'],
     ['2025 年 11 月 23 日，我创建了微信公众号 @睿见RayView，并发布了第 6 周周记。'],
     ['2025 年 12 月 22 日，发布第 10 周周记。'],
@@ -102,6 +102,7 @@ const zh: AboutCopy = {
     ['2026 年 5 月 21 日，博客网站正式公开，部署在 GitHub Pages。'],
     ['2026 年 7 月 1 日，博客网站备案通过，部署到腾讯云服务器。'],
     ['2026 年 7 月 10 日，发布第一期《随便想想（JustThinking）》。'],
+    ['2026 年 9 月 15 日，博客网站推出英文版，由 AI 翻译。'],
   ],
   siteHeading: '关于这个网站',
   site: [
@@ -119,7 +120,7 @@ const zh: AboutCopy = {
     '备案号：',
     { href: LINKS.icp, label: '渝 ICP 备 2026010610 号', external: true },
   ],
-  updated: '最近更新：2026-08-26',
+  updated: '最近更新：2026-09-15',
 };
 
 const en: AboutCopy = {
@@ -135,7 +136,7 @@ const en: AboutCopy = {
     [
       'I run the WeChat Official Account @睿见 RayView (',
       { href: LINKS.wechat, label: '@RayView365', external: true },
-      '), where I publish Biweekly — notes and reflections from every two weeks — and RayDesign, where I share my thinking about design.',
+      '), where I publish 半月记 (Biweekly), notes and reflections from every two weeks; Ray 的设计课 (RayDesign), where I share my thinking about design; 正在输入中 (Typing...), linguistics in plain language; and 随便想想 (JustThinking), longer essays of reflection.',
     ],
     ['You can reach me by email at ', { code: 'rayysummers[at]proton.me' }, '.'],
   ],
@@ -150,7 +151,7 @@ const en: AboutCopy = {
   ],
   historyHeading: 'About RayView',
   history: [
-    ["RayView is Ray's personal blog, published both on WeChat and on this site."],
+    ["RayView is Ray's personal blog, published on WeChat, Zhihu, and this site."],
     [
       'On 20 October 2025 I posted my first weekly note to my personal WeChat Moments — effectively the first RayView piece.',
     ],
@@ -163,6 +164,7 @@ const en: AboutCopy = {
     ['On 21 May 2026 the blog went public, deployed on GitHub Pages.'],
     ['On 1 July 2026 the site passed its ICP filing and moved to a Tencent Cloud server.'],
     ['On 10 July 2026 I published the first issue of JustThinking.'],
+    ['On 15 September 2026 the blog launched an English edition, translated by AI.'],
   ],
   siteHeading: 'About this website',
   site: [
@@ -180,7 +182,7 @@ const en: AboutCopy = {
     'ICP filing: ',
     { href: LINKS.icp, label: '渝 ICP 备 2026010610 号', external: true },
   ],
-  updated: 'Last updated: 2026-08-26',
+  updated: 'Last updated: 2026-09-15',
 };
 
 export const ABOUT: Record<Lang, AboutCopy> = { zh, en };
