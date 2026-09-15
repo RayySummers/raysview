@@ -4,7 +4,8 @@ date: 2026-04-25
 tags:
   - RayDesign
   - emoji
-banner: https://pic1.imgdb.cn/i/0345F8T0WFQoMOWKIsBepL.png
+banner: /images/posts/emoji-everything-banner.jpg
+ogImage: /images/posts/emoji-everything-og.jpg
 excerpt: ""
 modified: 2026-08-12T08:00:00+08:00
 created: 2026-04-23T22:09:57+08:00

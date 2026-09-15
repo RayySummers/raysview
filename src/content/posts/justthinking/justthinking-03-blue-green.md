@@ -5,7 +5,7 @@ tags:
   - JustThinking
   - 颜色词
   - 语义学
-banner: https://pic1.imgdb.cn/i/034OkYqAkXTTF4n25eKF0Y.png
+banner: /images/posts/justthinking-03-blue-green-banner.jpg
 ---
 
 最近上语义学导论课，老师说颜色词是连续体，没办法被精准界定。这句话让我想起一个同名的网站，叫 Is My Blue Your Blue，中文就是"你眼中的蓝和别人眼中的一样吗"。

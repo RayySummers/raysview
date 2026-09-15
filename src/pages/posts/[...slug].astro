@@ -38,15 +38,17 @@ const summary = post.data.excerpt?.trim()
         .trim()
         .slice(0, 120) + '…'
     : undefined);
-// banner 可能是绝对 URL 或站内相对路径，统一转成绝对 URL
-const bannerUrl = post.data.banner
-  ? post.data.banner.startsWith('http')
-    ? post.data.banner
-    : new URL(post.data.banner, site).toString()
-  : undefined;
-// og:image 仅在 banner 位于本站时使用；外部图床（如 imgdb）若有防盗链/限流，
+// 封面图可能是绝对 URL 或站内相对路径（如 /images/posts/xxx-banner.jpg），统一转成绝对 URL
+const toAbsoluteUrl = (value?: string) =>
+  value ? (value.startsWith('http') ? value : new URL(value, site).toString()) : undefined;
+const bannerUrl = toAbsoluteUrl(post.data.banner);
+// og:image 优先用 frontmatter ogImage（宽幅封面可另配 1:1 方图），其次 banner。
+// 仅当图片位于本站时使用；外部图床（如 imgdb）若有防盗链/限流，
 // 社交卡片会裂图且无回退 —— 此时省略，由 Base 回退到本地 /og-image.png
-const ogCardImage = bannerUrl?.startsWith(site.origin) ? bannerUrl : undefined;
+const ogSourceUrl = toAbsoluteUrl(post.data.ogImage) ?? bannerUrl;
+const ogCardImage = ogSourceUrl?.startsWith(site.origin) ? ogSourceUrl : undefined;
+// JSON-LD 的 image 同样优先用本站可稳定抓取的图
+const ldImage = ogCardImage ?? bannerUrl;
 const articleLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -73,7 +75,7 @@ const articleLd = {
   },
   url: canonicalUrl,
   mainEntityOfPage: canonicalUrl,
-  ...(bannerUrl ? { image: bannerUrl } : {})
+  ...(ldImage ? { image: ldImage } : {})
 };
 ---
 
