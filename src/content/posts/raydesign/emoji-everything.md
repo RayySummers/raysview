@@ -9,6 +9,7 @@ ogImage: /images/posts/emoji-everything-og.jpg
 excerpt: ""
 modified: 2026-08-12T08:00:00+08:00
 created: 2026-04-23T22:09:57+08:00
+wechatUrl: https://mp.weixin.qq.com/s/Jq48u9gEh9IzLXV4lr2YxQ
 ---
 # 什么是 emoji？
 
