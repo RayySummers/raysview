@@ -89,13 +89,22 @@ git push
 | **仓库** | [github.com/RayySummers/raysview](https://github.com/RayySummers/raysview) |
 | **服务器** | 腾讯云轻量应用服务器 47.109.61.171 |
 | **Web 服务** | Nginx |
-| **部署路径** | `/www/raysview/` |
+| **部署路径** | `/www/wwwroot/raysview.fun/`（nginx `root` 指向这里） |
 | **域名** | [raysview.fun](https://raysview.fun) |
 | **SSL** | 已启用 HTTPS |
 
 推送代码到 `main` 分支后，GitHub Actions 自动构建并部署至服务器。
 
 访问：**https://raysview.fun**
+
+### 服务器侧配置（改配置前先看这里）
+
+- nginx vhost：`/www/server/panel/vhost/nginx/html_raysview.fun.conf`，其中 `root /www/wwwroot/raysview.fun;`；站点目录外不要再手工加 `/images/` 之类的 `location ... alias` 覆盖（RAY-463 踩过：一条指向旧目录 `/www/raysview/` 的 `location ^~ /images/` 让所有站内封面图 404，见下）。
+- 站内图片放 `public/images/`，构建后由 `root` 直接提供，不需要额外规则。
+- 部署流水线 `.github/workflows/deploy.yml`：构建 → 自检 `dist` → rsync 增量同步（`--delete`，保留 `.user.ini` / `.htaccess` / `.well-known`）→ 逐个校验线上资源与 `og:image`；任何一步失败 job 直接变红。
+- 线上排障（不上传文件，只巡检构建产物、服务器目录与线上资源）：`gh workflow run deploy.yml --ref <branch> -f dry_run=true`。
+- `/images/` 或分享卡片又出现 404 时：先确认 nginx vhost 里有没有人手加的 `location ^~ /images/` 块（`grep -n "images" /www/server/panel/vhost/nginx/html_raysview.fun.conf`），再确认 `dist/images` 是否正常上传。
+- 改 nginx 配置前先 `cp -a` 备份 + `nginx -t`，服务器上仍留有一份 RAY-463 改动前的 vhost 备份（`html_raysview.fun.conf.bak-ray463-20260915064319`）。
 
 ---
 
