@@ -1,19 +1,6 @@
 ---
-import Base from '../../layouts/Base.astro';
-import Icon from '../../components/Icon.astro';
-const base = import.meta.env.BASE_URL || '/';
-const getHref = (path: string) => base === '/' ? path : `${base}${path}`;
+// 中文视频页 `/videos/`
+import VideosPage from '../../components/pages/VideosPage.astro';
 ---
 
-<Base title="敬请期待 - 睿见 RayView">
-  <a href={getHref('/')} style="display: inline-block; color: var(--color-text-secondary); transition: color var(--transition-fast);" aria-label="Back" class="back-btn">
-    <Icon name="arrow_back" size={20} />
-  </a>
-  <p style="font-size: var(--text-3xl); font-weight: 630; color: var(--color-text-primary); text-align: center; padding: var(--space-6) 0 0 0;">敬请期待</p>
-</Base>
-
-<style>
-  .back-btn:hover {
-    color: var(--color-text-primary) !important;
-  }
-</style>
+<VideosPage />

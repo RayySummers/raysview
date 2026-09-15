@@ -1,0 +1,9 @@
+---
+// 英文系列索引页 `/en/posts/biweekly/`
+import SeriesPage from '../../../../components/pages/SeriesPage.astro';
+import { getSeriesPosts } from '../../../../series';
+
+const posts = await getSeriesPosts('biweekly', 'en');
+---
+
+<SeriesPage series="biweekly" posts={posts} />

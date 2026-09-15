@@ -79,7 +79,17 @@ export default defineConfig({
   build: {
     assets: 'assets'
   },
-  integrations: [sitemap()],
+  // sitemap 的 i18n 选项让中英互指的两页互相登记 xhtml:link alternate（RAY-465）。
+  // 只在该语言的页面确实存在时才登记：/posts/welcome/ 找不到 /en/posts/welcome/，
+  // 就不会凭空多一条指向 404 的 alternate。
+  integrations: [
+    sitemap({
+      i18n: {
+        defaultLocale: 'zh',
+        locales: { zh: 'zh-Hans', en: 'en' }
+      }
+    })
+  ],
   markdown: {
     smartypants: false,
     remarkPlugins: [gfm],

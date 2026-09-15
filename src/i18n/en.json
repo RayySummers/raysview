@@ -1,0 +1,79 @@
+{
+  "site": {
+    "name": "RayView",
+    "description": "RayView is the personal blog of Rayy Summers — design, linguistics, AI, society, and everyday observations."
+  },
+  "common": {
+    "back": "Back"
+  },
+  "header": {
+    "search": "Search",
+    "searchPlaceholder": "Search",
+    "searchEmpty": "No articles found for “{query}”.",
+    "theme": "Switch theme",
+    "language": "Switch language",
+    "lang": {
+      "en": "English",
+      "zh": "Simplified Chinese"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} RayView",
+    "icp": "渝ICP备2026010610号",
+    "aiNotice": "This article was originally written in Simplified Chinese. The English version is AI-translated and may contain errors."
+  },
+  "home": {
+    "title": "RayView | Ray's blog",
+    "greeting": "Hello, I'm Ray",
+    "intro": "This is RayView — notes on design, linguistics, AI, society, and everyday observations.",
+    "nav": {
+      "posts": "Posts",
+      "videos": "Videos",
+      "about": "About"
+    }
+  },
+  "posts": {
+    "title": "Posts - RayView",
+    "empty": "No posts yet."
+  },
+  "series": {
+    "justthinking": {
+      "name": "JustThinking",
+      "subtitle": "Scattered thoughts",
+      "empty": "Articles in the JustThinking series are on the way."
+    },
+    "biweekly": {
+      "name": "Biweekly",
+      "subtitle": "A series of posts",
+      "empty": "Articles in the Biweekly series are on the way."
+    },
+    "raydesign": {
+      "name": "RayDesign",
+      "subtitle": "A series of posts",
+      "empty": "Articles in the RayDesign series are on the way."
+    }
+  },
+  "tags": {
+    "title": "{tag} - RayView",
+    "heading": "Tag: {tag}",
+    "back": "← Back"
+  },
+  "videos": {
+    "title": "Coming soon - RayView",
+    "placeholder": "Coming soon"
+  },
+  "notFound": {
+    "title": "404 - RayView",
+    "message": "Page not found",
+    "back": "← Back home"
+  },
+  "post": {
+    "backToPrevious": "Back to previous page",
+    "scrollTop": "Scroll to top",
+    "wechat": "WeChat Official Account"
+  },
+  "toc": {
+    "label": "Contents",
+    "close": "Close"
+  }
+}

@@ -1,0 +1,41 @@
+---
+/**
+ * 标签归档页（RAY-465：中英共用同一份模板）
+ *
+ * noindex：tag 归档页内容与文章页重复，主动不索引（保留 canonical 供去重/引用）。
+ * 若未来有意做 tag 流量，去掉 noindex 即可。
+ */
+import Base from '../../layouts/Base.astro';
+import { langFromPath, useTranslations } from '../../i18n';
+import { hrefFor } from '../../i18n/routes';
+
+interface Props {
+  tag: string;
+  posts: { id: string; data: { title: string; date: Date } }[];
+}
+
+const { tag, posts } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const t = useTranslations(lang);
+---
+
+<Base title={t('tags.title', { tag })} noindex>
+  <h1 style="font-size: var(--text-xs); color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: var(--space-6);">{t('tags.heading', { tag })}</h1>
+
+  <div>
+    {posts.map((post) => (
+      <article style="margin-bottom: var(--space-3);">
+        <a href={hrefFor(`/posts/${post.id}/`, lang)} style="display: block; text-decoration: none;">
+          <h3 style="font-size: var(--text-base); font-weight: 320; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
+            {post.data.title}
+          </h3>
+        </a>
+        <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">
+          <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <a href={hrefFor('/', lang)} style="display: inline-block; margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text-secondary);">{t('tags.back')}</a>
+</Base>

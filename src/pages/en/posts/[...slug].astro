@@ -1,0 +1,18 @@
+---
+// 英文文章页 `/en/posts/<id>/`，文章来自 posts-en 集合。
+// 第一阶段该集合是空的，所以这里不生成任何页面 —— 等第一篇译文进来就会自动有路由。
+import ArticlePage from '../../../components/pages/ArticlePage.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('postsEn');
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post }
+  }));
+}
+
+const { post } = Astro.props;
+---
+
+<ArticlePage post={post} />

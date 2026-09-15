@@ -82,6 +82,25 @@ git push
 
 ---
 
+## 🌏 中英双语（RAY-465）
+
+| 位置 | 说明 |
+|------|------|
+| **界面文案** | `src/i18n/zh.json` / `src/i18n/en.json`，两个文件的键一一对应；漏译或键名写错会在构建时直接报错，不会静默渲染成空串 |
+| **「关于」页文案** | 篇幅长且带链接，单独放 `src/i18n/about.ts`，两份文案并排 |
+| **路由判断** | `src/i18n/routes.ts` 回答「当前页面在目标语言下有没有对应版本」，语言切换菜单只负责渲染 |
+| **英文页面** | 目录镜像中文：`src/pages/en/…`，URL 前缀 `/en/`；中文仍在根路径 |
+| **英文文章** | 放进 `src/content/posts-en/`，frontmatter 用 `translationOf` 指向中文原文 id（文件名与中文同名时可省略） |
+| **AI 译文声明** | 英文页面的 footer 自动显示，文案在 `en.json` 的 `footer.aiNotice` |
+
+`src/content/posts-en/` 目前是空目录（只有 `.gitkeep`）：第一阶段只搭架构，译文留到第二阶段。
+放入第一篇译文后，对应中文文章页语言菜单里的「英文」项会自动从灰色变成可点，不需要改代码。
+
+构建时的两条提示（`No files found matching "**/*.md"` 与 `The collection "postsEn" does not exist or is empty`）
+都是「英文内容目录还空着」的正常表现，不是配置错误；放进第一篇译文后自动消失。
+
+---
+
 ## 🌐 部署
 
 | 项目 | 详情 |

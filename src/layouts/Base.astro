@@ -4,6 +4,8 @@ import '@fontsource-variable/geist-mono';
 import '@fontsource-variable/roboto-flex/opsz.css'; // RAY-408 验证：Roboto Flex opsz.css 提供 wght 100-1000 + opsz 8-144，完整覆盖标题 600/800
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { HREFLANG, HTML_LANG, OG_LOCALE, useTranslations } from '../i18n';
+import { resolveLanguage } from '../i18n/routes';
 
 interface Props {
   title: string;
@@ -20,9 +22,14 @@ interface Props {
   noindex?: boolean;
 }
 
+// 界面语言由路由层从 URL 推导（/en/… → en，其余 → zh），页面组件不需要各自传：
+// 少一个可能的传错点，也保证 html lang / footer 声明 / 语言菜单永远与 URL 一致。
+const { lang, links: languageLinks, alternates } = await resolveLanguage(Astro.url.pathname);
+const t = useTranslations(lang);
+
 const {
   title,
-  description = '睿见 RayView 是 Rayy Summers 的个人博客，分享设计、语言学、AI、社会现象与日常观察。',
+  description = t('site.description'),
   canonical,
   ogType = 'website',
   ogImage,
@@ -37,7 +44,7 @@ const rawPath = Astro.url.pathname;
 const canonicalUrl =
   canonical ??
   new URL(rawPath.endsWith('/') ? rawPath : `${rawPath}/`, site).toString();
-const siteName = '睿见 RayView';
+const siteName = t('site.name');
 // 社交分享卡片不支持 SVG：用 /og-image.png（由 RayView_transparent.svg 栅格化而来，1200×630）
 const ogImageUrl = ogImage ?? new URL('/og-image.png', site).toString();
 const ldBlocks = structuredData
@@ -47,16 +54,33 @@ const ldBlocks = structuredData
   : [];
 // JSON-LD 转义：把 < 序列化为 \u003c，防止 </script> 提前闭合破坏页面
 const jsonLd = JSON.stringify(ldBlocks).replace(/</g, '\\u003c');
+
+// hreflang：只在「确实存在另一个语言的版本」时才登记 —— 只有一种语言的页面
+// （中文文章页、标签页、404 页）本来就没有可互相替代的 URL，登记自己反而制造噪音。
+// x-default 指向中文版，与「中文留在根路径」的默认语言设定一致。
+const hasAlternates = alternates.length > 1;
+const alternateLinks = hasAlternates
+  ? alternates.map(link => ({
+      hreflang: HREFLANG[link.lang],
+      href: new URL(link.href, site).toString(),
+    }))
+  : [];
+const defaultAlternate = hasAlternates
+  ? alternateLinks[alternates.findIndex(link => link.lang === 'zh')]
+  : undefined;
 ---
 
 <!doctype html>
-<html lang="zh" data-base={base}>
+<html lang={HTML_LANG[lang]} data-base={base}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="canonical" href={canonicalUrl} />
+    <!-- 中英两版各自 canonical，搜索引擎分别收录；只列真实存在的版本 -->
+    {alternateLinks.map(link => <link rel="alternate" hreflang={link.hreflang} href={link.href} />)}
+    {defaultAlternate && <link rel="alternate" hreflang="x-default" href={defaultAlternate.href} />}
     {noindex && <meta name="robots" content="noindex" />}
     <!-- Open Graph -->
     <meta property="og:type" content={ogType} />
@@ -65,7 +89,10 @@ const jsonLd = JSON.stringify(ldBlocks).replace(/</g, '\\u003c');
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:site_name" content={siteName} />
-    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:locale" content={OG_LOCALE[lang]} />
+    {alternates
+      .filter(link => link.lang !== lang)
+      .map(link => <meta property="og:locale:alternate" content={OG_LOCALE[link.lang]} />)}
     <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
@@ -423,10 +450,10 @@ const jsonLd = JSON.stringify(ldBlocks).replace(/</g, '\\u003c');
     </script>
   </head>
   <body>
-    <Header />
+    <Header lang={lang} languageLinks={languageLinks} />
     <main style={`padding-left: var(--padding-x); padding-right: var(--padding-x); padding-top: var(--space-6); padding-bottom: var(--space-6); max-width: var(--max-width); margin: 0 auto; width: 100%;`}>
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
   </body>
 </html>

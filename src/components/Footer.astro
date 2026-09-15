@@ -1,7 +1,61 @@
 ---
+/**
+ * 全站 footer（RAY-465：英文页面多一行 AI 译文声明）
+ *
+ * 声明只在英文页面出现，由 `lang` 决定；中文页面 footer 与改动前完全一致。
+ */
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props {
+  /** 界面语言 */
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
-<footer style="height: var(--header-height); margin-bottom: var(--space-6); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-1); font-size: var(--text-xs); color: var(--color-text-secondary);">
-  <span>© {year} 睿见 RayView</span>
-  <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" style="color: var(--color-text-secondary);">渝ICP备2026010610号</a>
+
+<footer class:list={['site-footer', lang === 'en' && 'site-footer--notice']}>
+  <span>{t('footer.copyright', { year })}</span>
+  <a
+    href="https://beian.miit.gov.cn/"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="site-footer__icp">{t('footer.icp')}</a
+  >
+  {lang === 'en' && <p class="site-footer__notice">{t('footer.aiNotice')}</p>}
 </footer>
+
+<style>
+  .site-footer {
+    height: var(--header-height);
+    margin-bottom: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+
+  /* 英文页面多一行声明：固定高度会把它挤出可视区，改为「至少一行高」+ 上下留白 */
+  .site-footer--notice {
+    height: auto;
+    min-height: var(--header-height);
+    gap: var(--space-2);
+    padding: var(--space-4) 0;
+  }
+
+  .site-footer__icp {
+    color: var(--color-text-secondary);
+  }
+
+  .site-footer__notice {
+    max-width: 62ch;
+    text-align: center;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+</style>
