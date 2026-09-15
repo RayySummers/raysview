@@ -9,6 +9,8 @@
  * `[role="menuitem"][aria-disabled="true"]`（不是 <a>，所以真的点不动，也没有 href 可以跟随）。
  *
  * 菜单项顺序固定为英文在前、简体中文在后，只有文案随界面语言变化。
+ * 菜单项共三态：正在浏览的语言（加粗）、可切换的语言（常规字重）、
+ * 目标语言没有对应页面（灰色 + aria-disabled，不可点击）。
  *
  * 键盘：按钮上 ↓/↑ 展开并把焦点送进菜单；菜单内 ↑/↓/Home/End 移动，Esc 关闭并退回按钮，
  * Tab 移出菜单时自动收起；点击菜单外部同样关闭。
@@ -45,7 +47,7 @@ const t = useTranslations(lang);
     {links.map((link) =>
       link.available ? (
         <a
-          class="lang-menu__item"
+          class:list={['lang-menu__item', link.current && 'lang-menu__item--current']}
           role="menuitem"
           href={link.href}
           hreflang={link.lang}
@@ -127,6 +129,13 @@ const t = useTranslations(lang);
 
   .lang-menu__item:focus-visible {
     outline: none;
+  }
+
+  /* 正在浏览的语言：加粗标记（RAY-465，Ray 在「对勾 / 加粗」里选了加粗）。
+     700 是这套设计里既有的强调档（中英同名等重：MiSans 700 ↔ Roboto 800），
+     首页 nav-link hover、文章标题用的都是它；这里只加粗，不换色。 */
+  .lang-menu__item--current {
+    font-weight: 700;
   }
 
   /* 目标语言没有这个页面：灰色 + 不可点击（是 <span>，没有 href，也没有点击行为） */

@@ -20,7 +20,8 @@
   "footer": {
     "copyright": "© {year} RayView",
     "icp": "渝ICP备2026010610号",
-    "aiNotice": "This article was originally written in Simplified Chinese. The English version is AI-translated and may contain errors."
+    "aiNoticeFirst": "This article was originally written in Simplified Chinese.",
+    "aiNoticeSecond": "The English version is AI-translated and may contain errors."
   },
   "home": {
     "title": "RayView | Ray's blog",
