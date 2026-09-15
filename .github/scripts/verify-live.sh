@@ -44,23 +44,36 @@ for path in / /404.html /robots.txt /sitemap-index.xml /posts/justthinking/justt
 done
 
 echo
-echo "== og:image（微信分享缩略图）=="
-post_path="/posts/justthinking/justthinking-03-blue-green/"
-html=$(curl -s -m 20 "${SITE_URL}${post_path}" || true)
-og_url=$(printf '%s' "$html" | grep -o '<meta property="og:image" content="[^"]*"' | head -1 | sed 's/.*content="//; s/"$//') || true
+echo "== 每篇文章的 og:image / twitter:image（微信分享缩略图）=="
+warned_fallback=0
+while IFS= read -r page; do
+  rel="${page#"$DIST_DIR"}"          # /posts/xxx/index.html
+  path="${rel%/index.html}/"
+  html=$(cat "$page")
+  og_url=$(printf '%s' "$html" | grep -o '<meta property="og:image" content="[^"]*"' | head -1 | sed 's/.*content="//; s/"$//') || true
+  tw_url=$(printf '%s' "$html" | grep -o '<meta name="twitter:image" content="[^"]*"' | head -1 | sed 's/.*content="//; s/"$//') || true
 
-if [[ -z "$og_url" ]]; then
-  echo "  ❌ ${post_path} 里没有解析到 og:image"
-  failures=$((failures + 1))
-else
-  echo "  og:image = $og_url"
-  if [[ "$og_url" == "${SITE_URL}/og-image.png" ]]; then
-    echo "  ❌ og:image 仍是站点默认 Logo，文章封面没有生效"
+  if [[ -z "$og_url" ]]; then
+    echo "  ❌ ${path} 没有 og:image"
     failures=$((failures + 1))
-  else
-    check "$og_url"
+    continue
   fi
-fi
+  if [[ "$tw_url" != "$og_url" ]]; then
+    echo "  ❌ ${path} 的 twitter:image（${tw_url:-空}）与 og:image 不一致"
+    failures=$((failures + 1))
+  fi
+  if [[ "$og_url" == "${SITE_URL}/og-image.png" ]]; then
+    # 文章没配 banner 时的正常回退，只提示不判失败
+    echo "  ⚠️  $og_url （${path} 用的是站点默认图，未配 banner）"
+    warned_fallback=$((warned_fallback + 1))
+    check "$og_url"
+  elif [[ "$og_url" == "${SITE_URL}"* ]]; then
+    check "$og_url"
+  else
+    echo "  ⚠️  ${path} 的 og:image 是站外地址，社交卡片可能抓不到：$og_url"
+  fi
+done < <(find "$DIST_DIR/posts" -name index.html | sort)
+[[ "$warned_fallback" -eq 0 ]] || echo "  （${warned_fallback} 篇未配 banner，回退到站点默认图）"
 
 echo
 echo "== 校验汇总 =="
