@@ -9,8 +9,11 @@
  * `[role="menuitem"][aria-disabled="true"]`（不是 <a>，所以真的点不动，也没有 href 可以跟随）。
  *
  * 菜单项顺序固定为英文在前、简体中文在后，只有文案随界面语言变化。
- * 菜单项共三态：正在浏览的语言（加粗）、可切换的语言（常规字重）、
- * 目标语言没有对应页面（灰色 + aria-disabled，不可点击）。
+ * 菜单项共三态：正在浏览的语言（加粗，中英分别取 MiSans 600 / Roboto 700，见下方样式注释里的映射表）、
+ * 可切换的语言（常规字重）、目标语言没有对应页面（灰色 + aria-disabled，不可点击）。
+ *
+ * 每一项都标了 `hreflang`（目标语言，给搜索引擎/读屏说明链接去哪）与 `lang`（标签文字自身的语言，
+ * 也就是界面语言：中文界面写「英文」，那两个字是中文）—— 加粗的按语言分流靠的就是这个 `lang`。
  *
  * 键盘：按钮上 ↓/↑ 展开并把焦点送进菜单；菜单内 ↑/↓/Home/End 移动，Esc 关闭并退回按钮，
  * Tab 移出菜单时自动收起；点击菜单外部同样关闭。
@@ -51,7 +54,7 @@ const t = useTranslations(lang);
           role="menuitem"
           href={link.href}
           hreflang={link.lang}
-          lang={link.lang}
+          lang={lang}
           aria-current={link.current ? 'true' : undefined}
         >
           {t(`header.lang.${link.lang}`)}
@@ -62,6 +65,7 @@ const t = useTranslations(lang);
           role="menuitem"
           aria-disabled="true"
           tabindex="-1"
+          lang={lang}
         >
           {t(`header.lang.${link.lang}`)}
         </span>
@@ -131,10 +135,34 @@ const t = useTranslations(lang);
     outline: none;
   }
 
-  /* 正在浏览的语言：加粗标记（RAY-465，Ray 在「对勾 / 加粗」里选了加粗）。
-     700 是这套设计里既有的强调档（中英同名等重：MiSans 700 ↔ Roboto 800），
-     首页 nav-link hover、文章标题用的都是它；这里只加粗，不换色。 */
+  /* 正在浏览的语言：加粗标记（RAY-465，Ray 在「对勾 / 加粗」里选了加粗，字重定 600）。
+     两个字体分开取值 —— CSS 的 font-weight 一个数值会同时喂给字体栈里的每个字体，
+     而 MiSans（中文）与 Roboto Flex（拉丁）的 wght 轴并不同步，同一个数值下笔画粗细并不相等。
+     所以按标签文字的语言分流：中文标签走 MiSans，英文标签走 Roboto。
+
+       中文标签（lang="zh"）  MiSans 600
+       英文标签（lang="en"）  Roboto Flex 700   ← 与上面那支视觉等重
+
+     ⚠️ 映射表（RAY-465 实测，勿凭手感改）：
+         字号 14px、DPR 8，笔画粗细 = 墨点 min(横向连段, 纵向连段) 的中位数（单位 CSS px）
+         括号内为「4 × 平均距离变换」的独立交叉核对值，两个口径结论一致。
+
+         CSS font-weight   320     400     520     600     700     800
+         MiSans           1.000   1.250   1.625   2.000   2.250   2.250*
+         Roboto Flex      1.125   1.250   1.625   1.750   2.000   2.250
+                          (1.277) (1.396) (1.681) (1.838) (2.035) (2.238)
+         对照 MiSans 的距离变换口径：1.244   1.476   1.804   2.036   2.292   2.292*
+         * MiSans VF 的 wght 上限就是 700，再往上会被夹住。
+
+         这张表对上了 global.css 里既有的映射：MiSans 520 ↔ Roboto 600（实测同为 1.625）、
+         MiSans 700 ↔ Roboto 800（实测同为 2.250）。MiSans 600 落在两者之间，
+         线性内插对应 Roboto ≈690，取最近的 700 —— 两支的连段口径与距离变换口径都吻合到 0.001。
+         同样注意 320 那一档：拉丁反而略重于中文，所以常规字重的菜单项不做补偿。 */
   .lang-menu__item--current {
+    font-weight: 600;
+  }
+
+  .lang-menu__item--current[lang='en'] {
     font-weight: 700;
   }
 
