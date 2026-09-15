@@ -1,4 +1,4 @@
-﻿---
+---
 title: "「静音车厢」为何总是静不下来？我推演了 6 种解法 | 随便想想 #01"
 date: 2026-07-10
 tags:
@@ -6,6 +6,7 @@ tags:
   - 静音车厢
   - 高铁
 banner: /images/posts/justthinking-01-quiet-carriage-banner.jpg
+wechatUrl: https://mp.weixin.qq.com/s/3Tc_fz1_SgJ6Sh9EItl3_g
 ---
 
 熬夜看完世界杯后，你想着在写着「静」字的静音车厢美美睡一觉，以为买到了「静音车厢」的票，就能拥有一个安静的旅途。你看到了列车两侧隔音的自动门，还有门上的标语「静音车厢，请勿喧哗」，你感到放心。

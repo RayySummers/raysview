@@ -78,10 +78,6 @@ const articleLd = {
   mainEntityOfPage: canonicalUrl,
   ...(ldImage ? { image: ldImage } : {})
 };
-
-// 文章底部微信公众号入口的跳转地址：公众号 @睿见RayView 的主页，
-// 与 /about/ 页用的是同一个链接；要换成某篇具体文章的链接时只改这里。
-const wechatUrl = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzYzNTI3NjQwMg==#wechat_redirect';
 ---
 
 <Base
@@ -141,21 +137,23 @@ const wechatUrl = 'https://mp.weixin.qq.com/mp/profile_ext?action=home&__biz=MzY
       </button>
     </div>
 
-    <a
-      class="wechat-link"
-      href={wechatUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <img
-        src={getHref('/images/wechat-icon.png')}
-        alt="微信公众号"
-        width="24"
-        height="20"
-        loading="lazy"
-        decoding="async"
-      />
-    </a>
+    {post.data.wechatUrl && (
+      <a
+        class="wechat-link"
+        href={post.data.wechatUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src={getHref('/images/wechat-icon.png')}
+          alt="微信公众号"
+          width="24"
+          height="20"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    )}
   </div>
 </Base>
 
