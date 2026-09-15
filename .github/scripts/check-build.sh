@@ -35,8 +35,21 @@ total_kb=$(du -sk "$DIST_DIR" | cut -f1)
 html_count=$(find "$DIST_DIR" -name '*.html' -type f | wc -l)
 [[ "$html_count" -ge 10 ]] || fail "只生成了 $html_count 个 HTML 页面，明显少于预期"
 
+# RAY-467：文章页底部的公众号图标曾经误用 hrefFor()（页面路由函数）生成 src，
+# 结果带上尾斜杠变成 /images/wechat-icon.png/，图片 404、浏览器只渲染 alt 文字。
+# 这里直接对构建产物断言：src 必须是静态资源路径，不带尾斜杠、不带语言前缀。
+WECHAT_ICON_SRC='src="/images/wechat-icon.png"'
+wechat_srcs=$(grep -rho 'src="[^"]*wechat-icon[^"]*"' "$DIST_DIR" --include='*.html' | sort -u || true)
+[[ -n "$wechat_srcs" ]] || fail "构建产物里找不到公众号图标的 img src，预期每篇文章页各有一处（RAY-467）"
+while IFS= read -r src; do
+  [[ "$src" == "$WECHAT_ICON_SRC" ]] || fail "公众号图标 src 不是 $WECHAT_ICON_SRC（实为 $src）：静态资源不能走路由函数，会 404（RAY-467）"
+done <<<"$wechat_srcs"
+[[ -f "$DIST_DIR/images/wechat-icon.png" ]] || fail "构建产物缺少 $DIST_DIR/images/wechat-icon.png"
+wechat_pages=$(grep -rl "$WECHAT_ICON_SRC" "$DIST_DIR" --include='*.html' | wc -l)
+
 echo "  dist 体积 : $(du -sh "$DIST_DIR" | cut -f1)"
 echo "  HTML 页面 : $html_count"
+echo "  公众号图标: $wechat_pages 个页面，src=/images/wechat-icon.png"
 echo "  images    : $(find "$DIST_DIR/images" -type f | wc -l) 个文件"
 echo "  fonts     : $(find "$DIST_DIR/fonts" -type f | wc -l) 个文件"
 echo "  assets    : $(find "$DIST_DIR/assets" -type f | wc -l) 个文件"
