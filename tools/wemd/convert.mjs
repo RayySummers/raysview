@@ -14,7 +14,8 @@
  *   - ![[xxx.png]] 嵌入 → <img>，通过 --map 指定的 JSON（key=嵌入文件名，value=图床 URL）映射；
  *     若未命中，再尝试按文件名子串匹配 image-hosting/_urls.json
  *   - 图片后紧邻的独立「（……）」行 → 图注（居中、#999、12px）
- *   - [^n] 行内脚注 → <sup> 上标引用；文末 [^n]: ... 定义 → 「参考资料」列表
+ *   - [^n] / [^name] 行内脚注 → <sup> 上标引用（具名脚注按首次引用顺序编号 1,2,3…）；
+ *     文末 [^n]: ... / [^name]: ... 定义 → 「参考资料」列表（定义内 **粗体** / *斜体* 照常渲染）
  *   - #/##/###/#### 标题、粗体、斜体、行内代码、链接、列表、引用、表格、代码块、--- 分隔线
  *   - 正文直角引号惯例：英文双引号 "…" → 「…」（脚注定义与链接原文保留）
  *   - 所有 WeMD 主题样式内联化；主色 #FAAD14 → #edd363（含 rgba(250,173,20,*) → rgba(237,211,99,*)）；
@@ -106,6 +107,25 @@ function normalizeQuotes(s) {
     .replace(/“([^”\n]+)”/g, '「$1」');
 }
 
+// ---------- 脚注编号 ----------
+// 数字脚注 [^1] 沿用原编号；具名脚注 [^name]（Obsidian 默认写法）按「首次引用顺序」自动编号 1,2,3…
+// 自动编号会跳过文档中数字脚注已占用的编号，因此纯数字脚注的旧文章产物保持逐字不变。
+const fnNamedNumbers = new Map(); // 具名 label → 编号
+const fnTakenNumbers = new Set(); // 数字脚注占用的编号
+function collectNumericFootnoteNumbers(text) {
+  for (const m of text.matchAll(/\[\^(\d+)\]/g)) fnTakenNumbers.add(Number(m[1]));
+}
+function footnoteNumber(label) {
+  if (/^\d+$/.test(label)) return Number(label);
+  let n = fnNamedNumbers.get(label);
+  if (n === undefined) {
+    n = 1;
+    while (fnTakenNumbers.has(n) || [...fnNamedNumbers.values()].includes(n)) n++;
+    fnNamedNumbers.set(label, n);
+  }
+  return n;
+}
+
 /** 段落文本级行内解析：行内代码 → 链接 → 脚注上标 → 粗体 → 斜体 */
 function inlineParse(text) {
   const codeSpans = [];
@@ -121,8 +141,8 @@ function inlineParse(text) {
   });
 
   text = text.replace(
-    /\[\^(\d+)\]/g,
-    (m, n) => `<sup style="${STYLE.sup}">[${n}]</sup>`
+    /\[\^([^\]\s]+)\]/g,
+    (m, label) => `<sup style="${STYLE.sup}">[${footnoteNumber(label)}]</sup>`
   );
 
   text = text.replace(/\*\*([^*]+)\*\*/g, (m, t) => `<strong style="${STYLE.strong}">${t}</strong>`);
@@ -183,7 +203,7 @@ function loadImageMap(mapPath) {
 }
 
 const EMBED_RE = /^!\[\[(.+?)\]\]\s*$/;
-const FN_DEF_RE = /^\[\^(\d+)\]:\s?(.*)$/;
+const FN_DEF_RE = /^\[\^([^\]\s]+)\]:\s?(.*)$/;
 const HEADING_RE = /^(#{1,6})\s+(.*)$/;
 const HR_RE = /^-{3,}\s*$/;
 const QUOTE_RE = /^>\s?(.*)$/;
@@ -198,7 +218,7 @@ function isCaptionLine(line) {
 /** 解析行列表，产出 block 数组：{type:'p'|'h'|'hr'|'img'|'ul'|'ol'|'quote'|'pre'|'table', ...} */
 function parseBlocks(lines, imageMap) {
   const blocks = [];
-  const fnDefs = new Map(); // n -> 原文
+  const fnDefs = new Map(); // label（数字或具名）-> 原文
   let fnInsertIndex = null; // 首个脚注定义出现的 block 位置（参考资料插回此处）
   let i = 0;
 
@@ -212,7 +232,7 @@ function parseBlocks(lines, imageMap) {
     const fnM = line.match(FN_DEF_RE);
     if (fnM) {
       if (fnInsertIndex === null) fnInsertIndex = blocks.length;
-      fnDefs.set(Number(fnM[1]), fnM[2].trim());
+      fnDefs.set(fnM[1], fnM[2].trim());
       i++;
       continue;
     }
@@ -334,8 +354,8 @@ function renderBlock(b, imageMap) {
     case 'p':
       return paragraphHtml(b.text);
     case 'h': {
-      // 站内脚注区标题（#### 引用资料…）由「参考资料」块替代，不再单独渲染
-      if (/^引用资料/.test(b.text)) return '';
+      // 站内脚注区标题（#### 引用资料… / ## 参考文献）由「参考资料」块替代，不再单独渲染
+      if (/^(引用资料|参考文献)/.test(b.text)) return '';
       const key = `h${b.level}`;
       return `<h${b.level} style="${STYLE[key]}">${inlineParse(escapeHtml(normalizeQuotes(b.text)))}</h${b.level}>`;
     }
@@ -397,15 +417,20 @@ function renderBlock(b, imageMap) {
 
 function renderFootnotes(fnDefs) {
   if (!fnDefs.size) return '';
-  const nums = [...fnDefs.keys()].sort((a, b) => a - b);
-  const items = nums
-    .map((n) => {
+  const items = [...fnDefs.entries()]
+    .map(([label, text]) => ({ n: footnoteNumber(label), text }))
+    .sort((a, b) => a.n - b.n)
+    .map(({ n, text }) => {
       // 脚注内 URL 显式着色（浅黄不可读，用深金），与正文链接一致
-      const text = escapeHtml(fnDefs.get(n)).replace(
-        /(https?:\/\/[^\s<>，。；、()]+)/g,
-        `<span style="${STYLE.fnUrl}">$1</span>`
-      );
-      return `<p style="${STYLE.fnItem}"><span style="${STYLE.fnNum}">[${n}]</span>${text}</p>`;
+      // 定义里的 **粗体** / *斜体*（书目题名）照常渲染，但引号不做直角引号转换，保留原文
+      const body = escapeHtml(text)
+        .replace(
+          /(https?:\/\/[^\s<>，。；、()]+)/g,
+          `<span style="${STYLE.fnUrl}">$1</span>`
+        )
+        .replace(/\*\*([^*]+)\*\*/g, `<strong style="${STYLE.strong}">$1</strong>`)
+        .replace(/\*([^*]+)\*/g, `<em style="${STYLE.em}">$1</em>`);
+      return `<p style="${STYLE.fnItem}"><span style="${STYLE.fnNum}">[${n}]</span>${body}</p>`;
     })
     .join('');
   return (
@@ -440,6 +465,7 @@ function main() {
   const input = fs.readFileSync(args.input, 'utf8');
   const { frontmatterTitle, rest } = stripFrontmatter(input);
   const imageMap = loadImageMap(args.map);
+  collectNumericFootnoteNumbers(rest); // 具名脚注自动编号时避开数字脚注已占用的编号
 
   const lines = rest.replace(/\r\n?/g, '\n').split('\n');
 

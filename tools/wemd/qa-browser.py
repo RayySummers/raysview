@@ -4,10 +4,13 @@
 import json
 import sys
 import asyncio
+from pathlib import Path
 from playwright.async_api import async_playwright
 
 HTML_PATH = sys.argv[1]
 SHOT_PATH = sys.argv[2] if len(sys.argv) > 2 else None
+# 支持相对路径（README 用法）与 Windows 反斜杠路径：统一转成 file: URI
+HTML_URL = Path(HTML_PATH).expanduser().resolve().as_uri()
 
 JS = r"""
 (() => {
@@ -58,7 +61,7 @@ async def main():
     async with async_playwright() as p:
         browser = await p.chromium.launch()
         page = await browser.new_page(viewport={"width": 414, "height": 896})
-        await page.goto("file:///" + HTML_PATH.replace("\\", "/"), wait_until="networkidle", timeout=60000)
+        await page.goto(HTML_URL, wait_until="networkidle", timeout=60000)
         await page.wait_for_timeout(3000)
         data = await page.evaluate(JS)
         with open(HTML_PATH + ".qa.json", "w", encoding="utf-8") as f:
