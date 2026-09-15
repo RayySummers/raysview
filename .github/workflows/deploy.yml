@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "只做构建自检 + 服务器巡检 + 线上校验，不上传文件（线上排障用）"
+        type: boolean
+        default: false
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -11,6 +16,11 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      DIST_DIR: dist
+      DEPLOY_TARGET: /www/wwwroot/raysview.fun
+      SITE_URL: https://raysview.fun
+      DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -31,15 +41,43 @@ jobs:
       - name: Build
         run: pnpm build
 
-      - name: Deploy to server
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "dist/*"
-          target: "/www/wwwroot/raysview.fun/"
-          strip_components: 1
+      # RAY-463：上传前先确认 dist 里该有的资源都在（images 曾经整体漏传）
+      - name: Check build output
+        run: bash .github/scripts/check-build.sh
 
-      - name: Verify deployment
-        run: curl -s -o /dev/null -w "%{http_code}" https://raysview.fun/
+      - name: Setup SSH key
+        env:
+          SERVER_SSH_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$SERVER_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts 2>/dev/null || true
+          echo "SSH_KEY_PATH=$HOME/.ssh/deploy_key" >> "$GITHUB_ENV"
+
+      # 巡检：部署前把服务器目录状态写进日志，权限/归属问题一眼可见
+      - name: Inspect server state
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          ssh -i "$SSH_KEY_PATH" \
+              -o IdentitiesOnly=yes \
+              -o StrictHostKeyChecking=accept-new \
+              -o ConnectTimeout=20 \
+              "$SERVER_USER@$SERVER_HOST" \
+              "DEPLOY_TARGET='$DEPLOY_TARGET' bash -s" \
+              < .github/scripts/remote-preflight.sh
+
+      - name: Deploy to server
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: bash .github/scripts/deploy.sh
+
+      # 部署后逐个资源校验：images 没上去、og:image 没生效都会让 job 变红
+      - name: Verify live assets
+        run: bash .github/scripts/verify-live.sh
