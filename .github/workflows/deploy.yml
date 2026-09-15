@@ -9,10 +9,6 @@ on:
         description: "只做构建自检 + 服务器巡检 + 线上校验，不上传文件（线上排障用）"
         type: boolean
         default: false
-      repair:
-        description: "一次性运维：清理 vhost 里遗留的 /images/ alias（RAY-463，执行完即移除本开关）"
-        type: boolean
-        default: false
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
@@ -74,20 +70,6 @@ jobs:
               "$SERVER_USER@$SERVER_HOST" \
               "DEPLOY_TARGET='$DEPLOY_TARGET' bash -s" \
               < .github/scripts/remote-preflight.sh
-
-      # 一次性运维开关（RAY-463）：vhost 里遗留的 /images/ alias 指向废弃目录，清理后即移除本步骤
-      - name: Repair stale /images/ nginx alias (one-off)
-        if: ${{ github.event.inputs.repair == 'true' }}
-        env:
-          SERVER_HOST: ${{ secrets.SERVER_IP }}
-          SERVER_USER: ${{ secrets.SERVER_USER }}
-        run: |
-          ssh -i "$SSH_KEY_PATH" \
-              -o IdentitiesOnly=yes \
-              -o StrictHostKeyChecking=accept-new \
-              -o ConnectTimeout=20 \
-              "$SERVER_USER@$SERVER_HOST" "bash -s" \
-              < .github/scripts/repair-nginx-images-alias.sh
 
       - name: Deploy to server
         if: ${{ github.event.inputs.dry_run != 'true' }}
