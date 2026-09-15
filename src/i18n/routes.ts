@@ -54,7 +54,14 @@ export function stripLang(pathname: string): Slug {
   return segments.length ? `/${segments.join('/')}/` : '/';
 }
 
-/** 语言无关路径 → 目标语言下的 URL（逐段编码，中文标签不会被拼坏） */
+/**
+ * 语言无关路径 → 目标语言下的 URL（逐段编码，中文标签不会被拼坏）。
+ *
+ * ⚠️ 仅供**页面路由**使用：输出一定带尾斜杠，并按语言加 `/en` 前缀（或 subpath base 前缀）。
+ * 静态资源（`public/` 下的图片 / 字体 / favicon）**不要**走这个函数 —— 它产出的是页面地址，
+ * 拿去当 `img src` / `link href` 会 404（RAY-467：公众号图标被拼成 `/images/wechat-icon.png/`）。
+ * 静态资源自行拼 base：`base === '/' ? '/x.png' : `${base}/x.png``（见 Header 的 logo、Base 的 favicon）。
+ */
 export function localizePath(slug: Slug, lang: Lang): string {
   const path = slug
     .split('/')
@@ -66,7 +73,10 @@ export function localizePath(slug: Slug, lang: Lang): string {
   return `${prefix}/${path}/`;
 }
 
-/** 可直接写进 href 的站内链接：语言前缀 + 站点 base 前缀 */
+/**
+ * 可直接写进 `href` 的站内链接：语言前缀 + 站点 base 前缀。
+ * 同样**仅限页面路由**，静态资源见上面的告警（RAY-467）。
+ */
 export function hrefFor(slug: Slug, lang: Lang): string {
   const base = import.meta.env.BASE_URL || '/';
   const localized = localizePath(slug, lang);

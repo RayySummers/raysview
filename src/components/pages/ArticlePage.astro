@@ -22,6 +22,12 @@ const t = useTranslations(lang);
 
 const { Content, headings } = await render(post);
 
+// 静态资源（public/ 下的文件）不走 hrefFor/localizePath：那两个是页面路由函数，
+// 会加语言前缀和尾斜杠，当 img src 用会 404（RAY-467）。base 前缀单独拼，
+// 写法与 Header 的 logo、Base 的 favicon 一致。
+const base = import.meta.env.BASE_URL || '/';
+const wechatIconSrc = base === '/' ? '/images/wechat-icon.png' : `${base}/images/wechat-icon.png`;
+
 const site = Astro.site ?? new URL('https://raysview.fun');
 const rawPath = Astro.url.pathname;
 const canonicalUrl = new URL(rawPath.endsWith('/') ? rawPath : `${rawPath}/`, site).toString();
@@ -151,7 +157,7 @@ const articleLd = {
         rel="noopener noreferrer"
       >
         <img
-          src={hrefFor('/images/wechat-icon.png', lang)}
+          src={wechatIconSrc}
           alt={t('post.wechat')}
           width="19"
           height="16"
