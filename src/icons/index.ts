@@ -25,6 +25,11 @@
  * 参数与上面完全一致（wght 350 / opsz 24 / FILL 0 / GRAD 0、25）。
  * 它的两个文件坐标已在生成阶段取负（y 落在 viewBox 的负半轴），因此没有 scale(1,-1) 那层 <g>；
  * 渲染结果与其它图标一致，接入方式不变。
+ *
+ * RAY-472 补充：文章脚注返回箭头用的 reply（码点 E15E）同样按上面流程生成，
+ * 参数不变（wght 350 / opsz 24 / FILL 0 / GRAD 0、25），保留 scale(1,-1) 那层 <g>。
+ * 它的入口不在 Astro 组件里，而是 astro.config.mjs 的 rehypeFootnoteLabel 插件：
+ * 插件会直接读这两个文件取 path 的 d 值拼成同构的 .ms-icon 节点树。
  */
 
 import arrowBackLight from './arrow_back-light.svg?raw';
@@ -43,6 +48,8 @@ import desktopWindowsLight from './desktop_windows-light.svg?raw';
 import desktopWindowsDark from './desktop_windows-dark.svg?raw';
 import translateLight from './translate-light.svg?raw';
 import translateDark from './translate-dark.svg?raw';
+import replyLight from './reply-light.svg?raw';
+import replyDark from './reply-dark.svg?raw';
 
 export interface MaterialIconPair {
   /** 浅色主题（GRAD 0） */
@@ -60,6 +67,7 @@ export const MATERIAL_ICONS = {
   dark_mode: { light: darkModeLight, dark: darkModeDark },
   desktop_windows: { light: desktopWindowsLight, dark: desktopWindowsDark },
   translate: { light: translateLight, dark: translateDark },
+  reply: { light: replyLight, dark: replyDark },
 } satisfies Record<string, MaterialIconPair>;
 
 export type MaterialIconName = keyof typeof MATERIAL_ICONS;
