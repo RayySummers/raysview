@@ -621,6 +621,13 @@ article.heti .footnotes a:hover {
   color: var(--color-text-primary);
 }
 
+/* RAY-472：返回箭头由 ↩ 字符换成 17px 的 reply 图标。图标盒上下各留约 3.6px 空白，
+   基线对齐会让箭头整个浮在文字上方（像上标）；下移 4px 让箭头落在基线上、
+   顶端与字高齐平，位置和原来的 ↩ 一致。 */
+.footnotes a[data-footnote-backref] .ms-icon {
+  vertical-align: -4px;
+}
+
 .toc-item.depth-3 {
   padding-left: var(--space-5);
   font-size: var(--text-xs);
