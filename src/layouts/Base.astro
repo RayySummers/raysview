@@ -20,6 +20,12 @@ interface Props {
   structuredData?: object | object[];
   /** 禁止搜索引擎索引（如 404 页） */
   noindex?: boolean;
+  /**
+   * 页面皮肤标识，输出为 `<html data-page="…">`（RAY-476）。
+   * global.css 用它做整页级换色（目前只有关于页的蛋黄色皮肤）。
+   * 缺省不输出该属性，其余页面不受影响。
+   */
+  page?: string;
 }
 
 // 界面语言由路由层从 URL 推导（/en/… → en，其余 → zh），页面组件不需要各自传：
@@ -35,6 +41,7 @@ const {
   ogImage,
   structuredData,
   noindex = false,
+  page,
 } = Astro.props;
 
 const base = import.meta.env.BASE_URL || '/';
@@ -71,7 +78,7 @@ const defaultAlternate = hasAlternates
 ---
 
 <!doctype html>
-<html lang={HTML_LANG[lang]} data-base={base}>
+<html lang={HTML_LANG[lang]} data-base={base} data-page={page}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

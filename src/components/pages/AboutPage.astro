@@ -35,7 +35,7 @@ const body = 'font-size: var(--text-base); line-height: 1.8; color: var(--color-
 const heading2 = 'font-size: var(--text-lg); font-weight: 520; color: var(--color-text-primary); margin-top: var(--space-5);';
 ---
 
-<Base title={copy.title} description={copy.metaDescription} ogType="profile" structuredData={personLd}>
+<Base title={copy.title} description={copy.metaDescription} ogType="profile" structuredData={personLd} page="about">
   <a href={hrefFor('/', lang)} style="display: inline-block; color: var(--color-text-secondary); transition: color var(--transition-fast);" aria-label={copy.backLabel} class="back-btn">
     <Icon name="arrow_back" size={20} />
   </a>

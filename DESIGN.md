@@ -13,6 +13,9 @@
 4. **静默交互** — Hover states are subtle. Motion is minimal and purposeful.
 5. **色彩克制** — Monochrome base. Color is used only for functional purposes (theme contrast).
 
+> RAY-476 补注：第 5 条的「单色基础」指**文章区**；关于页是本站唯一的 expressive 例外
+> （蛋黄色蛋彩皮肤）。允许的边界与推导过程见下方 **Color System**。
+
 ---
 
 ## 📐 Grid & Spacing
@@ -49,25 +52,137 @@ desktop: >= 640px  → padding: 48px
 
 ---
 
-## 🎨 Color Tokens
+## 🎨 Color System
 
-### Light Mode
+> **RAY-476 起，全站颜色不再是六个手写值，而是一套可推导的体系。**
+> 取的是 Material Design 3 的 **color system**（tone 阶梯 + 语义角色）——**只取这一层**：
+> 不接 MD3 的组件、圆角规格、阴影 / elevation、ripple / state layer、动效曲线。
+> 过渡时间仍然只有 150 / 200 / 300ms 三档；8px 网格与阅读宽度（640 / 680）不变。
+
+### 源色与两处刻意偏离
+
+源色（seed）`#F2C94C`，蛋黄色，**只服务关于页**。MD3 的算法色板会从源色推导出
+primary / secondary / tertiary / neutral 等 tone 阶梯。本站有两处**刻意偏离** MD3 默认行为：
+
+1. **文章区用 chroma = 0 的纯灰，不用 MD3 默认的 neutral 组。**
+   MD3 的 neutral 会继承源色色相（chroma 10 时 `surface98` = `#fff8f1` 米白、
+   `on-surface10` = `#201b0d` 深棕），整站会泛黄。文章区必须永远是灰调，
+   所以这里显式把 chroma 压到 0 —— ramp 里每个值都满足 `R = G = B`。
+2. **关于页用 primary 组，不用 tertiary 组。**
+   MD3 的 tertiary 会主动转 60° 色相，在黄色系上推出橄榄绿
+   （`tertiary tone 90` = `#e7e799`，像芥末不像蛋黄）。蛋黄色只能取 primary 组。
+
+### 灰阶 ramp（chroma = 0）
+
+编号即 HCT tone（等价 CIELAB L\*），实测每个值的 |ΔL\*| ≤ 0.23。
+变量名 `--rv-gray-<tone>`。
+
+| tone | hex | 用途 |
+|------|-----|------|
+| 0 | `#000000` | 暗色页面底（AMOLED 纯黑） |
+| 4 | `#0E0E0E` | 暗色 surface-container-low |
+| 6 | `#131313` | 暗色 surface |
+| 10 | `#1B1B1B` | 亮色 on-surface（正文）；暗色 surface-container |
+| 20 | `#303030` | 暗色 outline-variant |
+| 30 | `#474747` | 亮色 on-surface-variant（次要文字） |
+| 40 | `#5E5E5E` | — |
+| 50 | `#777777` | outline（分隔线） |
+| 60 | `#919191` | 暗色 outline |
+| 70 | `#ABABAB` | — |
+| 80 | `#C6C6C6` | 亮色 outline-variant（边框）；暗色 on-surface-variant |
+| 90 | `#E2E2E2` | 暗色 on-surface |
+| 94 | `#EEEEEE` | surface-container |
+| 95 | `#F1F1F1` | — |
+| 96 | `#F3F3F3` | surface-container-low |
+| 98 | `#F9F9F9` | surface（亮色页面底） |
+| 99 | `#FCFCFC` | — |
+| 100 | `#FFFFFF` | 亮色 surface / accent |
+
+### MD3 语义角色
+
+| 角色 | 亮色 | 暗色 |
+|------|------|------|
+| `--rv-surface` | tone 98 `#F9F9F9` | tone 6 `#131313` |
+| `--rv-surface-container-low` | tone 96 `#F3F3F3` | tone 4 `#0E0E0E` |
+| `--rv-surface-container` | tone 94 `#EEEEEE` | tone 10 `#1B1B1B` |
+| `--rv-on-surface` | tone 10 `#1B1B1B` | tone 90 `#E2E2E2` |
+| `--rv-on-surface-variant` | tone 30 `#474747` | tone 80 `#C6C6C6` |
+| `--rv-outline` | tone 50 `#777777` | tone 60 `#919191` |
+| `--rv-outline-variant` | tone 80 `#C6C6C6` | tone 20 `#303030` |
+
+### 旧 token → 新值
+
+六个旧变量名**保持不变**，全站组件零改动，变的只是它们指向的值。
+亮色指向上面亮色那列，暗色指向暗色那列。
+
+| Token | 原值（亮） | 新值（亮） | 原值（暗） | 新值（暗） |
+|-------|-----------|-----------|-----------|-----------|
+| `--color-bg` | `#F0F0F0` | `#F9F9F9` | `#000000` | `#000000`（保持） |
+| `--color-surface` | `#FFFFFF` | `#FFFFFF`（保持） | `#0A0A0A` | `#0A0A0A`（保持） |
+| `--color-text-primary` | `#000000` | `#1B1B1B` | `#FFFFFF` | `#E2E2E2` |
+| `--color-text-secondary` | `#6B6B6B` | `#474747` | `#888888` | `#C6C6C6` |
+| `--color-accent` | `#000000` | `#000000`（保持） | `#FFFFFF` | `#FFFFFF`（保持） |
+| `--color-border` | `#E0E0E0` | `#C6C6C6` | `#1A1A1A` | `#303030` |
+
+**`--color-surface` 与 `--color-accent` 为什么不换：** MD3 的 `surface-container` 比 `surface`
+更深，是「卡片浮在底上」的另一套层次逻辑，直接套会改变现有卡片的视觉层次；
+`--color-accent` 一旦换成彩色就会破坏全站灰调（正文与链接同色是本站的硬约束）。
+
+### 关于页蛋黄色板
+
+挂在 `<html data-page="about">` 上（由 `Base.astro` 的可选 prop `page` 输出），
+只覆盖本页作用域内的 token，`:root` 的全局值一律不动。
+
+| 角色 | 亮色 | 暗色 | 用途 |
+|------|------|------|------|
+| `--rv-about-bg` | tone 90 `#FFE08B` | tone 20 `#3D2F00` | 页面底 + sticky 顶栏底色 |
+| `--rv-about-bg-soft` | tone 95 `#FFEFCD` | tone 30 `#584400` | 浮层 / 分层块的底 |
+| `--rv-about-on-bg` | tone 10 `#241A00` | tone 90 `#FFE08B` | 主文字 |
+| `--rv-about-on-bg-soft` | tone 30 `#584400` | tone 80 `#F1C100` | 次要文字 |
+| `--rv-about-accent` | tone 40 `#745B00` | tone 80 `#F1C100` | 深色强调 |
+| `--rv-about-container` | tone 80 `#F1C100` | tone 40 `#745B00` | 分层块底 / 装饰性分隔线 |
+
+**暗色模式也换色**，理由：关于页是本站唯一的 expressive 页面，它的身份就是「那块蛋黄」。
+按 MD3 dark scheme 的做法取**同一色相的低 tone**（tone 20 / 30 / 40），
+底色 L\* ≈ 20，与暗色文章区的 tone 10–20 区间同档，夜里不会刺眼；
+换成保持暗灰则这页在暗色下就失去身份了。
+
+### 对比度自检（WCAG 2.1，实测值）
+
+| 组合 | 对比度 | 等级 |
+|------|--------|------|
+| 亮色 surface98 / on-surface10（正文） | 16.36:1 | AAA |
+| 亮色 surface98 / on-surface-variant30（次要文字） | 8.82:1 | AAA |
+| 亮色 surface98 / outline50（分隔线，装饰） | 4.25:1 | — |
+| 暗色 surface6 / on-surface90 | 14.34:1 | AAA |
+| 暗色 surface6 / on-surface-variant80 | 10.88:1 | AAA |
+| 关于页亮色 bg90 / on-bg10 | 13.32:1 | AAA |
+| 关于页亮色 bg90 / on-bg30 | 7.27:1 | AAA |
+| 关于页亮色 bg95 / on-bg10 | 15.11:1 | AAA |
+| 关于页暗色 bg20 / on-bg90 | 10.15:1 | AAA |
+| 关于页暗色 bg20 / on-bg80 | 7.71:1 | AAA |
+| 关于页暗色 soft30 / on-bg90 | 7.27:1 | AAA |
+
+### 亮色（`global.css` 的 `:root`）
 
 ```css
 :root {
-  /* Background */
-  --color-bg: #F0F0F0;
+  /* MD3 语义角色 —— 亮色 */
+  --rv-surface:               var(--rv-gray-98);  /* #F9F9F9 */
+  --rv-surface-container-low: var(--rv-gray-96);  /* #F3F3F3 */
+  --rv-surface-container:     var(--rv-gray-94);  /* #EEEEEE */
+  --rv-on-surface:            var(--rv-gray-10);  /* #1B1B1B */
+  --rv-on-surface-variant:    var(--rv-gray-30);  /* #474747 */
+  --rv-outline:               var(--rv-gray-50);  /* #777777 */
+  --rv-outline-variant:       var(--rv-gray-80);  /* #C6C6C6 */
+
+  /* 旧 token（变量名不变，值指向上面的角色） */
+  --color-bg: var(--rv-surface);                        /* #F9F9F9 */
   --color-surface: #FFFFFF;
-
-  /* Text */
-  --color-text-primary: #000000;
-  --color-text-secondary: #6B6B6B;
-
-  /* Accent */
+  --color-text-primary: var(--rv-on-surface);           /* #1B1B1B */
+  --color-text-secondary: var(--rv-on-surface-variant); /* #474747 */
   --color-accent: #000000;
-
-  /* Utility */
-  --color-border: #E0E0E0;
+  --color-border: var(--rv-outline-variant);            /* #C6C6C6 */
 
   /* Transitions */
   --transition-fast: 150ms ease-out;
@@ -76,23 +191,25 @@ desktop: >= 640px  → padding: 48px
 }
 ```
 
-### Dark Mode (AMOLED)
+### 暗色（AMOLED）
 
 ```css
 [data-theme="dark"] {
-  /* Background */
-  --color-bg: #000000;
+  /* MD3 语义角色 —— 暗色 */
+  --rv-surface:               var(--rv-gray-6);   /* #131313 */
+  --rv-surface-container-low: var(--rv-gray-4);   /* #0E0E0E */
+  --rv-surface-container:     var(--rv-gray-10);  /* #1B1B1B */
+  --rv-on-surface:            var(--rv-gray-90);  /* #E2E2E2 */
+  --rv-on-surface-variant:    var(--rv-gray-80);  /* #C6C6C6 */
+  --rv-outline:               var(--rv-gray-60);  /* #919191 */
+  --rv-outline-variant:       var(--rv-gray-20);  /* #303030 */
+
+  --color-bg: #000000;                                  /* 保持 AMOLED 纯黑（tone 0） */
   --color-surface: #0A0A0A;
-
-  /* Text */
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #888888;
-
-  /* Accent */
+  --color-text-primary: var(--rv-on-surface);           /* #E2E2E2 */
+  --color-text-secondary: var(--rv-on-surface-variant); /* #C6C6C6 */
   --color-accent: #FFFFFF;
-
-  /* Utility */
-  --color-border: #1A1A1A;
+  --color-border: var(--rv-outline-variant);            /* #303030 */
 }
 ```
 
@@ -111,13 +228,48 @@ Icon shows current target state, not current active state.
 ## 🔤 Typography
 
 ### Font Stack
+
+> **现状（对齐 `global.css`，RAY-476 补正）** —— 本站**没有** Inter；
+> CJK 汉字的主字体是 **MiSans**（`--font-sans` 的第一顺位），不是 Zhudou Sans。
+> 以代码为准：两者冲突时 `global.css` 赢。
+
 ```css
-/* Latin (variable): */
---font-sans: "Zhudou Sans", "Roboto Flex Variable", "Source Han Sans SC", ui-sans-serif, system-ui, sans-serif;
---font-display: "Roboto Flex Variable", ui-sans-serif, system-ui, sans-serif;
-/* Code: */
+/* 正文 / 界面（--font-sans）：MiSans → Zhudou Sans → Roboto Flex → Geist Sans → Source Han Sans SC */
+--font-sans: "MiSans", "Zhudou Sans", "Roboto Flex Variable", "Geist Sans", "Source Han Sans SC",
+             ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+/* 展示 / 纯拉丁（--font-display） */
+--font-display: "Roboto Flex Variable", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+/* 等宽（--font-mono，JetBrains Mono 在前） */
 --font-mono: "JetBrains Mono", "Sarasa Mono SC", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+/* 已弃用，仅为 .date-cjk 的数字回退保留（RAY-391） */
+--font-date: "MiSans Date", "MiSans", ui-sans-serif, system-ui, sans-serif;
 ```
+
+代码块与行内代码另外**直接写死**了一串等宽栈（顺序与 `--font-mono` 相反，`article.heti pre` / `code` 用）：
+
+```css
+font-family: "Sarasa Mono SC", "JetBrains Mono", Consolas, ui-monospace, monospace;
+```
+
+### 实际加载的字体族（`@font-face`）
+
+| 字体族 | 来源 | 覆盖范围 |
+|--------|------|----------|
+| `MiSans` | 本地 `/fonts/MiSans-VF.woff2`（构建时按用字子集化，见 `scripts/subset-misans.mjs`） | CJK 汉字；**排除**数字 / 拉丁，以及全角 / CJK 标点（RAY-390） |
+| `MiSans Date` | 同一个 MiSans VF 文件 | 仅 `U+0030-0039` 数字与 `U+002D`，供 `.date-cjk` 齐线等宽（SS04/tnum） |
+| `Zhudou Sans` | 本地 `/fonts/ZhudouSansVF.woff2` | 标点兜底：`U+3000-303F`、`U+FF00-FFEF`、`U+2000-206F`、`U+2190-21FF`、`U+2600-26FF`、`U+2700-27BF`，带 `ss02` |
+| `Roboto Flex Variable` | `@fontsource-variable/roboto-flex/opsz.css` | 拉丁 / 数字 / 半角标点，可变轴 `wght` 100–1000 + `opsz` 8–144 |
+| `Geist Sans` | jsDelivr CDN（`@fontsource/geist-sans`，逐字重 100–900） | 拉丁备用 |
+| `Source Han Sans SC` | jsDelivr CDN（`@fontpkg/source-han-sans-sc-vf`） | CJK 兜底，含全角标点 |
+| `FnHover` | 本地 `roboto-flex-latin-gradonly.woff2`（wght 钉死 400，只留 GRAD）+ Source Han Sans SC | 脚注链接 hover 加粗：**只变笔画不变字宽**，避免网址换行 |
+| `JetBrains Mono` | Google Fonts | 等宽 |
+| `Noto Serif SC` | Google Fonts | `article.heti blockquote` 引用块 |
+
+`.date-cjk` 另有专用栈 `"MiSans", "MiSans Date", "Source Han Sans SC", sans-serif`。
+字体栈本身在 RAY-476 **未做任何改动**。
 
 ### Roboto Flex OpenType Features
 Roboto Flex is a variable font loaded with the `opsz` and `wght` axes (`@fontsource-variable/roboto-flex/opsz.css`).
@@ -312,7 +464,7 @@ margin-bottom: 32px;
 
 ### Code Blocks
 ```css
-font-family: ui-monospace, "SF Mono", Menlo, monospace;
+font-family: "Sarasa Mono SC", "JetBrains Mono", Consolas, ui-monospace, monospace;
 font-size: 14px;
 line-height: 1.6;
 background: var(--color-surface);
@@ -420,6 +572,18 @@ margin-right: auto;
 - **Decision**: Generate `/search.json` at build time
 - **Rationale**: GitHub Pages can't run server-side search. Client-side fuzzy search via Fuse.js.
 - **Status**: Approved
+
+### 2026-09-23 (RAY-476): 接入 MD3 色彩系统
+- **Decision**: 全站颜色改为 MD3 tonal palette 推导，源色 `#F2C94C`。
+  文章区取 **chroma = 0 的纯灰** ramp（不用 MD3 默认 neutral，避免整站泛黄）；
+  关于页取 **primary 组**蛋黄色（`#FFE08B` 底 / `#241A00` 字，不用 tertiary，避免橄榄绿）。
+  暗色下关于页同步换成同色相低 tone（`#3D2F00` 底 / `#FFE08B` 字）。
+  **只取 color system**，不接 MD3 的组件 / 圆角 / elevation / ripple / 动效。
+- **Rationale**: 六个手写色值无法解释「为什么是这个值」，也无法成对推导暗色；
+  tone 阶梯让亮暗两套值来自同一条轴，新增页面只需挑 tone。
+  保持 `--color-surface` / `--color-accent` 与六个变量名不变，全站组件零改动。
+- **Status**: Approved
+- **Refs**: `src/styles/global.css`、`src/components/pages/AboutPage.astro`、`src/layouts/Base.astro`（新增可选 prop `page`）
 
 ---
 
