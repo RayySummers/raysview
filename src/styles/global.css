@@ -109,13 +109,72 @@
 }
 
 :root {
-  /* Colors - Light Mode */
-  --color-bg: #F0F0F0;
+  /* ==========================================================================
+     Color — MD3 tonal palette（RAY-476）
+     只取 Material Design 3 的 **color system**（tone 阶梯 + 语义角色），
+     不接 MD3 的组件、圆角、阴影 / elevation、ripple / state layer、动效曲线。
+     六个旧 token 变量名保持不变，组件零改动 —— 变的只是它们指向的值。
+     ========================================================================== */
+
+  /* --- 灰阶 ramp：chroma = 0 的纯灰（R = G = B，不带任何色相）---
+     源色 #F2C94C（蛋黄）只服务关于页。文章区必须永远是灰调，而 MD3 默认的
+     neutral 色板会继承源色色相（chroma 10 时 surface98 = #fff8f1 米白、
+     on-surface10 = #201b0d 深棕），整站会泛黄 —— 所以这里显式取 chroma = 0。
+     编号即 HCT tone（等价 CIELAB L*），实测每个值的 |ΔL*| ≤ 0.23。 */
+  --rv-gray-0:   #000000;
+  --rv-gray-4:   #0E0E0E;
+  --rv-gray-6:   #131313;
+  --rv-gray-10:  #1B1B1B;
+  --rv-gray-20:  #303030;
+  --rv-gray-30:  #474747;
+  --rv-gray-40:  #5E5E5E;
+  --rv-gray-50:  #777777;
+  --rv-gray-60:  #919191;
+  --rv-gray-70:  #ABABAB;
+  --rv-gray-80:  #C6C6C6;
+  --rv-gray-90:  #E2E2E2;
+  --rv-gray-94:  #EEEEEE;
+  --rv-gray-95:  #F1F1F1;
+  --rv-gray-96:  #F3F3F3;
+  --rv-gray-98:  #F9F9F9;
+  --rv-gray-99:  #FCFCFC;
+  --rv-gray-100: #FFFFFF;
+
+  /* --- MD3 语义角色（亮色 · 文章区）---
+     对比度：surface98 / on-surface10 = 16.36:1 AAA；surface98 / on-surface-variant30 = 8.82:1 AAA；
+     surface98 / outline50 = 4.25:1（分隔线，装饰用途）。 */
+  --rv-surface:               var(--rv-gray-98);
+  --rv-surface-container-low: var(--rv-gray-96);
+  --rv-surface-container:     var(--rv-gray-94);
+  --rv-on-surface:            var(--rv-gray-10);
+  --rv-on-surface-variant:    var(--rv-gray-30);
+  --rv-outline:               var(--rv-gray-50);
+  --rv-outline-variant:       var(--rv-gray-80);
+
+  /* --- 关于页蛋黄色板（primary 组，源色 #F2C94C）---
+     这里刻意**不用** MD3 的 tertiary 组：tertiary 会主动转 60° 色相，在黄色系上变成
+     橄榄绿（tertiary tone 90 = #e7e799，像芥末不像蛋黄），是本方案相对 MD3 文档的例外。
+     对比度（亮色）：bg90 / on-bg10 = 13.32:1 AAA；bg90 / on-bg30 = 7.27:1 AAA；
+     bg95 / on-bg10 = 15.11:1 AAA。
+     暗色映射见 [data-theme="dark"]：同色相取更低 tone（MD3 dark scheme 的做法），
+     页面底 L* ≈ 20，夜里仍是一块暗色而不是把亮黄糊到脸上。 */
+  --rv-about-bg:          #FFE08B;  /* primary tone 90 */
+  --rv-about-bg-soft:     #FFEFCD;  /* primary tone 95 —— 浮层 / 分层块的底 */
+  --rv-about-on-bg:       #241A00;  /* primary tone 10 */
+  --rv-about-on-bg-soft:  #584400;  /* primary tone 30 */
+  --rv-about-accent:      #745B00;  /* primary tone 40 */
+  --rv-about-container:   #F1C100;  /* primary tone 80 */
+
+  /* Colors - Light Mode —— 值改为上面的 MD3 灰阶（变量名不变，全站组件零改动） */
+  --color-bg: var(--rv-surface);                        /* tone 98，原 #F0F0F0 */
+  /* surface / accent 保持原值：
+     MD3 的 surface-container 比 surface 更深，是「卡片浮在底上」的另一套层次逻辑，
+     直接套会改变现有卡片的视觉层次；accent 换成彩色会破坏全站灰调（正文与链接同色）。 */
   --color-surface: #FFFFFF;
-  --color-text-primary: #000000;
-  --color-text-secondary: #6B6B6B;
+  --color-text-primary: var(--rv-on-surface);           /* tone 10，原 #000000 */
+  --color-text-secondary: var(--rv-on-surface-variant); /* tone 30，原 #6B6B6B */
   --color-accent: #000000;
-  --color-border: #E0E0E0;
+  --color-border: var(--rv-outline-variant);            /* tone 80，原 #E0E0E0 */
 
   /* Typography — 顺序：MiSans(CJK汉字，不含全角标点) > Zhudou Sans(标点兜底) > Roboto Flex Variable(Latin/数字/半角标点) > Geist Sans(Latin 备用) > Source Han Sans SC(CJK 兜底，含全角标点)
      RAY-390：全角/CJK 标点（，、。？！（）【】「」『』‘’“”…—–）已从 MiSans 排除回退至 Source Han；半角标点（, . ? ! ( )）仍走 Roboto Flex/Geist。 */
@@ -161,12 +220,52 @@
 }
 
 [data-theme="dark"] {
+  /* --- MD3 语义角色（暗色）---
+     surface 组下沉到 tone 6 / 4，on-surface 抬到 tone 90 / 80。
+     对比度：surface6 / on-surface90 = 14.34:1 AAA；surface6 / on-surface-variant80 = 10.88:1 AAA。 */
+  --rv-surface:               var(--rv-gray-6);
+  --rv-surface-container-low: var(--rv-gray-4);
+  --rv-surface-container:     var(--rv-gray-10);
+  --rv-on-surface:            var(--rv-gray-90);
+  --rv-on-surface-variant:    var(--rv-gray-80);
+  --rv-outline:               var(--rv-gray-60);
+  --rv-outline-variant:       var(--rv-gray-20);
+
+  /* --- 关于页蛋黄色板（暗色）：同色相降到 tone 20 / 30 / 40，文字抬到 tone 90 / 80 ---
+     对比度：bg20 / on-bg90 = 10.15:1 AAA；bg20 / on-bg80 = 7.71:1 AAA；
+     浮层（tone 30）/ on-bg90 = 7.27:1 AAA。 */
+  --rv-about-bg:          #3D2F00;  /* primary tone 20 */
+  --rv-about-bg-soft:     #584400;  /* primary tone 30 */
+  --rv-about-on-bg:       #FFE08B;  /* primary tone 90 */
+  --rv-about-on-bg-soft:  #F1C100;  /* primary tone 80 */
+  --rv-about-accent:      #F1C100;  /* primary tone 80 */
+  --rv-about-container:   #745B00;  /* primary tone 40 */
+
+  /* --color-bg 在暗色保持 AMOLED 纯黑（tone 0），比 MD3 的 surface tone 6 更深；
+     --rv-surface 仍登记 tone 6，留给后续新组件用。 */
   --color-bg: #000000;
   --color-surface: #0A0A0A;
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #888888;
+  --color-text-primary: var(--rv-on-surface);           /* tone 90，原 #FFFFFF */
+  --color-text-secondary: var(--rv-on-surface-variant); /* tone 80，原 #888888 */
   --color-accent: #FFFFFF;
-  --color-border: #1A1A1A;
+  --color-border: var(--rv-outline-variant);            /* tone 20，原 #1A1A1A */
+}
+
+/* ==========================================================================
+   关于页蛋黄色皮肤（RAY-476）
+   Base.astro 的可选 prop `page` 输出成 <html data-page="about">。换色挂在 html 上而不是
+   内容容器上：sticky 顶栏（底色取 --color-bg）和页脚都在内容容器之外，只改容器会剩下
+   灰色顶栏 + 灰色页边。这条规则只作用于本页，:root 的全局值一律不动。
+   --rv-about-* 在 :root 与 [data-theme="dark"] 里成对定义，所以**这一条规则同时覆盖
+   亮色与暗色**，不需要第二份暗色副本 —— 这正是改用 tonal palette 换来的收益。
+   ========================================================================== */
+html[data-page="about"] {
+  --color-bg: var(--rv-about-bg);            /* 页面底 + 顶栏 sticky 底色 */
+  --color-surface: var(--rv-about-bg-soft);  /* 搜索下拉等浮层底 */
+  --color-text-primary: var(--rv-about-on-bg);
+  --color-text-secondary: var(--rv-about-on-bg-soft);
+  --color-accent: var(--rv-about-accent);
+  --color-border: var(--rv-about-container); /* 装饰性分隔线 */
 }
 
 * {
