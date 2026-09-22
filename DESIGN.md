@@ -61,8 +61,9 @@ desktop: >= 640px  → padding: 48px
 
 ### 源色与两处刻意偏离
 
-源色（seed）`#F2C94C`，蛋黄色，**只服务关于页**。MD3 的算法色板会从源色推导出
-primary / secondary / tertiary / neutral 等 tone 阶梯。本站有两处**刻意偏离** MD3 默认行为：
+源色（seed）`#F2C94C`，蛋黄色（HCT **H = 91.67 / C = 48.72 / T = 82.47**），**只服务关于页**。
+MD3 的算法色板会从源色推导出 primary / secondary / tertiary / neutral 等 tone 阶梯。
+本站有两处**刻意偏离** MD3 默认行为：
 
 1. **文章区用 chroma = 0 的纯灰，不用 MD3 默认的 neutral 组。**
    MD3 的 neutral 会继承源色色相（chroma 10 时 `surface98` = `#fff8f1` 米白、
@@ -135,17 +136,30 @@ primary / secondary / tertiary / neutral 等 tone 阶梯。本站有两处**刻�
 
 | 角色 | 亮色 | 暗色 | 用途 |
 |------|------|------|------|
-| `--rv-about-bg` | tone 90 `#FFE08B` | tone 20 `#3D2F00` | 页面底 + sticky 顶栏底色 |
-| `--rv-about-bg-soft` | tone 95 `#FFEFCD` | tone 30 `#584400` | 浮层 / 分层块的底 |
-| `--rv-about-on-bg` | tone 10 `#241A00` | tone 90 `#FFE08B` | 主文字 |
-| `--rv-about-on-bg-soft` | tone 30 `#584400` | tone 80 `#F1C100` | 次要文字 |
-| `--rv-about-accent` | tone 40 `#745B00` | tone 80 `#F1C100` | 深色强调 |
-| `--rv-about-container` | tone 80 `#F1C100` | tone 40 `#745B00` | 分层块底 / 装饰性分隔线 |
+| `--rv-about-bg` | tone 95 `#FFEFCD` | tone 10 `#241A00` | 页面底 + sticky 顶栏底色 |
+| `--rv-about-bg-soft` | tone 90 `#FFE08B` | tone 20 `#3D2F00` | 浮层 / 分层块的底 |
+| `--rv-about-on-bg` | tone 10 `#241A00` | tone 95 `#FFEFCD` | 主文字 |
+| `--rv-about-on-bg-soft` | tone 30 `#584400` | tone 80 `#EBC246` | 次要文字 |
+| `--rv-about-accent` | tone 40 `#745B00` | tone 80 `#EBC246` | 深色强调 |
+| `--rv-about-container` | tone 50 `#927300` | tone 50 `#927300` | 分隔线 / 分层块底 |
+
+**每个色值都能在该色板的 MD3 官方 tone 刻度（tone 0–100）上查到**，由
+`@material/material-color-utilities` 的 `TonalPalette.fromHueAndChroma(91.67, 48.72)` 复核：
+tone 10 `#241A00`、tone 20 `#3D2F00`、tone 30 `#584400`、tone 40 `#745B00`、
+tone 50 `#927300`、tone 80 `#EBC246`、tone 90 `#FFE08B`、tone 95 `#FFEFCD`。
+
+`bg` / `bg-soft` 的次序照 MD3「容器比 surface 深」的规矩：页底取最淡的 tone 95，
+分层块 / 浮层降一档到 tone 90；暗色是它的镜像 —— 页底压到最深（tone 10），
+浮层反而升一档（tone 20）。
 
 **暗色模式也换色**，理由：关于页是本站唯一的 expressive 页面，它的身份就是「那块蛋黄」。
-按 MD3 dark scheme 的做法取**同一色相的低 tone**（tone 20 / 30 / 40），
-底色 L\* ≈ 20，与暗色文章区的 tone 10–20 区间同档，夜里不会刺眼；
-换成保持暗灰则这页在暗色下就失去身份了。
+按 MD3 dark scheme 的做法取**同一色相的低 tone**，底色 tone 10 与暗色文章区的
+tone 10–20 区间同档，夜里不会刺眼；换成保持暗灰则这页在暗色下就失去身份了。
+
+> **教训（RAY-476 精修）**：早先这里写的 `--rv-about-container: #F1C100` 标注为
+> 「primary tone 80」，但它**不在刻度上** —— 该色 H=91.89 / C=60.34 / T=80.09，
+> 色相与本色板一致（91.67）而 chroma 偏高（60.34 vs 48.72），只是「亮度等于 tone 80」。
+> 官方 tone 80 是 `#EBC246`。凡写 tone 号必须以色板实际刻度为准，不能只按 L\* 反推。
 
 ### 对比度自检（WCAG 2.1，实测值）
 
@@ -156,12 +170,18 @@ primary / secondary / tertiary / neutral 等 tone 阶梯。本站有两处**刻�
 | 亮色 surface98 / outline50（分隔线，装饰） | 4.25:1 | — |
 | 暗色 surface6 / on-surface90 | 14.34:1 | AAA |
 | 暗色 surface6 / on-surface-variant80 | 10.88:1 | AAA |
-| 关于页亮色 bg90 / on-bg10 | 13.32:1 | AAA |
-| 关于页亮色 bg90 / on-bg30 | 7.27:1 | AAA |
 | 关于页亮色 bg95 / on-bg10 | 15.11:1 | AAA |
-| 关于页暗色 bg20 / on-bg90 | 10.15:1 | AAA |
-| 关于页暗色 bg20 / on-bg80 | 7.71:1 | AAA |
-| 关于页暗色 soft30 / on-bg90 | 7.27:1 | AAA |
+| 关于页亮色 bg95 / on-bg-soft30 | 8.24:1 | AAA |
+| 关于页亮色 bg95 / accent40 | 5.71:1 | AA |
+| 关于页亮色 bg95 / container50（分隔线） | 3.95:1 | ≥3:1 |
+| 关于页亮色 soft90 / on-bg10 | 13.32:1 | AAA |
+| 关于页亮色 soft90 / on-bg-soft30 | 7.27:1 | AAA |
+| 关于页暗色 bg10 / on-bg95 | 15.11:1 | AAA |
+| 关于页暗色 bg10 / on-bg-soft80 | 10.09:1 | AAA |
+| 关于页暗色 bg10 / accent80 | 10.09:1 | AAA |
+| 关于页暗色 bg10 / container50（分隔线） | 3.82:1 | ≥3:1 |
+| 关于页暗色 soft20 / on-bg95 | 11.51:1 | AAA |
+| 关于页暗色 soft20 / on-bg-soft80 | 7.69:1 | AAA |
 
 ### 亮色（`global.css` 的 `:root`）
 
@@ -576,14 +596,27 @@ margin-right: auto;
 ### 2026-09-23 (RAY-476): 接入 MD3 色彩系统
 - **Decision**: 全站颜色改为 MD3 tonal palette 推导，源色 `#F2C94C`。
   文章区取 **chroma = 0 的纯灰** ramp（不用 MD3 默认 neutral，避免整站泛黄）；
-  关于页取 **primary 组**蛋黄色（`#FFE08B` 底 / `#241A00` 字，不用 tertiary，避免橄榄绿）。
-  暗色下关于页同步换成同色相低 tone（`#3D2F00` 底 / `#FFE08B` 字）。
+  关于页取 **primary 组**蛋黄色（`#FFEFCD` 底 / `#241A00` 字，不用 tertiary，避免橄榄绿）。
+  暗色下关于页同步换成同色相低 tone（`#241A00` 底 / `#FFEFCD` 字）。
   **只取 color system**，不接 MD3 的组件 / 圆角 / elevation / ripple / 动效。
 - **Rationale**: 六个手写色值无法解释「为什么是这个值」，也无法成对推导暗色；
   tone 阶梯让亮暗两套值来自同一条轴，新增页面只需挑 tone。
   保持 `--color-surface` / `--color-accent` 与六个变量名不变，全站组件零改动。
 - **Status**: Approved
 - **Refs**: `src/styles/global.css`、`src/components/pages/AboutPage.astro`、`src/layouts/Base.astro`（新增可选 prop `page`）
+
+### 2026-09-23 (RAY-476 精修 · A 方案): 关于页蛋黄色板拉开刻度两端
+- **Decision**: 只改 `--rv-about-*` 六个变量的取值，结构 / 文案 / 排版一律不动。
+  亮色页底升到最淡的 **tone 95**（`#FFEFCD`），分层块 / 浮层降到 tone 90（`#FFE08B`）——
+  `bg` 与 `bg-soft` 对调，让容器比页底深一档；分隔线从刻度外的 `#F1C100` 换成
+  刻度上的 **tone 50** `#927300`（对页底 3.95:1，≥3:1 可见）。
+  暗色取镜像：页底压到 **tone 10**（`#241A00`），浮层升到 tone 20，文字拉到 tone 95 / 80。
+- **Rationale**: 上一轮 `--rv-about-bg` = tone 90 是偏金的黄，刻度两端没拉开；
+  且 `--rv-about-container: #F1C100` 标注「tone 80」但根本不在刻度上（同色相、chroma 偏高），
+  属于手算草案值被带进实现。现在每个色值都能在官方 tone 刻度上查到，由
+  `@material/material-color-utilities` 复核；正文对比度 15.11:1 AAA，较上一轮 13.32:1 更高。
+- **Status**: Approved
+- **Refs**: 同上一版；色值复核脚本见 issue RAY-476 评论
 
 ---
 

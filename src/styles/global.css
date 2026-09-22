@@ -151,19 +151,23 @@
   --rv-outline:               var(--rv-gray-50);
   --rv-outline-variant:       var(--rv-gray-80);
 
-  /* --- 关于页蛋黄色板（primary 组，源色 #F2C94C）---
+  /* --- 关于页蛋黄色板（primary 组，源色 #F2C94C；HCT H=91.67 / C=48.72）---
+     下面每个色值都取自该色板的 MD3 官方 tone 刻度（tone 0–100），不含任何刻度外的色值。
      这里刻意**不用** MD3 的 tertiary 组：tertiary 会主动转 60° 色相，在黄色系上变成
      橄榄绿（tertiary tone 90 = #e7e799，像芥末不像蛋黄），是本方案相对 MD3 文档的例外。
-     对比度（亮色）：bg90 / on-bg10 = 13.32:1 AAA；bg90 / on-bg30 = 7.27:1 AAA；
-     bg95 / on-bg10 = 15.11:1 AAA。
+     bg / bg-soft 的次序照 MD3「容器比 surface 深」的规矩：页底取最淡的 tone 95，
+     分层块 / 浮层降一档到 tone 90。
+     对比度（底 = bg tone 95 #FFEFCD）：on-bg10 = 15.11:1 AAA；on-bg-soft30 = 8.24:1 AAA；
+     accent40 = 5.71:1 AA；container50 = 3.95:1（分隔线，≥3:1 可见）。
+     浮层底 tone 90 上：on-bg10 = 13.32:1 AAA；on-bg-soft30 = 7.27:1 AAA。
      暗色映射见 [data-theme="dark"]：同色相取更低 tone（MD3 dark scheme 的做法），
-     页面底 L* ≈ 20，夜里仍是一块暗色而不是把亮黄糊到脸上。 */
-  --rv-about-bg:          #FFE08B;  /* primary tone 90 */
-  --rv-about-bg-soft:     #FFEFCD;  /* primary tone 95 —— 浮层 / 分层块的底 */
+     页面底压到 tone 10，夜里仍是一块暗色而不是把亮黄糊到脸上。 */
+  --rv-about-bg:          #FFEFCD;  /* primary tone 95 —— 页面底 */
+  --rv-about-bg-soft:     #FFE08B;  /* primary tone 90 —— 浮层 / 分层块的底（比页底深一档） */
   --rv-about-on-bg:       #241A00;  /* primary tone 10 */
   --rv-about-on-bg-soft:  #584400;  /* primary tone 30 */
   --rv-about-accent:      #745B00;  /* primary tone 40 */
-  --rv-about-container:   #F1C100;  /* primary tone 80 */
+  --rv-about-container:   #927300;  /* primary tone 50 */
 
   /* Colors - Light Mode —— 值改为上面的 MD3 灰阶（变量名不变，全站组件零改动） */
   --color-bg: var(--rv-surface);                        /* tone 98，原 #F0F0F0 */
@@ -231,15 +235,17 @@
   --rv-outline:               var(--rv-gray-60);
   --rv-outline-variant:       var(--rv-gray-20);
 
-  /* --- 关于页蛋黄色板（暗色）：同色相降到 tone 20 / 30 / 40，文字抬到 tone 90 / 80 ---
-     对比度：bg20 / on-bg90 = 10.15:1 AAA；bg20 / on-bg80 = 7.71:1 AAA；
-     浮层（tone 30）/ on-bg90 = 7.27:1 AAA。 */
-  --rv-about-bg:          #3D2F00;  /* primary tone 20 */
-  --rv-about-bg-soft:     #584400;  /* primary tone 30 */
-  --rv-about-on-bg:       #FFE08B;  /* primary tone 90 */
-  --rv-about-on-bg-soft:  #F1C100;  /* primary tone 80 */
-  --rv-about-accent:      #F1C100;  /* primary tone 80 */
-  --rv-about-container:   #745B00;  /* primary tone 40 */
+  /* --- 关于页蛋黄色板（暗色）：亮色的镜像 —— 页底压到最深、文字拉到最淡 ---
+     同样全部取自该色板的 MD3 官方 tone 刻度。
+     对比度（底 = bg tone 10 #241A00）：on-bg95 = 15.11:1 AAA；on-bg-soft80 = 10.09:1 AAA；
+     accent80 = 10.09:1 AAA；container50 = 3.82:1（分隔线，≥3:1 可见）。
+     浮层底 tone 20 上：on-bg95 = 11.51:1 AAA；on-bg-soft80 = 7.69:1 AAA。 */
+  --rv-about-bg:          #241A00;  /* primary tone 10 —— 页面底 */
+  --rv-about-bg-soft:     #3D2F00;  /* primary tone 20 —— 浮层 / 分层块的底（比页底浅一档） */
+  --rv-about-on-bg:       #FFEFCD;  /* primary tone 95 */
+  --rv-about-on-bg-soft:  #EBC246;  /* primary tone 80 */
+  --rv-about-accent:      #EBC246;  /* primary tone 80 */
+  --rv-about-container:   #927300;  /* primary tone 50 */
 
   /* --color-bg 在暗色保持 AMOLED 纯黑（tone 0），比 MD3 的 surface tone 6 更深；
      --rv-surface 仍登记 tone 6，留给后续新组件用。 */
