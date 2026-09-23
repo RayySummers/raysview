@@ -142,12 +142,17 @@
 
   /* --- MD3 语义角色（亮色 · 文章区）---
      对比度：surface98 / on-surface10 = 16.36:1 AAA；surface98 / on-surface-variant30 = 8.82:1 AAA；
-     surface98 / outline50 = 4.25:1（分隔线，装饰用途）。 */
+     surface98 / on-surface-muted40 = 6.16:1 AA（RAY-479，footer 次要文字专用）；
+     surface98 / outline50 = 4.25:1（分隔线，装饰用途）。
+     muted 是 on-surface-variant 之下**再降一档**的角色，只服务页脚版权行与备案号：
+     备案号是工信部的法律展示项，tone 40 是对 4.5:1 的下限取档（tone 50 只有 4.25:1，不够）。
+     它**不替换** on-surface-variant —— 文章区的日期 / 注释 / 标签仍走 tone 30。 */
   --rv-surface:               var(--rv-gray-98);
   --rv-surface-container-low: var(--rv-gray-96);
   --rv-surface-container:     var(--rv-gray-94);
   --rv-on-surface:            var(--rv-gray-10);
   --rv-on-surface-variant:    var(--rv-gray-30);
+  --rv-on-surface-muted:      var(--rv-gray-40);
   --rv-outline:               var(--rv-gray-50);
   --rv-outline-variant:       var(--rv-gray-80);
 
@@ -158,7 +163,8 @@
      bg / bg-soft 的次序照 MD3「容器比 surface 深」的规矩：页底取最淡的 tone 95，
      分层块 / 浮层降一档到 tone 90。
      对比度（底 = bg tone 95 #FFEFCD）：on-bg10 = 15.11:1 AAA；on-bg-soft30 = 8.24:1 AAA；
-     accent40 = 5.71:1 AA；container50 = 3.95:1（分隔线，≥3:1 可见）。
+     on-bg-muted40 = 5.71:1 AA（RAY-479，页脚次要文字）；accent40 = 5.71:1 AA；
+     container50 = 3.95:1（分隔线，≥3:1 可见）。
      浮层底 tone 90 上：on-bg10 = 13.32:1 AAA；on-bg-soft30 = 7.27:1 AAA。
      暗色映射见 [data-theme="dark"]：同色相取更低 tone（MD3 dark scheme 的做法），
      页面底压到 tone 10，夜里仍是一块暗色而不是把亮黄糊到脸上。 */
@@ -166,6 +172,7 @@
   --rv-about-bg-soft:     #FFE08B;  /* primary tone 90 —— 浮层 / 分层块的底（比页底深一档） */
   --rv-about-on-bg:       #241A00;  /* primary tone 10 */
   --rv-about-on-bg-soft:  #584400;  /* primary tone 30 */
+  --rv-about-on-bg-muted: #745B00;  /* primary tone 40 —— 页脚次要文字（RAY-479） */
   --rv-about-accent:      #745B00;  /* primary tone 40 */
   --rv-about-container:   #927300;  /* primary tone 50 */
 
@@ -226,24 +233,29 @@
 [data-theme="dark"] {
   /* --- MD3 语义角色（暗色）---
      surface 组下沉到 tone 6 / 4，on-surface 抬到 tone 90 / 80。
-     对比度：surface6 / on-surface90 = 14.34:1 AAA；surface6 / on-surface-variant80 = 10.88:1 AAA。 */
+     对比度：surface6 / on-surface90 = 14.34:1 AAA；surface6 / on-surface-variant80 = 10.88:1 AAA。
+     muted 照 MD3 的镜像规则取 100−40 = tone 60（同 on-surface-variant 的 30↔80）：
+     暗色页面底实际是 AMOLED 纯黑 tone 0，on-surface-muted60 = 6.66:1 AA（RAY-479）。 */
   --rv-surface:               var(--rv-gray-6);
   --rv-surface-container-low: var(--rv-gray-4);
   --rv-surface-container:     var(--rv-gray-10);
   --rv-on-surface:            var(--rv-gray-90);
   --rv-on-surface-variant:    var(--rv-gray-80);
+  --rv-on-surface-muted:      var(--rv-gray-60);
   --rv-outline:               var(--rv-gray-60);
   --rv-outline-variant:       var(--rv-gray-20);
 
   /* --- 关于页蛋黄色板（暗色）：亮色的镜像 —— 页底压到最深、文字拉到最淡 ---
      同样全部取自该色板的 MD3 官方 tone 刻度。
      对比度（底 = bg tone 10 #241A00）：on-bg95 = 15.11:1 AAA；on-bg-soft80 = 10.09:1 AAA；
-     accent80 = 10.09:1 AAA；container50 = 3.82:1（分隔线，≥3:1 可见）。
+     on-bg-muted60 = 5.40:1 AA（RAY-479，页脚次要文字）；accent80 = 10.09:1 AAA；
+     container50 = 3.82:1（分隔线，≥3:1 可见）。
      浮层底 tone 20 上：on-bg95 = 11.51:1 AAA；on-bg-soft80 = 7.69:1 AAA。 */
   --rv-about-bg:          #241A00;  /* primary tone 10 —— 页面底 */
   --rv-about-bg-soft:     #3D2F00;  /* primary tone 20 —— 浮层 / 分层块的底（比页底浅一档） */
   --rv-about-on-bg:       #FFEFCD;  /* primary tone 95 */
   --rv-about-on-bg-soft:  #EBC246;  /* primary tone 80 */
+  --rv-about-on-bg-muted: #B08C09;  /* primary tone 60 —— 页脚次要文字（RAY-479，亮色 40 的镜像） */
   --rv-about-accent:      #EBC246;  /* primary tone 80 */
   --rv-about-container:   #927300;  /* primary tone 50 */
 
@@ -272,6 +284,9 @@ html[data-page="about"] {
   --color-text-secondary: var(--rv-about-on-bg-soft);
   --color-accent: var(--rv-about-accent);
   --color-border: var(--rv-about-container); /* 装饰性分隔线 */
+  /* RAY-479：页脚次要文字在本页换成蛋黄色板的那一档（亮 tone 40 / 暗 tone 60）。
+     只重定向这一个 footer 专用角色，--rv-on-surface-muted 的灰阶值在本页自然失效。 */
+  --rv-on-surface-muted: var(--rv-about-on-bg-muted);
 }
 
 * {
