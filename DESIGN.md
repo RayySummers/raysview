@@ -86,9 +86,9 @@ MD3 的算法色板会从源色推导出 primary / secondary / tertiary / neutra
 | 10 | `#1B1B1B` | 亮色 on-surface（正文）；暗色 surface-container |
 | 20 | `#303030` | 暗色 outline-variant |
 | 30 | `#474747` | 亮色 on-surface-variant（次要文字） |
-| 40 | `#5E5E5E` | — |
+| 40 | `#5E5E5E` | 亮色 on-surface-muted（页脚次要文字，RAY-479） |
 | 50 | `#777777` | outline（分隔线） |
-| 60 | `#919191` | 暗色 outline |
+| 60 | `#919191` | 暗色 outline；暗色 on-surface-muted（页脚次要文字，RAY-479） |
 | 70 | `#ABABAB` | — |
 | 80 | `#C6C6C6` | 亮色 outline-variant（边框）；暗色 on-surface-variant |
 | 90 | `#E2E2E2` | 暗色 on-surface |
@@ -108,6 +108,7 @@ MD3 的算法色板会从源色推导出 primary / secondary / tertiary / neutra
 | `--rv-surface-container` | tone 94 `#EEEEEE` | tone 10 `#1B1B1B` |
 | `--rv-on-surface` | tone 10 `#1B1B1B` | tone 90 `#E2E2E2` |
 | `--rv-on-surface-variant` | tone 30 `#474747` | tone 80 `#C6C6C6` |
+| `--rv-on-surface-muted` | tone 40 `#5E5E5E` | tone 60 `#919191` |
 | `--rv-outline` | tone 50 `#777777` | tone 60 `#919191` |
 | `--rv-outline-variant` | tone 80 `#C6C6C6` | tone 20 `#303030` |
 
@@ -140,13 +141,14 @@ MD3 的算法色板会从源色推导出 primary / secondary / tertiary / neutra
 | `--rv-about-bg-soft` | tone 90 `#FFE08B` | tone 20 `#3D2F00` | 浮层 / 分层块的底 |
 | `--rv-about-on-bg` | tone 10 `#241A00` | tone 95 `#FFEFCD` | 主文字 |
 | `--rv-about-on-bg-soft` | tone 30 `#584400` | tone 80 `#EBC246` | 次要文字 |
+| `--rv-about-on-bg-muted` | tone 40 `#745B00` | tone 60 `#B08C09` | 页脚次要文字（RAY-479） |
 | `--rv-about-accent` | tone 40 `#745B00` | tone 80 `#EBC246` | 深色强调 |
 | `--rv-about-container` | tone 50 `#927300` | tone 50 `#927300` | 分隔线 / 分层块底 |
 
 **每个色值都能在该色板的 MD3 官方 tone 刻度（tone 0–100）上查到**，由
 `@material/material-color-utilities` 的 `TonalPalette.fromHueAndChroma(91.67, 48.72)` 复核：
 tone 10 `#241A00`、tone 20 `#3D2F00`、tone 30 `#584400`、tone 40 `#745B00`、
-tone 50 `#927300`、tone 80 `#EBC246`、tone 90 `#FFE08B`、tone 95 `#FFEFCD`。
+tone 50 `#927300`、tone 60 `#B08C09`、tone 80 `#EBC246`、tone 90 `#FFE08B`、tone 95 `#FFEFCD`。
 
 `bg` / `bg-soft` 的次序照 MD3「容器比 surface 深」的规矩：页底取最淡的 tone 95，
 分层块 / 浮层降一档到 tone 90；暗色是它的镜像 —— 页底压到最深（tone 10），
@@ -167,17 +169,21 @@ tone 10–20 区间同档，夜里不会刺眼；换成保持暗灰则这页在�
 |------|--------|------|
 | 亮色 surface98 / on-surface10（正文） | 16.36:1 | AAA |
 | 亮色 surface98 / on-surface-variant30（次要文字） | 8.82:1 | AAA |
+| 亮色 surface98 / on-surface-muted40（页脚，RAY-479） | 6.16:1 | AA |
 | 亮色 surface98 / outline50（分隔线，装饰） | 4.25:1 | — |
 | 暗色 surface6 / on-surface90 | 14.34:1 | AAA |
 | 暗色 surface6 / on-surface-variant80 | 10.88:1 | AAA |
+| 暗色 bg0 / on-surface-muted60（页脚，RAY-479） | 6.66:1 | AA |
 | 关于页亮色 bg95 / on-bg10 | 15.11:1 | AAA |
 | 关于页亮色 bg95 / on-bg-soft30 | 8.24:1 | AAA |
+| 关于页亮色 bg95 / on-bg-muted40（页脚，RAY-479） | 5.71:1 | AA |
 | 关于页亮色 bg95 / accent40 | 5.71:1 | AA |
 | 关于页亮色 bg95 / container50（分隔线） | 3.95:1 | ≥3:1 |
 | 关于页亮色 soft90 / on-bg10 | 13.32:1 | AAA |
 | 关于页亮色 soft90 / on-bg-soft30 | 7.27:1 | AAA |
 | 关于页暗色 bg10 / on-bg95 | 15.11:1 | AAA |
 | 关于页暗色 bg10 / on-bg-soft80 | 10.09:1 | AAA |
+| 关于页暗色 bg10 / on-bg-muted60（页脚，RAY-479） | 5.40:1 | AA |
 | 关于页暗色 bg10 / accent80 | 10.09:1 | AAA |
 | 关于页暗色 bg10 / container50（分隔线） | 3.82:1 | ≥3:1 |
 | 关于页暗色 soft20 / on-bg95 | 11.51:1 | AAA |
@@ -193,6 +199,7 @@ tone 10–20 区间同档，夜里不会刺眼；换成保持暗灰则这页在�
   --rv-surface-container:     var(--rv-gray-94);  /* #EEEEEE */
   --rv-on-surface:            var(--rv-gray-10);  /* #1B1B1B */
   --rv-on-surface-variant:    var(--rv-gray-30);  /* #474747 */
+  --rv-on-surface-muted:      var(--rv-gray-40);  /* #5E5E5E —— 页脚次要文字（RAY-479） */
   --rv-outline:               var(--rv-gray-50);  /* #777777 */
   --rv-outline-variant:       var(--rv-gray-80);  /* #C6C6C6 */
 
@@ -221,6 +228,7 @@ tone 10–20 区间同档，夜里不会刺眼；换成保持暗灰则这页在�
   --rv-surface-container:     var(--rv-gray-10);  /* #1B1B1B */
   --rv-on-surface:            var(--rv-gray-90);  /* #E2E2E2 */
   --rv-on-surface-variant:    var(--rv-gray-80);  /* #C6C6C6 */
+  --rv-on-surface-muted:      var(--rv-gray-60);  /* #919191 —— 页脚次要文字（RAY-479） */
   --rv-outline:               var(--rv-gray-60);  /* #919191 */
   --rv-outline-variant:       var(--rv-gray-20);  /* #303030 */
 
@@ -464,8 +472,12 @@ display: flex;
 align-items: center;
 justify-content: center;
 font-size: 12px;
-color: var(--color-text-secondary);
+color: var(--rv-on-surface-muted);   /* RAY-479：版权行与备案号；关于页重定向到 --rv-about-on-bg-muted */
 ```
+footer 的次要文字**不**走 `--color-text-secondary`（全站共用，动它会连带文章区的
+日期 / 注释 / 标签），而是用专用的 `--rv-on-surface-muted`：亮 tone 40 `#5E5E5E`、
+暗 tone 60 `#919191`、关于页同色板 tone 40 / tone 60。版权行与备案号同色 ——
+备案号是工信部的法律展示项，取的是 4.5:1 下限那一档（浅色 tone 50 只有 4.25:1，不够）。
 
 ### Banner Image
 ```css

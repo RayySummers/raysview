@@ -46,7 +46,10 @@ const year = new Date().getFullYear();
     justify-content: center;
     gap: var(--space-1);
     font-size: var(--text-xs);
-    color: var(--color-text-secondary);
+    /* RAY-479：页脚次要文字专用色（亮 tone 40 / 暗 tone 60 / 关于页同色板对应档）。
+       刻意不用 --color-text-secondary —— 那个 token 全站共用，降档会连带文章区的
+       日期 / 注释 / 标签。 */
+    color: var(--rv-on-surface-muted);
   }
 
   /* 英文页面多一段声明：固定高度会把它挤出可视区，改为「至少一行高」+ 上下留白 */
@@ -58,14 +61,14 @@ const year = new Date().getFullYear();
   }
 
   .site-footer__icp {
-    color: var(--color-text-secondary);
+    color: var(--rv-on-surface-muted);
   }
 
   .site-footer__notice {
     max-width: 62ch;
     text-align: center;
     line-height: 1.6;
-    color: var(--color-text-secondary);
+    color: var(--rv-on-surface-muted);
   }
 
   /* 两个独立的行：断句位置固定，不随容器宽度变化 */
