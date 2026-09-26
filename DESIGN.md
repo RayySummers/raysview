@@ -367,7 +367,7 @@ padding: 0 48px; /* desktop */
 - Scrolled: same (no change needed — band 是 fixed 的)
 - 无 `backdrop-filter` 的浏览器：由带子的降级规则恢复
   `background: color-mix(in srgb, var(--color-bg) 80%, transparent)`（顶栏的 `class="site-header"` 供其命中）；
-  这里保持 80%，**不跟着带子的 30% 降**（没有模糊兜底时 30% 压不住正文）
+  这里保持 80%，**不跟着带子的 45% 降**（没有模糊兜底时 45% 压不住正文）
 
 ### Progressive Blur Band
 渲染在 `Base.astro` 的 `<body>` 开头，全站一次（`aria-hidden="true"`，纯装饰）。
@@ -380,16 +380,17 @@ pointer-events: none;
 z-index: 99;                                  /* header 是 100，压在带子之上 */
 overflow: hidden;
 
-/* 底色渐隐层（带内最底层）：峰值 30%，多停靠点缓动，起止斜率为 0（RAY-484，方案 K）。
+/* 底色渐隐层（带内最底层）：峰值 45%（RAY-485，由 RAY-484 的 30% 整体 ×1.5），
+   多停靠点缓动，起止斜率为 0（相对比例与 RAY-484 完全一致）。
    停靠点位置按 --header-height（h）给，最后一段落到带子下沿。 */
 background: linear-gradient(
   to bottom,
-  color-mix(in srgb, var(--color-bg) 30%, transparent) 0,
-  color-mix(in srgb, var(--color-bg) 30%, transparent) calc(var(--header-height) * 0.30),
-  color-mix(in srgb, var(--color-bg) 28%, transparent) calc(var(--header-height) * 0.45),
-  color-mix(in srgb, var(--color-bg) 23%, transparent) calc(var(--header-height) * 0.60),
-  color-mix(in srgb, var(--color-bg) 16%, transparent) calc(var(--header-height) * 0.75),
-  color-mix(in srgb, var(--color-bg) 8%,  transparent) calc(var(--header-height) * 0.88),
+  color-mix(in srgb, var(--color-bg) 45%, transparent) 0,
+  color-mix(in srgb, var(--color-bg) 45%, transparent) calc(var(--header-height) * 0.30),
+  color-mix(in srgb, var(--color-bg) 42%, transparent) calc(var(--header-height) * 0.45),
+  color-mix(in srgb, var(--color-bg) 35%, transparent) calc(var(--header-height) * 0.60),
+  color-mix(in srgb, var(--color-bg) 24%, transparent) calc(var(--header-height) * 0.75),
+  color-mix(in srgb, var(--color-bg) 12%, transparent) calc(var(--header-height) * 0.88),
   transparent 100%
 );
 
@@ -701,6 +702,19 @@ margin-right: auto;
 - **Status**: Approved
 - **Refs**: `src/components/ProgressiveBlur.astro`；选型对比（H/I/J/K 四候选 × 明暗两主题）见
   `~/.hermes-hari/workspace/rayview-pb-spike/`
+
+### 2026-09-26 (RAY-485): 带子底色峰值 30% → 45%
+- **Decision**: 只把 `.pb-band__veil` 的 7 个停靠点整体 ×1.5 —— 峰值 **30% → 45%**
+  （0 / 0.30h 保持 45%，0.45h **42%**、0.60h **35%**、0.75h **24%**、0.88h **12%**，带子下沿 transparent）。
+  缓动形状、6 层模糊（2/4/6/8/10/12px）、各层 mask、带高、`z-index`、`pointer-events`、
+  `Header.astro` 与降级分支的 80% 实色底一律不动。
+- **Rationale**: 30% 那层底在 48px 顶栏区只有约 **2 个亮度单位**（同一位置有带子减无带子：
+  暗色 −2.06 / 浅色 +2.01），浅色主题下顶栏的底与滚过来的浅色内容几乎同色，缺一条可辨的分界。
+  **不是**带子把图标洗淡了 —— header 是 `z-index: 100`、带子是 99，顶栏自己的 logo 与三个按钮
+  始终压在带子之上；缺的是分层，所以加厚这层底。45% 后同款测法升到暗色 **−3.21** / 浅色 **+3.23**。
+- **Status**: Approved
+- **Refs**: `src/components/ProgressiveBlur.astro`；缺口对比图（无带子 / 30% / 45% × 明暗两主题）见
+  `~/.hermes-hari/workspace/rayview-pb-spike/zoom_compare.png`
 
 ---
 

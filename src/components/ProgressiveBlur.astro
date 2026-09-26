@@ -15,8 +15,15 @@
  * 0.62 × --header-height 处斜率突变，人眼对梯度折角敏感（马赫带），会看到一条隐约的转折。
  * 于是底色峰值降到 30%、渐隐换成多停靠点缓动（起止斜率为 0），模糊层从 3 层加到 6 层。
  *
+ * RAY-485：K 上线后 Ray 反馈底色还是太淡 —— 浅色主题下顶栏那层底与滚过来的浅色内容
+ * 太像，缺一条可辨的分界。实测「同一位置有带子减无带子」在 48px 顶栏区只有
+ * 暗色 −2.06 / 浅色 +2.01 个亮度单位，几乎等于没有。于是把 7 个停靠点的峰值整体
+ * ×1.5（30 → 45，相对比例不变），实测升到暗色 −3.21 / 浅色 +3.23。
+ * 注意：顶栏自己的 logo 与三个按钮不会被带子洗淡（header z-index 100 > 带子 99），
+ * 所以这次是「把底加厚与内容分层」，不是「把图标提亮」。
+ *
  * 结构（自下而上）：
- *   1. .pb-band__veil  底色渐隐层：0 → 0.30h 保持 30% 实色，之后按缓动停靠点淡出到透明；
+ *   1. .pb-band__veil  底色渐隐层：0 → 0.30h 保持 45% 实色，之后按缓动停靠点淡出到透明；
  *   2. .pb-band__layer 渐进模糊层 ×6：第 k 层高度 H*k/6、blur(2k px)，各自带一条
  *      「上实下透明」的 mask。叠起来后带子顶部六层全叠（最糊），越往下参与的层越少
  *      （越清），形成连续的模糊梯度。单层模糊 + mask 不行：会出现一圈光晕，过渡几乎看不出来。
@@ -52,20 +59,21 @@
     overflow: hidden;
   }
 
-  /* 底色渐隐层：峰值 30%，多停靠点缓动（起止斜率都是 0，没有折角 → 没有马赫带）。
-     停靠点位置按 --header-height（h）给，最后一段落到带子下沿（100%）。
+  /* 底色渐隐层：峰值 45%（RAY-485，RAY-484 的 30% 太淡），多停靠点缓动
+     （起止斜率都是 0，没有折角 → 没有马赫带）。停靠点位置按 --header-height（h）给，
+     最后一段落到带子下沿（100%）。相对比例与 RAY-484 完全一致，只是整体 ×1.5。
      颜色只走 color-mix(var(--color-bg) N%, transparent)，不新增色值。 */
   .pb-band__veil {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--color-bg) 30%, transparent) 0,
-      color-mix(in srgb, var(--color-bg) 30%, transparent) calc(var(--header-height) * 0.30),
-      color-mix(in srgb, var(--color-bg) 28%, transparent) calc(var(--header-height) * 0.45),
-      color-mix(in srgb, var(--color-bg) 23%, transparent) calc(var(--header-height) * 0.60),
-      color-mix(in srgb, var(--color-bg) 16%, transparent) calc(var(--header-height) * 0.75),
-      color-mix(in srgb, var(--color-bg) 8%, transparent) calc(var(--header-height) * 0.88),
+      color-mix(in srgb, var(--color-bg) 45%, transparent) 0,
+      color-mix(in srgb, var(--color-bg) 45%, transparent) calc(var(--header-height) * 0.30),
+      color-mix(in srgb, var(--color-bg) 42%, transparent) calc(var(--header-height) * 0.45),
+      color-mix(in srgb, var(--color-bg) 35%, transparent) calc(var(--header-height) * 0.60),
+      color-mix(in srgb, var(--color-bg) 24%, transparent) calc(var(--header-height) * 0.75),
+      color-mix(in srgb, var(--color-bg) 12%, transparent) calc(var(--header-height) * 0.88),
       transparent 100%
     );
   }
