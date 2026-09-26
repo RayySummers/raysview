@@ -9,6 +9,11 @@
  *
  * 按钮顺序：搜索 → 语言 → 主题。三个按钮同尺寸（32×32 触摸区、18px 图标）、同色。
  *
+ * RAY-486：顶栏这三个按钮的 `color` 由 `--color-text-secondary` 改为 `--color-text-primary`，
+ * 与同一行的时钟对齐（浅色下左端 #1B1B1B 黑、右端却是 #474747 灰，落差 44；暗色下
+ * #E2E2E2 对 #C6C6C6 只差 28，细线图标压在模糊层上发脏）。图标 SVG 的 fill 本来就是
+ * currentColor（见 src/icons/*.svg），所以只改这一处 `color` 即可，token 值未动。
+ *
  * 界面文案不在这里硬编码：`t()` 从 src/i18n/<lang>.json 取；
  * 搜索索引地址与「无结果」提示通过 data-* 下发给客户端脚本，脚本里不再写死中文。
  */
@@ -58,14 +63,14 @@ const searchIndexHref = `${langPrefix(lang)}/search.json`;
       <div id="search-results" style="position: absolute; top: 100%; right: 0; width: 280px; max-height: 300px; overflow-y: auto; background: var(--color-surface); border: 1px solid var(--color-border); display: none; z-index: 200;"></div>
     </div>
 
-    <button id="search-toggle" aria-label={t('header.search')} style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--color-text-secondary);">
+    <button id="search-toggle" aria-label={t('header.search')} style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--color-text-primary);">
       <Icon id="search-icon" name="search" size={18} />
       <Icon id="close-icon" name="close" size={18} hidden />
     </button>
 
     <LanguageSwitcher lang={lang} links={languageLinks} />
 
-    <button id="theme-toggle" aria-label={t('header.theme')} style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--color-text-secondary); transition: transform var(--transition-slow);">
+    <button id="theme-toggle" aria-label={t('header.theme')} style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--color-text-primary); transition: transform var(--transition-slow);">
       <Icon id="sun-icon" name="light_mode" size={18} hidden />
       <Icon id="moon-icon" name="dark_mode" size={18} />
       <Icon id="system-icon" name="desktop_windows" size={18} hidden />
