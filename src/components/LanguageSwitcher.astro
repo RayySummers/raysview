@@ -81,7 +81,8 @@ const t = useTranslations(lang);
     align-items: center;
   }
 
-  /* 与 #search-toggle / #theme-toggle 完全同尺寸同色 */
+  /* 与 #search-toggle / #theme-toggle 完全同尺寸同色
+     （RAY-486：色阶跟顶栏时钟走 --color-text-primary，不再用 --color-text-secondary） */
   .lang-switch__button {
     width: 32px;
     height: 32px;
@@ -91,7 +92,7 @@ const t = useTranslations(lang);
     border: none;
     background: none;
     cursor: pointer;
-    color: var(--color-text-secondary);
+    color: var(--color-text-primary);
   }
 
   /* 面板外观与 #search-results 下拉一致：surface 底 + 1px 描边，不做圆角与阴影 */
