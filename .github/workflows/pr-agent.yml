@@ -21,9 +21,17 @@ jobs:
         uses: the-pr-agent/pr-agent@main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          config.model: "deepseek/deepseek-v4-flash"
-          config.fallback_models: '["deepseek/deepseek-v4-flash"]'
-          DEEPSEEK.KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          # 2026-09-26：从 DeepSeek 官方 API 切到 OpenCode Go（订阅内额度，模型 DeepSeek V4.1 Flash）。
+          # OpenCode Go 的接入要求（见 https://opencode.ai/docs/go/）：
+          #   1) 客户端自带 User-Agent，而不是通用 SDK/HTTP 库的名字；
+          #   2) 每个会话带稳定的 x-opencode-session，用于路由与 prompt 缓存。
+          # 缺 x-opencode-session 时接口直接返回 MissingSessionID，故用 LITELLM.EXTRA_HEADERS 补上。
+          config.model: "openai/deepseek-v4.1-flash"
+          config.fallback_models: '["openai/deepseek-v4.1-flash"]'
+          config.custom_model_max_tokens: "128000"
+          OPENAI.KEY: ${{ secrets.OPENCODE_GO_API_KEY }}
+          OPENAI.API_BASE: "https://opencode.ai/zen/go/v1"
+          LITELLM.EXTRA_HEADERS: '{"x-opencode-session":"pr-agent-raysview","User-Agent":"pr-agent-raysview/1.0"}'
           github_action_config.auto_review: "true"
           github_action_config.auto_describe: "true"
           github_action_config.auto_improve: "false"
