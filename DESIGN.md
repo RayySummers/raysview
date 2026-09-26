@@ -346,7 +346,8 @@ article.heti li:lang(zh) {
 ## 🧩 Components
 
 ### Header
-顶栏自身**没有底色、没有模糊**（RAY-483，方案 E）：它只负责占位、吸顶与排布，
+顶栏自身**没有底色、没有模糊**（RAY-483，方案 E；RAY-484 调参为方案 K 后这一条不变）：
+它只负责占位、吸顶与排布，
 视觉上的底色渐隐 + 渐进模糊交给下面的 Progressive Blur Band，
 于是 `--header-height`（48px）处不再有任何切换。
 ```css
@@ -365,7 +366,8 @@ padding: 0 48px; /* desktop */
 - Default: transparent — 底色与模糊来自 Progressive Blur Band
 - Scrolled: same (no change needed — band 是 fixed 的)
 - 无 `backdrop-filter` 的浏览器：由带子的降级规则恢复
-  `background: color-mix(in srgb, var(--color-bg) 80%, transparent)`（顶栏的 `class="site-header"` 供其命中）
+  `background: color-mix(in srgb, var(--color-bg) 80%, transparent)`（顶栏的 `class="site-header"` 供其命中）；
+  这里保持 80%，**不跟着带子的 30% 降**（没有模糊兜底时 30% 压不住正文）
 
 ### Progressive Blur Band
 渲染在 `Base.astro` 的 `<body>` 开头，全站一次（`aria-hidden="true"`，纯装饰）。
@@ -378,21 +380,29 @@ pointer-events: none;
 z-index: 99;                                  /* header 是 100，压在带子之上 */
 overflow: hidden;
 
-/* 底色渐隐层（带内最底层）：前 62% 保持 80% 实色，之后淡出到透明 */
+/* 底色渐隐层（带内最底层）：峰值 30%，多停靠点缓动，起止斜率为 0（RAY-484，方案 K）。
+   停靠点位置按 --header-height（h）给，最后一段落到带子下沿。 */
 background: linear-gradient(
   to bottom,
-  color-mix(in srgb, var(--color-bg) 80%, transparent) 0,
-  color-mix(in srgb, var(--color-bg) 80%, transparent) calc(var(--header-height) * 0.62),
+  color-mix(in srgb, var(--color-bg) 30%, transparent) 0,
+  color-mix(in srgb, var(--color-bg) 30%, transparent) calc(var(--header-height) * 0.30),
+  color-mix(in srgb, var(--color-bg) 28%, transparent) calc(var(--header-height) * 0.45),
+  color-mix(in srgb, var(--color-bg) 23%, transparent) calc(var(--header-height) * 0.60),
+  color-mix(in srgb, var(--color-bg) 16%, transparent) calc(var(--header-height) * 0.75),
+  color-mix(in srgb, var(--color-bg) 8%,  transparent) calc(var(--header-height) * 0.88),
   transparent 100%
 );
 
-/* 渐进模糊：第 k 层（k = 1..3）高度 H*k/3、blur(4k px)，各层 mask 上实下透明 */
+/* 渐进模糊：第 k 层（k = 1..6）高度 H*k/6、blur(2k px)，各层 mask 上实下透明 */
 .pb-band__layer    { mask-image: linear-gradient(to bottom, #000, transparent); }
-.pb-band__layer--1 { height: calc(100% * 1 / 3); backdrop-filter: blur(4px);  }
-.pb-band__layer--2 { height: calc(100% * 2 / 3); backdrop-filter: blur(8px);  }
-.pb-band__layer--3 { height: 100%;               backdrop-filter: blur(12px); }
+.pb-band__layer--1 { height: calc(100% * 1 / 6); backdrop-filter: blur(2px);  }
+.pb-band__layer--2 { height: calc(100% * 2 / 6); backdrop-filter: blur(4px);  }
+.pb-band__layer--3 { height: calc(100% * 3 / 6); backdrop-filter: blur(6px);  }
+.pb-band__layer--4 { height: calc(100% * 4 / 6); backdrop-filter: blur(8px);  }
+.pb-band__layer--5 { height: calc(100% * 5 / 6); backdrop-filter: blur(10px); }
+.pb-band__layer--6 { height: 100%;               backdrop-filter: blur(12px); }
 ```
-叠起来后带子顶部三层全叠（最糊），越往下参与的层越少（越清）。
+叠起来后带子顶部六层全叠（最糊），越往下参与的层越少（越清）。
 **单层模糊 + mask 不行**：会出现一圈光晕，过渡几乎看不出来。
 `-webkit-backdrop-filter` / `-webkit-mask-image` 与无前缀写法成对写（Safari 18 之前只认前缀）。
 颜色只走 `var(--color-bg)`，暗色主题与关于页蛋黄色皮肤自动跟随。
@@ -678,6 +688,19 @@ margin-right: auto;
   带外（≥80px）像素与改动前逐行一致。选型对比图见 `~/.hermes-hari/workspace/rayview-pb-spike/`。
 - **Status**: Approved
 - **Refs**: `src/components/ProgressiveBlur.astro`（新增）、`src/components/Header.astro`、`src/layouts/Base.astro`
+
+### 2026-09-26 (RAY-484): 带子调参 —— 底色 30% + 缓动 + 6 层（方案 K）
+- **Decision**: 在方案 E 的带子上只调三处：底色峰值 80% → **30%**；渐隐由线性换成
+  **7 个停靠点的缓动**（0 / 0.30h 保持 30%，0.45h 28%、0.60h 23%、0.75h 16%、0.88h 8%，带子下沿 transparent）；
+  模糊层 3 → **6 层**（第 k 层高度 `H*k/6`、`blur(2k px)` = 2/4/6/8/10/12px）。
+  带高、位置、`z-index`、`pointer-events`、`Header.astro` 与降级分支的 80% 实色底都不动。
+- **Rationale**: E 上线后 Ray 指出「底色太深」「过渡不太自然」。暗色主题下带子把顶栏区域整体压暗
+  16.5 个亮度单位（峰值 80% 所致）；线性渐隐在 `0.62 × --header-height` 处斜率突变，
+  人眼对梯度折角敏感（马赫带），会看到一条隐约的转折。改成方案 K 后同款测法：
+  暗色封面图区带内偏移 **−16.5 → +13.3**，48px 逐行亮度跳变 **1.04 → 0.49**（验收线 < 2）。
+- **Status**: Approved
+- **Refs**: `src/components/ProgressiveBlur.astro`；选型对比（H/I/J/K 四候选 × 明暗两主题）见
+  `~/.hermes-hari/workspace/rayview-pb-spike/`
 
 ---
 

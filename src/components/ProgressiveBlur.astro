@@ -1,6 +1,6 @@
 ---
 /**
- * 顶栏渐进模糊带（RAY-483，方案 E）
+ * 顶栏渐进模糊带（RAY-483 方案 E；RAY-484 调参为方案 K）
  *
  * 渲染位置：Base.astro 的 <body> 开头，全站一次。
  *
@@ -8,19 +8,24 @@
  * 处硬切 —— 内容滚过去时能看到一条明显的横向分界，实测该处逐行亮度跳变 17.78。
  *
  * 方案 E：顶栏自身不再提供底色与模糊（见 Header.astro），改由这条从 y=0 开始的固定带子
- * 统一提供「底色渐隐 + 3 层渐进模糊」，于是 48px 处不再发生任何切换（同款测法 1.14）。
+ * 统一提供「底色渐隐 + 渐进模糊」，于是 48px 处不再发生任何切换（同款测法 1.14）。
+ *
+ * 方案 K（RAY-484）：E 上线后 Ray 指出「底色太深」「过渡不太自然」。前者是暗色主题下
+ * 带子把顶栏区域整体压暗 16.5 个亮度单位（峰值 80% 所致）；后者是线性渐隐在
+ * 0.62 × --header-height 处斜率突变，人眼对梯度折角敏感（马赫带），会看到一条隐约的转折。
+ * 于是底色峰值降到 30%、渐隐换成多停靠点缓动（起止斜率为 0），模糊层从 3 层加到 6 层。
  *
  * 结构（自下而上）：
- *   1. .pb-band__veil  底色渐隐层：前 --header-height*0.62 保持 80% 实色，之后淡出到透明；
- *   2. .pb-band__layer 渐进模糊层 ×3：第 k 层高度 H*k/3、blur(4k px)，各自带一条
- *      「上实下透明」的 mask。叠起来后带子顶部三层全叠（最糊），越往下参与的层越少
+ *   1. .pb-band__veil  底色渐隐层：0 → 0.30h 保持 30% 实色，之后按缓动停靠点淡出到透明；
+ *   2. .pb-band__layer 渐进模糊层 ×6：第 k 层高度 H*k/6、blur(2k px)，各自带一条
+ *      「上实下透明」的 mask。叠起来后带子顶部六层全叠（最糊），越往下参与的层越少
  *      （越清），形成连续的模糊梯度。单层模糊 + mask 不行：会出现一圈光晕，过渡几乎看不出来。
  *
  * 高度、渐变停靠点全部由 --header-height 推算，颜色只走 var(--color-bg)，所以暗色主题
  * 与关于页蛋黄色皮肤自动跟随。header 是 z-index 100、带子是 99，顶栏文字与按钮始终压在
  * 带子之上；带子 pointer-events: none，不挡任何点击。
  *
- * 素材与选型依据（A/E/F/G 四候选对比图）：~/.hermes-hari/workspace/rayview-pb-spike/
+ * 素材与选型依据（H/I/J/K 候选对比图）：~/.hermes-hari/workspace/rayview-pb-spike/
  */
 ---
 
@@ -29,6 +34,9 @@
   <div class="pb-band__layer pb-band__layer--1"></div>
   <div class="pb-band__layer pb-band__layer--2"></div>
   <div class="pb-band__layer pb-band__layer--3"></div>
+  <div class="pb-band__layer pb-band__layer--4"></div>
+  <div class="pb-band__layer pb-band__layer--5"></div>
+  <div class="pb-band__layer pb-band__layer--6"></div>
 </div>
 
 <style>
@@ -44,15 +52,20 @@
     overflow: hidden;
   }
 
-  /* 底色渐隐层：与顶栏原来的 80% 实色同色。前 62% 保持实色（正好压在顶栏本身的位置），
-     之后线性淡出到透明，把 48px 那条硬边摊开成一整条渐隐。 */
+  /* 底色渐隐层：峰值 30%，多停靠点缓动（起止斜率都是 0，没有折角 → 没有马赫带）。
+     停靠点位置按 --header-height（h）给，最后一段落到带子下沿（100%）。
+     颜色只走 color-mix(var(--color-bg) N%, transparent)，不新增色值。 */
   .pb-band__veil {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--color-bg) 80%, transparent) 0,
-      color-mix(in srgb, var(--color-bg) 80%, transparent) calc(var(--header-height) * 0.62),
+      color-mix(in srgb, var(--color-bg) 30%, transparent) 0,
+      color-mix(in srgb, var(--color-bg) 30%, transparent) calc(var(--header-height) * 0.30),
+      color-mix(in srgb, var(--color-bg) 28%, transparent) calc(var(--header-height) * 0.45),
+      color-mix(in srgb, var(--color-bg) 23%, transparent) calc(var(--header-height) * 0.60),
+      color-mix(in srgb, var(--color-bg) 16%, transparent) calc(var(--header-height) * 0.75),
+      color-mix(in srgb, var(--color-bg) 8%, transparent) calc(var(--header-height) * 0.88),
       transparent 100%
     );
   }
@@ -67,29 +80,48 @@
     mask-image: linear-gradient(to bottom, #000, transparent);
   }
 
-  /* 第 k 层（k = 1..3）高度 H*k/3、模糊量 12px*k/3 = 4k px。
+  /* 第 k 层（k = 1..6）高度 H*k/6、模糊量 12px*k/6 = 2k px。
      层高用百分比：100% 就是带子高度（已由 --header-height 推出）。 */
   .pb-band__layer--1 {
-    height: calc(100% * 1 / 3);
+    height: calc(100% * 1 / 6);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+
+  .pb-band__layer--2 {
+    height: calc(100% * 2 / 6);
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
   }
 
-  .pb-band__layer--2 {
-    height: calc(100% * 2 / 3);
+  .pb-band__layer--3 {
+    height: calc(100% * 3 / 6);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  .pb-band__layer--4 {
+    height: calc(100% * 4 / 6);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
   }
 
-  .pb-band__layer--3 {
-    height: 100%;
+  .pb-band__layer--5 {
+    height: calc(100% * 5 / 6);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .pb-band__layer--6 {
+    height: 100%; /* = calc(100% * 6 / 6) */
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
   }
 
   /* 降级：完全没有 backdrop-filter 时（老 Safari / 老 Firefox），渐进模糊无从谈起，
      只剩一条纯渐隐的底色 —— 顶栏会退化成没有底色的透明条，文字直接压在正文上。
-     这种环境整条带子撤掉，让顶栏恢复原来的 80% 实色底。 */
+     这种环境整条带子撤掉，让顶栏恢复原来的 80% 实色底（这里**不跟着降到 30%**：
+     没有模糊兜底时 30% 的底色压不住正文，文字读不了）。 */
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     :global(header.site-header) {
       background: color-mix(in srgb, var(--color-bg) 80%, transparent);
