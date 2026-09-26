@@ -1,0 +1,102 @@
+---
+/**
+ * 顶栏渐进模糊带（RAY-483，方案 E）
+ *
+ * 渲染位置：Base.astro 的 <body> 开头，全站一次。
+ *
+ * 背景：顶栏原来是一块 80% 实色 + blur(12px) 的 sticky 矩形，在 48px（= --header-height）
+ * 处硬切 —— 内容滚过去时能看到一条明显的横向分界，实测该处逐行亮度跳变 17.78。
+ *
+ * 方案 E：顶栏自身不再提供底色与模糊（见 Header.astro），改由这条从 y=0 开始的固定带子
+ * 统一提供「底色渐隐 + 3 层渐进模糊」，于是 48px 处不再发生任何切换（同款测法 1.14）。
+ *
+ * 结构（自下而上）：
+ *   1. .pb-band__veil  底色渐隐层：前 --header-height*0.62 保持 80% 实色，之后淡出到透明；
+ *   2. .pb-band__layer 渐进模糊层 ×3：第 k 层高度 H*k/3、blur(4k px)，各自带一条
+ *      「上实下透明」的 mask。叠起来后带子顶部三层全叠（最糊），越往下参与的层越少
+ *      （越清），形成连续的模糊梯度。单层模糊 + mask 不行：会出现一圈光晕，过渡几乎看不出来。
+ *
+ * 高度、渐变停靠点全部由 --header-height 推算，颜色只走 var(--color-bg)，所以暗色主题
+ * 与关于页蛋黄色皮肤自动跟随。header 是 z-index 100、带子是 99，顶栏文字与按钮始终压在
+ * 带子之上；带子 pointer-events: none，不挡任何点击。
+ *
+ * 素材与选型依据（A/E/F/G 四候选对比图）：~/.hermes-hari/workspace/rayview-pb-spike/
+ */
+---
+
+<div class="pb-band" aria-hidden="true">
+  <div class="pb-band__veil"></div>
+  <div class="pb-band__layer pb-band__layer--1"></div>
+  <div class="pb-band__layer pb-band__layer--2"></div>
+  <div class="pb-band__layer pb-band__layer--3"></div>
+</div>
+
+<style>
+  .pb-band {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    /* 带高 = 顶栏高 + 32px 渐隐余量（当前 48 + 32 = 80px），不写死像素 */
+    height: calc(var(--header-height) + 32px);
+    pointer-events: none;
+    z-index: 99; /* header 是 100，必须压在带子之上 */
+    overflow: hidden;
+  }
+
+  /* 底色渐隐层：与顶栏原来的 80% 实色同色。前 62% 保持实色（正好压在顶栏本身的位置），
+     之后线性淡出到透明，把 48px 那条硬边摊开成一整条渐隐。 */
+  .pb-band__veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-bg) 80%, transparent) 0,
+      color-mix(in srgb, var(--color-bg) 80%, transparent) calc(var(--header-height) * 0.62),
+      transparent 100%
+    );
+  }
+
+  .pb-band__layer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    /* 每层自上而下淡出，让下层（更清）透出来 */
+    -webkit-mask-image: linear-gradient(to bottom, #000, transparent);
+    mask-image: linear-gradient(to bottom, #000, transparent);
+  }
+
+  /* 第 k 层（k = 1..3）高度 H*k/3、模糊量 12px*k/3 = 4k px。
+     层高用百分比：100% 就是带子高度（已由 --header-height 推出）。 */
+  .pb-band__layer--1 {
+    height: calc(100% * 1 / 3);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+
+  .pb-band__layer--2 {
+    height: calc(100% * 2 / 3);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+
+  .pb-band__layer--3 {
+    height: 100%;
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+  }
+
+  /* 降级：完全没有 backdrop-filter 时（老 Safari / 老 Firefox），渐进模糊无从谈起，
+     只剩一条纯渐隐的底色 —— 顶栏会退化成没有底色的透明条，文字直接压在正文上。
+     这种环境整条带子撤掉，让顶栏恢复原来的 80% 实色底。 */
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    :global(header.site-header) {
+      background: color-mix(in srgb, var(--color-bg) 80%, transparent);
+    }
+
+    .pb-band {
+      display: none;
+    }
+  }
+</style>

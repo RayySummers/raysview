@@ -346,13 +346,14 @@ article.heti li:lang(zh) {
 ## 🧩 Components
 
 ### Header
+顶栏自身**没有底色、没有模糊**（RAY-483，方案 E）：它只负责占位、吸顶与排布，
+视觉上的底色渐隐 + 渐进模糊交给下面的 Progressive Blur Band，
+于是 `--header-height`（48px）处不再有任何切换。
 ```css
-height: 48px;
+height: var(--header-height);   /* 48px */
 position: sticky;
 top: 0;
-z-index: 100;
-background: color-mix(in srgb, var(--color-bg) 80%, transparent);
-backdrop-filter: blur(12px);
+z-index: 100;                   /* 必须高于带子的 99 */
 /* Content */
 display: flex;
 align-items: center;
@@ -361,8 +362,45 @@ padding: 0 24px; /* mobile */
 padding: 0 48px; /* desktop */
 ```
 **States:**
-- Default: transparent blur
-- Scrolled: same (no change needed — already blurred)
+- Default: transparent — 底色与模糊来自 Progressive Blur Band
+- Scrolled: same (no change needed — band 是 fixed 的)
+- 无 `backdrop-filter` 的浏览器：由带子的降级规则恢复
+  `background: color-mix(in srgb, var(--color-bg) 80%, transparent)`（顶栏的 `class="site-header"` 供其命中）
+
+### Progressive Blur Band
+渲染在 `Base.astro` 的 `<body>` 开头，全站一次（`aria-hidden="true"`，纯装饰）。
+```css
+/* 带子 */
+position: fixed;
+left: 0; right: 0; top: 0;
+height: calc(var(--header-height) + 32px);   /* 48 + 32 = 80px，不写死像素 */
+pointer-events: none;
+z-index: 99;                                  /* header 是 100，压在带子之上 */
+overflow: hidden;
+
+/* 底色渐隐层（带内最底层）：前 62% 保持 80% 实色，之后淡出到透明 */
+background: linear-gradient(
+  to bottom,
+  color-mix(in srgb, var(--color-bg) 80%, transparent) 0,
+  color-mix(in srgb, var(--color-bg) 80%, transparent) calc(var(--header-height) * 0.62),
+  transparent 100%
+);
+
+/* 渐进模糊：第 k 层（k = 1..3）高度 H*k/3、blur(4k px)，各层 mask 上实下透明 */
+.pb-band__layer    { mask-image: linear-gradient(to bottom, #000, transparent); }
+.pb-band__layer--1 { height: calc(100% * 1 / 3); backdrop-filter: blur(4px);  }
+.pb-band__layer--2 { height: calc(100% * 2 / 3); backdrop-filter: blur(8px);  }
+.pb-band__layer--3 { height: 100%;               backdrop-filter: blur(12px); }
+```
+叠起来后带子顶部三层全叠（最糊），越往下参与的层越少（越清）。
+**单层模糊 + mask 不行**：会出现一圈光晕，过渡几乎看不出来。
+`-webkit-backdrop-filter` / `-webkit-mask-image` 与无前缀写法成对写（Safari 18 之前只认前缀）。
+颜色只走 `var(--color-bg)`，暗色主题与关于页蛋黄色皮肤自动跟随。
+
+**States:**
+- Default: 带内自由渐变，`--header-height` 处无分界
+- 无 `backdrop-filter`（老 Safari / 老 Firefox）：整条带子 `display: none`，
+  顶栏恢复原来的 80% 实色底，不退化成没有底色的透明条
 
 ### Logo/Brand
 ```css
@@ -629,6 +667,17 @@ margin-right: auto;
   `@material/material-color-utilities` 复核；正文对比度 15.11:1 AAA，较上一轮 13.32:1 更高。
 - **Status**: Approved
 - **Refs**: 同上一版；色值复核脚本见 issue RAY-476 评论
+
+### 2026-09-26 (RAY-483): 顶栏改为渐进模糊（方案 E）
+- **Decision**: 顶栏撤掉自身的 `color-mix(… 80%, transparent)` 底与 `backdrop-filter: blur(12px)`，
+  改由一条从 y=0 开始的固定带子（`ProgressiveBlur.astro`）统一提供「底色渐隐 + 3 层渐进模糊」：
+  带高 `calc(var(--header-height) + 32px)`，第 k 层高度 `H*k/3`、`blur(4k px)`，各带一条「上实下透明」mask。
+  不采用候选 F（96px / 5 层）、G（无底色）及其他强度档。
+- **Rationale**: 原来那块 80% 实色矩形在 48px 处硬切，内容滚过去时有一条横向分界，
+  逐行亮度跳变 16.05（spike 镜像页 17.78）。改成从 0 开始连续淡出后同款测法为 **0.14**，
+  带外（≥80px）像素与改动前逐行一致。选型对比图见 `~/.hermes-hari/workspace/rayview-pb-spike/`。
+- **Status**: Approved
+- **Refs**: `src/components/ProgressiveBlur.astro`（新增）、`src/components/Header.astro`、`src/layouts/Base.astro`
 
 ---
 
