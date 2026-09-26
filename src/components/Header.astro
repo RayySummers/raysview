@@ -2,6 +2,11 @@
 /**
  * 站点头部（RAY-465：加入语言切换按钮，界面文案改为按语言取词条）
  *
+ * RAY-483：顶栏自身不再提供底色与模糊（方案 E）—— 原来的 `color-mix(… 80%, transparent)`
+ * 与 `blur(12px)` 在 --header-height 处硬切，改由 ProgressiveBlur.astro 那条从 y=0 开始的
+ * 固定带子统一提供「底色渐隐 + 3 层渐进模糊」。这里的 `site-header` class 只给
+ * ProgressiveBlur 的 @supports 降级规则用（没有 backdrop-filter 的浏览器恢复 80% 实色底）。
+ *
  * 按钮顺序：搜索 → 语言 → 主题。三个按钮同尺寸（32×32 触摸区、18px 图标）、同色。
  *
  * 界面文案不在这里硬编码：`t()` 从 src/i18n/<lang>.json 取；
@@ -30,9 +35,10 @@ const searchIndexHref = `${langPrefix(lang)}/search.json`;
 ---
 
 <header
+  class="site-header"
   data-search-index={searchIndexHref}
   data-search-empty={t('header.searchEmpty')}
-  style={`height: var(--header-height); position: sticky; top: 0; z-index: 100; background: color-mix(in srgb, var(--color-bg) 80%, transparent); backdrop-filter: blur(12px); display: flex; align-items: center; justify-content: space-between; padding-left: var(--padding-x); padding-right: var(--padding-x);`}
+  style={`height: var(--header-height); position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding-left: var(--padding-x); padding-right: var(--padding-x);`}
 >
   <div style="display: flex; align-items: center;">
     <a href={homeHref} style="display: flex; align-items: center;">
