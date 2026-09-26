@@ -128,8 +128,8 @@
 
   /* 降级：完全没有 backdrop-filter 时（老 Safari / 老 Firefox），渐进模糊无从谈起，
      只剩一条纯渐隐的底色 —— 顶栏会退化成没有底色的透明条，文字直接压在正文上。
-     这种环境整条带子撤掉，让顶栏恢复原来的 80% 实色底（这里**不跟着降到 30%**：
-     没有模糊兜底时 30% 的底色压不住正文，文字读不了）。 */
+     这种环境整条带子撤掉，让顶栏恢复原来的 80% 实色底（这里**不跟着降到 45%**：
+     没有模糊兜底时 45% 的底色压不住正文，文字读不了）。 */
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     :global(header.site-header) {
       background: color-mix(in srgb, var(--color-bg) 80%, transparent);
