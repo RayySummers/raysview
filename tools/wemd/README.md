@@ -129,12 +129,15 @@ node convert.mjs "D:\文章.md" -o ./output/文章.html --map ./image-map.json
 对转换产物跑 32 项断言。断言里有一组**与文章绑定的数量**（图片张数、上标/定义条数、图注条数、脚注 URL 条数、关键内容顺序），按文章拆成 profile：
 
 ```bash
-node verify.mjs ./output/文章.html                    # 默认 profile = 最近一次转换的文章（当前 justthinking-03）
+node verify.mjs ./output/文章.html                    # 默认 profile = 最近一次转换的文章（当前 justthinking-04）
 node verify.mjs ./output/02-token.html --profile justthinking-02   # 验证旧文章
 ```
 
-- 已内置 `justthinking-02`（RAY-222 词元文章：4 图 / 19 上标 / 18 定义 / 2 图注 / 17 脚注 URL）与 `justthinking-03`（《你的蓝色和我的蓝色一样吗？》：6 图 / 6 上标 / 5 定义 / 0 图注 / 1 脚注 URL）；
+- 已内置 `justthinking-02`（RAY-222 词元文章：4 图 / 19 上标 / 18 定义 / 2 图注 / 17 脚注 URL）、`justthinking-03`（《你的蓝色和我的蓝色一样吗？》：6 图 / 6 上标 / 5 定义 / 0 图注 / 1 脚注 URL）与 `justthinking-04`（《广州地铁志愿有感》：1 图 / 0 上标 / 0 定义 / 0 图注 / 0 脚注 URL / 无外链）；
 - **转换新文章后**：在 `verify.mjs` 顶部的 `PROFILES` 里加一份新 profile，并把 `DEFAULT_PROFILE` 指向它；
+- **两个可选字段**（文章结构简单时才需要，缺省行为与旧文章一致）：
+  - `primaryMin`：装饰性主色 `#edd363` 的出现次数下限，**默认 5**。该次数随文章结构而变（H1 左色条 / H2 下划线 / 列表符号 / 参考资料标题各 1 处），只有单个 H1、无 H2 无列表的文章只有 1 处，此时显式写 `primaryMin: 1`；
+  - `links: 0`：声明全文既无正文链接也无脚注。此时「链接色」那条断言改为校验「`#b8860b` 无残留」（避免断言空转），而不是校验 `<a>` 颜色。含链接的文章不要写这个字段；
 - 未知 `--profile` 名称会报错并列出可选值（退出码 2），不会静默回落到默认值。
 
 全部通过时输出结尾为 `全部通过（共 32 项）`，退出码 0；有失败项则打印 `N 项未通过`，退出码 1。
@@ -143,11 +146,11 @@ node verify.mjs ./output/02-token.html --profile justthinking-02   # 验证旧�
 
 **样式合规（8 项）**：无 `<style>` 标签；无 class 属性；无 flex；无 `position:`；无 `::before`；无 `::after`；无 `max-content`；无 `overflow-x`。
 
-**主题色（4 项）**：无旧主色 `#FAAD14`（含 rgba 形式）；无旧主色 `#ffe576`；装饰性主色 `#edd363` 出现 ≥ 5 次；文字级强调色 `#b8860b` 出现次数 ≥「上标数 + 定义数 + 脚注 URL 数 + 链接数×2」（下限由 profile 与产物结构推出，不是固定常数）。
+**主题色（4 项）**：无旧主色 `#FAAD14`（含 rgba 形式）；无旧主色 `#ffe576`；装饰性主色 `#edd363` 出现次数 ≥ profile 的 `primaryMin`（默认 5）；文字级强调色 `#b8860b` 出现次数 ≥「上标数 + 定义数 + 脚注 URL 数 + 链接数×2」（下限由 profile 与产物结构推出，不是固定常数）。
 
 **对齐（3 项）**：无 `text-align: justify`；`text-align: left` 出现 ≥ 20 次；图注保持居中（条数 = profile 的图注数）。
 
-**链接与脚注 URL（2 项）**：所有 `<a>` 及其内层 span 均为 `#b8860b`（正文无链接时以脚注 URL 着色为准）；脚注 URL span 着色条数 = profile 值。
+**链接与脚注 URL（2 项）**：所有 `<a>` 及其内层 span 均为 `#b8860b`（正文无链接时以脚注 URL 着色为准；profile 写 `links: 0` 的纯文字文章改为校验 `#b8860b` 无残留）；脚注 URL span 着色条数 = profile 值。
 
 **图片（4 项）**：图片数量 = profile 值；全部为 imgdb 图床 URL；图床映射一一对应；**无本地路径引用**（`file://` / `src="./`）。
 

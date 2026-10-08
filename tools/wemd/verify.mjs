@@ -60,8 +60,29 @@ const PROFILES = {
       { label: 'AI 声明', needle: 'AI 声明' },
     ],
   },
+  // JustThinking #04《广州地铁志愿有感》（无脚注、无图注，仅封面 1 张图）
+  'justthinking-04': {
+    images: 1,
+    imageIds: [
+      '034cS5chAhL4O1FyzqnNO6', // 封面 JustThinking_04.png
+    ],
+    sups: 0,
+    defs: 0,
+    captions: 0,
+    fnUrls: 0,
+    links: 0, // 正文无外链、文末无脚注 → 改用「#b8860b 无残留」断言
+    primaryMin: 1, // 全文只有一个 H1（左色条 1 处），无 H2 / 无列表 / 无参考资料块
+    order: [
+      { label: '标题 H1', needle: '广州地铁志愿有感' },
+      { label: '封面图', needle: '034cS5chAhL4O1FyzqnNO6' },
+      { label: '开场', needle: '国庆假期' },
+      { label: '词表', needle: 'ride code' },
+      { label: '结论句', needle: '让志愿者闲着' },
+      { label: 'AI 声明', needle: 'AI 声明' },
+    ],
+  },
 };
-const DEFAULT_PROFILE = 'justthinking-03';
+const DEFAULT_PROFILE = 'justthinking-04';
 
 const argv = process.argv.slice(2);
 let file = null;
@@ -110,7 +131,9 @@ check('无旧主色 #FAAD14', !/#FAAD14/i.test(html) && !/rgba\(250,\s*173,\s*20
 check('无旧主色 #ffe576', !/#ffe576/i.test(html) && !/rgba\(255,\s*229,\s*118/i.test(html));
 const primaryCount = (html.match(/#edd363/g) || []).length;
 // 装饰性主色：#edd363 仅用于 H1 左色条、H2 下划线、列表符号、参考资料标题（文字级已改用 #b8860b）
-check(`主色 #edd363 出现 ${primaryCount} 次（装饰性）`, primaryCount >= 5);
+// 出现次数随文章结构而变（单 H1、无列表的文章只有 1 处），故下限写进 profile，默认 5
+const primaryMin = E.primaryMin ?? 5;
+check(`主色 #edd363 出现 ${primaryCount} 次（装饰性，下限 ${primaryMin}）`, primaryCount >= primaryMin);
 const accentCount = (html.match(/#b8860b/g) || []).length;
 // 文字级强调色的下限由文章结构推出：每个上标 / 脚注编号 / 脚注 URL span 各 1 处，每个链接 2 处（<a> + 内层 span）
 const accentMin = E.sups + E.defs + E.fnUrls + links.length * 2;
@@ -125,10 +148,15 @@ check(`图注保持居中（${capStyle.length} 条）`, capStyle.length === E.ca
 
 // 2c. 链接色：<a> 与内层 span 均为 #b8860b；脚注 URL span 着色
 // 正文可无链接（此时以脚注 URL 着色为准），但只要有链接就必须是深金
-check(
-  `链接色 #b8860b（<a> ${links.length} 个 + 脚注 URL span ${fnUrls} 条）`,
-  links.every((s) => s.includes('#b8860b')) && links.length + fnUrls >= 1
-);
+if (E.links === 0) {
+  // 全文既无正文链接也无脚注（如 #04）：断言改为「无文字级强调色残留」，避免断言空转
+  check(`无链接/无脚注文章：#b8860b 无残留（实际 ${accentCount} 次）`, accentCount === 0);
+} else {
+  check(
+    `链接色 #b8860b（<a> ${links.length} 个 + 脚注 URL span ${fnUrls} 条）`,
+    links.every((s) => s.includes('#b8860b')) && links.length + fnUrls >= 1
+  );
+}
 check(`脚注 URL 着色 ${fnUrls} 条`, fnUrls === E.fnUrls);
 
 // 3. 图片：全部图床 URL，与映射一一对应
