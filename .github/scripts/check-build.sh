@@ -65,10 +65,40 @@ ai_pages=$(grep -rl '<details class="ai-disclosure"' "$DIST_DIR" --include='*.ht
 ai_chevrons=$(grep -rho 'class="ms-icon ai-disclosure__chevron"' "$DIST_DIR" --include='*.html' | wc -l || true)
 [[ "$ai_chevrons" -eq "$ai_pages" ]] || fail "AI 声明区的 chevron 图标有 $ai_chevrons 个，折叠区有 $ai_pages 个，数量对不上（RAY-544）"
 
+# RAY-547：JT#04《广州地铁志愿有感》的中英对照词表必须逐行渲染。
+# 词表在源文件里是同一个段落里的连续多行，靠行尾两个空格（CommonMark 硬换行）分行；
+# 行尾空格一旦被删掉（或被编辑器 trim），Markdown 会把整块并成一个段落 ——
+# 页面上就是一整行，正是 Ray 10/9 报的那个问题。这里直接对构建产物断言：
+# 词表段落里的 <br> 数 = 源文件词表行数 - 1。行数从源文件数出来，不写死，
+# 以后增删词条不用改这个脚本。
+check_wordlist() { # <源文件> <构建产物 html> <词表首行> <语言标签>
+  local src="$1" file="$2" first_entry="$3" label="$4"
+  [[ -f "$file" ]] || fail "构建产物缺少 $file（RAY-547）"
+  local src_lines block brs
+  src_lines=$(awk -v first="$first_entry" 'index($0, first) == 1 { f = 1 } f && NF == 0 { exit } f { print }' "$src" | wc -l)
+  [[ "$src_lines" -gt 1 ]] || fail "$label 源文件里找不到词表区块（首行「$first_entry」）：$src（RAY-547）"
+  # 词表段落里除 <br> 外没有别的标签，所以「<p> + 非 < 文本 + 若干 <br>」就能整段捞出来
+  block=$(tr -d '\n' < "$file" | grep -o "<p>[^<]*\(<br>[^<]*\)*</p>" | grep -F "$first_entry" | head -1 || true)
+  [[ -n "$block" ]] || fail "$label 文章页里找不到词表段落：首行「$first_entry」不在任何一个无属性 <p> 里（RAY-547）"
+  # 一个 <br> 都没有时 grep 退出码是 1，这里必须吞掉：否则 set -e 会在 fail 之前就把脚本掐掉，报不出原因
+  brs=$(grep -o '<br>' <<<"$block" | wc -l || true)
+  [[ "$brs" -eq "$((src_lines - 1))" ]] \
+    || fail "$label 词表段落只有 $brs 个硬换行，源文件是 $src_lines 行（预期 $((src_lines - 1)) 个）——词表被并成整行了（RAY-547）"
+}
+check_wordlist \
+  "$REPO_ROOT/src/content/posts/justthinking/justthinking-04-metro-volunteer.md" \
+  "$DIST_DIR/posts/justthinking/justthinking-04-metro-volunteer/index.html" \
+  '乘车码——ride code' '中文'
+check_wordlist \
+  "$REPO_ROOT/src/content/posts-en/justthinking/justthinking-04-metro-volunteer.md" \
+  "$DIST_DIR/en/posts/justthinking/justthinking-04-metro-volunteer/index.html" \
+  'ride code——乘车码' '英文'
+
 echo "  dist 体积 : $(du -sh "$DIST_DIR" | cut -f1)"
 echo "  HTML 页面 : $html_count"
 echo "  公众号图标: $wechat_pages 个页面，src=/images/wechat-icon.png"
 echo "  AI 声明区 : $ai_pages 个页面（源文件 $ai_src 篇），默认展开 + chevron"
+echo "  词表逐行  : JT#04 中英词表逐行渲染（硬换行数 = 源文件行数 - 1）"
 echo "  images    : $(find "$DIST_DIR/images" -type f | wc -l) 个文件"
 echo "  fonts     : $(find "$DIST_DIR/fonts" -type f | wc -l) 个文件"
 echo "  assets    : $(find "$DIST_DIR/assets" -type f | wc -l) 个文件"

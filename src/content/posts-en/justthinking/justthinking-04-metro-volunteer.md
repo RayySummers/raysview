@@ -38,20 +38,20 @@ Among the foreign travelers at Airport North, many come from the Middle East, So
 
 Exam English is one thing; real English is another. Terminal, interchange, transfer, change, currency exchange, banknotes... words that exams rarely touch—I learned them all on this job.
 
-ride code——乘车码
-payment password——支付密码
-terminal——终点站
-interchange——换乘站
-transfer——换乘
-change——找零
-currency exchange——外汇兑换
-banknotes——纸币（as the ticket machines put it; "bills" in American English）
-n yuan notes——n 面额的纸币（same）
-platform——站台
-concourse——站厅
-tap in——进站
-tap out——出站
-last train——末班车
+ride code——乘车码  
+payment password——支付密码  
+terminal——终点站  
+interchange——换乘站  
+transfer——换乘  
+change——找零  
+currency exchange——外汇兑换  
+banknotes——纸币（as the ticket machines put it; "bills" in American English）  
+n yuan notes——n 面额的纸币（same）  
+platform——站台  
+concourse——站厅  
+tap in——进站  
+tap out——出站  
+last train——末班车  
 …
 
 After answering a foreigner's question, I'd smile, nod, and send them off. Only before my last shift did I learn to close with "have a good one."
