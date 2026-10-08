@@ -25,8 +25,8 @@ const t = useTranslations(lang);
   <div>
     {posts.map((post) => (
       <article style="margin-bottom: var(--space-3);">
-        <a href={hrefFor(`/posts/${post.id}/`, lang)} style="display: block; text-decoration: none;">
-          <h3 style="font-size: var(--text-base); font-weight: 320; color: var(--color-text-primary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
+        <a href={hrefFor(`/posts/${post.id}/`, lang)} class="post-title-link">
+          <h3 class="post-title">
             {post.data.title}
           </h3>
         </a>
@@ -39,3 +39,28 @@ const t = useTranslations(lang);
 
   <a href={hrefFor('/', lang)} style="display: inline-block; margin-top: var(--space-6); font-size: var(--text-sm); color: var(--color-text-secondary);">{t('tags.back')}</a>
 </Base>
+
+<style>
+  /* RAY-525：文章标题 hover = 变粗（320 → 700、100ms）＋ 下划线出现（transparent → currentColor），
+     与 PostListPage / SeriesPage 同款，参数对齐 .nav-link（PostListPage 顶部系列链接）。 */
+  .post-title-link {
+    display: block;
+    text-decoration: none;
+  }
+  .post-title {
+    width: fit-content;
+    font-size: var(--text-base);
+    font-weight: 320;
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 3px;
+    transition:
+      text-decoration-color var(--transition-fast),
+      font-weight 100ms ease-out;
+  }
+  .post-title:hover {
+    font-weight: 700;
+    text-decoration-color: currentColor;
+  }
+</style>
