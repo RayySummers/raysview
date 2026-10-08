@@ -747,6 +747,20 @@ margin-right: auto;
 - **Status**: Approved（Ray 2026-10-08 决定先试这版，数值取自其文档排版惯例）
 - **Refs**: `src/styles/global.css`；逐档行高表与 before/after 读数见 `docs/qa/RAY-528/README.md`
 
+### 2026-10-08 (RAY-529): 页面大标题字重 700 → 520（SemiBold 对位档）
+- **Decision**: 文章页标题（`ArticlePage.astro` 的 `h1.post-title`，40px）与系列页 H1
+  （`SeriesPage.astro`，32px）的 `font-weight` 由 **700 → 520**。字号 / 行高 1.1 /
+  `--tracking-tight` / `opsz` / 间距一律不动；正文内嵌 `h1`（`article.heti h1`，32px）**不在本次范围**。
+- **Rationale**: Ray 2026-10-08「文章标题可不可以也不要那么粗？改为 SemiBold 那附近也比较合适。」
+  520 是站内既有刻度（RAY-408 映射表：520＝SemiBold 对位 / 620＝hover 加粗档 / 630＝Bold 对位 /
+  700＝Heavy），不引入新档位。页标题与正文 h2（24px、同为 520）差 1.67× 字号，层级仍由字号承担。
+  未取 620 —— 那是 RAY-527 为 hover 定义的档位，静止态沿用会让「静止 520 / 交互 620」的语义失效。
+- **Status**: In review（RAY-529）
+- **Refs**: `src/components/pages/ArticlePage.astro`、`src/components/pages/SeriesPage.astro`；
+  逐页读数、窄屏回流与目视校准见 `docs/qa/RAY-529/README.md`
+- **Note**: 上方 Type Scale 表的 Weight 列仍是 **RAY-408 之前的原始设计值**（400 / 600），
+  站内实际生效的字重映射以 `src/styles/global.css` 的注释与代码为准。
+
 ---
 
 ## 🔗 Reference Links
