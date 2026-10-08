@@ -313,14 +313,14 @@ Roboto Flex is a variable font loaded with the `opsz` and `wght` axes (`@fontsou
 | text-xs | 12px | 400 | 1.5 | Meta, dates, tags |
 | text-sm | 14px | 400 | 1.5 | Secondary body |
 | text-base | 16px | 400 | 1.65 | Primary body |
-| text-lg | 18px | 400 | **1.6（中）/ 1.2（英）** | Article body — `article.heti` 内 `p`/`li`（RAY-528，2026-10-08） |
+| text-lg | 18px | 400 | **1.8（中）/ 1.2（英）** | Article body — `article.heti` 内 `p`/`li`（RAY-528 上线 1.6 → RAY-530 复核原帖后重校为 1.8，2026-10-08） |
 | text-xl | 24px | 600 | 1.3 | h3 |
 | text-2xl | 32px | 600 | 1.2 | h2 |
 | text-3xl | 48px | 600 | 1.1 | h1 (hero, e.g. videos 敬请期待) |
 
 > **Article page title** — `--post-title-size: 40px` (page-scoped token in `src/pages/posts/[...slug].astro`), applied to the article H1 via `.post-title`. Slightly smaller than `--text-3xl` (48px) so the reading page feels calmer; the global token stays 48px for hero contexts.
 >
-> **文章正文行高**只认 RAY-528 口径（中文 **1.6** / 英文 **1.2**），只作用于 `article.heti` 内的 `p`/`li`；
+> **文章正文行高**只认 RAY-530 口径（中文 **1.8** / 英文 **1.2**）——RAY-528 上线 1.6，同日复核原帖后重校为 1.8；只作用于 `article.heti` 内的 `p`/`li`；
 > 文章以外的正文（头部 / 卡片 / 列表 / 标签）仍是中文 1.8（`:lang(zh)`）、英文 1.65（`html`）。
 > 文章内的标题、代码块、引用块另有来源，见 [Chinese Typography](#chinese-typography)。
 
@@ -339,12 +339,12 @@ For Chinese text, increase line-height to 1.8 for readability:
 ```
 （全站口径，**2026-10-08 起保持不变**：头部 / 卡片 / 列表 / 标签 / 文章内代码块与引用块都走它。）
 
-文章正文（阅读页）另有一套行高 —— **中文 1.6、英文 1.2**（2026-10-08，RAY-528 起；此前中文 1.9，英文继承文章容器的 1.65）：
+文章正文（阅读页）另有一套行高 —— **中文 1.8、英文 1.2**（2026-10-08：RAY-528 上线 1.6，同日 RAY-530 复核原帖后重校为 1.8；更早中文 1.9，英文继承文章容器的 1.65）：
 
 ```css
 article.heti p:lang(zh),
 article.heti li:lang(zh) {
-  line-height: 1.6;   /* 18px → 28.8px；改动前 1.9 → 34.2px */
+  line-height: 1.8;   /* 18px → 32.4px；RAY-528 的 1.6 → 28.8px，RAY-530 重校回 1.8 */
 }
 
 article.heti p:lang(en),
@@ -353,11 +353,13 @@ article.heti li:lang(en) {
 }
 ```
 
-- **依据**：方框字上下没有升降部，需要更多行间呼吸（1.6×）；西文有小写升降部，行距可以更紧（1.2×）。
+- **依据**：方框字上下没有升降部，需要更多行间呼吸（1.8×）；西文有小写升降部，行距可以更紧（1.2×）。
+  中文取原帖「字号 1.5–2 倍」区间里偏松的一档：该帖 10 磅配 18 磅（1.8×）自评为「挺好」，1.6 只是其「省版面」偏好值。
 - **固定值原则**：两条规则都用**无单位倍数**，每个字号各自按自己的 `font-size` 算出固定行高
-  （正文 18px → 中文 28.8px / 英文 21.6px；脚注 14px → 22.4px / 16.8px），不被父级倍数连带缩放。
+  （正文 18px → 中文 32.4px / 英文 21.6px；脚注 14px → 25.2px / 16.8px），不被父级倍数连带缩放。
 - **范围**：只作用于文章正文 `p`/`li`（`blockquote` 内的 `p` 同样命中）。文章内标题（h1–h6）、代码块、引用块
-  由 `heti.min.css`（CDN，固定 px）与本仓库既有规则接管，本单不动；逐档实测表见 `docs/qa/RAY-528/`。
+  由 `heti.min.css`（CDN，固定 px）与本仓库既有规则接管，本单不动；逐档实测表见 `docs/qa/RAY-530/`（1.8 重校）
+  与 `docs/qa/RAY-528/`（1.6 基线）。
 
 ---
 
@@ -760,6 +762,19 @@ margin-right: auto;
   逐页读数、窄屏回流与目视校准见 `docs/qa/RAY-529/README.md`
 - **Note**: 上方 Type Scale 表的 Weight 列仍是 **RAY-408 之前的原始设计值**（400 / 600），
   站内实际生效的字重映射以 `src/styles/global.css` 的注释与代码为准。
+
+### 2026-10-08 (RAY-530): 中文正文行高 1.6 → 1.8（原帖复核后重校）
+- **Decision**: `src/styles/global.css` 里 `article.heti p:lang(zh), article.heti li:lang(zh)` 由
+  RAY-528 的 **1.6 → 1.8**；英文 `article.heti p:lang(en), article.heti li:lang(en)` 保持 **1.2 不动**。
+  其余一切不动：全局 `:lang(zh) 1.8`、文章容器内联 1.65、`pre` 1.6、`blockquote` 1.1、heti 标题固定 px。
+- **Rationale**: RAY-528 上线 1.6 后 Ray 目视判「体感偏紧」。回查取数依据的原帖
+  （小红书 505808518「文字排版要点／易错点 ②行距」）逐句复核：原帖给的区间是「字号的 **1.5–2 倍**」，
+  1.6 只是作者「既能保证易读性，又能节省版面」的**偏好值**；该帖自己的演示里 10 磅配 18 磅
+  （**1.8×**）被标为「**挺好**」。屏幕长行语境下取更松一档，故重校为 1.8。Ray 已拍板：中文试 1.8，英文保持 1.2。
+  实测（Playwright + 无头 Chrome，1280×900）：中文正文 18px **28.8 → 32.4px**、
+  中文脚注 14px **22.4 → 25.2px**、英文正文 18px **21.6px 不变**；换行点与行数零漂移、无横向溢出。
+- **Status**: In review（RAY-530）
+- **Refs**: `src/styles/global.css`；逐档行高表与 before/after 读数见 `docs/qa/RAY-530/README.md`
 
 ---
 
