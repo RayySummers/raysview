@@ -1,18 +1,20 @@
 ---
-// 英文标签归档页 `/en/tags/<tag>/`：标签从 posts-en 汇总。
-// 第一阶段该集合是空的，所以不生成任何标签页；中文版标签页的「英文」项因此也是灰的。
+// 英文标签归档页 `/en/tags/<tag>/`：标签从 posts-en 汇总，目录名用英文写法（RAY-548）。
+// 标签写法由 src/tags-map.ts 的对照表决定；中文版标签页的「英文」项是否点亮，
+// 看该标签的英文写法在 posts-en 里出现过没有。
 import TagPage from '../../../components/pages/TagPage.astro';
 import { getCollection } from 'astro:content';
+import { tagsInLang } from '../../../tags-map';
 
 export async function getStaticPaths() {
   const posts = await getCollection('postsEn');
-  const tags = [...new Set(posts.flatMap(post => post.data.tags || []))];
+  const tags = [...new Set(tagsInLang(posts.flatMap(post => post.data.tags || []), 'en'))];
   return tags.map(tag => ({
     params: { tag },
     props: {
       tag,
       posts: posts
-        .filter(p => p.data.tags?.includes(tag))
+        .filter(p => tagsInLang(p.data.tags, 'en').includes(tag))
         .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
     }
   }));

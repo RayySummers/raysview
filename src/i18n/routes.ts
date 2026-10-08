@@ -11,7 +11,9 @@
  *      `posts-en` 的条目用 frontmatter `translationOf` 指向中文原文（id 相同时可省略）。
  *      现阶段 `posts-en` 只有目录骨架、没有正文，所以中文文章页的「英文」项一律置灰 ——
  *      这正是第二阶段翻译完成后会自动点亮的地方，不需要再改一行代码。
- *   3. 标签页 `/tags/<tag>/`：该标签在目标语言的文章集合里出现过，才有对应页面。
+ *   3. 标签页 `/tags/<tag>/`：先按 `src/tags-map.ts` 的对照表换成目标语言的标签写法
+ *      （中文 `/tags/志愿服务/` ↔ 英文 `/en/tags/Volunteering/`），再看该标签在目标语言的
+ *      文章集合里出现过没有 —— 出现过才有对应页面。
  *   4. 其余静态页面（首页 / 关于 / 视频 / 文章索引 / 系列索引）：中英各一份，见 STATIC_SLUGS。
  *   5. 其它一切路径（例如 404 页面实际收到的那个不存在的地址）：只有当前语言。
  */
@@ -25,6 +27,7 @@ import {
   type Lang,
 } from './index';
 import { isSeries, SERIES } from '../series';
+import { assertEnglishTags, tagInLang } from '../tags-map';
 
 /** 中英各有一份的静态页面（语言无关路径） */
 const STATIC_SLUGS = new Set<string>([
@@ -120,6 +123,9 @@ export function getRouteIndex(): Promise<RouteIndex> {
       if (zhIds.has(source)) translations.set(source, post.id);
       originals.set(post.id, source);
     }
+    // 英文集合里还写着中文标签 = 对照表漏登记，英文页会直接显示中文 —— 构建时喊停（RAY-548）
+    const enTags = collectTags(enPosts);
+    assertEnglishTags(enTags);
     return {
       translations,
       originals,
@@ -129,7 +135,7 @@ export function getRouteIndex(): Promise<RouteIndex> {
       },
       tags: {
         zh: collectTags(zhPosts),
-        en: collectTags(enPosts),
+        en: enTags,
       },
     };
   })();
@@ -155,10 +161,12 @@ function resolveSlug(
     }
   }
 
-  // 标签页
+  // 标签页：中英的标签写法不同（对照表见 src/tags-map.ts），先换成目标语言的标签再找页面
   if (slug.startsWith('/tags/')) {
     const tag = slug.slice('/tags/'.length).replace(/\/$/, '');
-    return tag && index.tags[to].has(tag) ? `/tags/${tag}/` : null;
+    if (!tag) return null;
+    const target = tagInLang(tag, to);
+    return index.tags[to].has(target) ? `/tags/${target}/` : null;
   }
 
   // 静态页面

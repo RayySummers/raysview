@@ -20,7 +20,7 @@
 import Icon from './Icon.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import { useTranslations, langPrefix, type Lang } from '../i18n';
-import type { LanguageLink } from '../i18n/routes';
+import { hrefFor, type LanguageLink } from '../i18n/routes';
 
 interface Props {
   /** 界面语言 */
@@ -35,7 +35,10 @@ const t = useTranslations(lang);
 const currentPath = Astro.url.pathname;
 const base = import.meta.env.BASE_URL || '/';
 const logoSrc = base === '/' ? '/RayView_transparent.svg' : `${base}/RayView_transparent.svg`;
-const homeHref = base === '/' ? '/' : `${base}/`;
+// RAY-548：logo 是「回首页」，地址必须跟着界面语言走 —— 中文 `/`、英文 `/en/`。
+// 原来写死站点根，英文页点 logo 会掉回中文首页。这里只改链接：logoSrc 是静态资源，
+// 不能走 hrefFor（RAY-467：路由函数会拼出 `/RayView_transparent.svg/`）。
+const homeHref = hrefFor('/', lang);
 const searchIndexHref = `${langPrefix(lang)}/search.json`;
 ---
 

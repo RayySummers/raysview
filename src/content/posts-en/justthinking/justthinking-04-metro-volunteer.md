@@ -3,8 +3,8 @@ title: "Metro Volunteering | JustThinking #04"
 date: 2026-10-08
 tags:
   - JustThinking
-  - 志愿服务
-  - 地铁
+  - Volunteering
+  - Metro
 banner: /images/posts/justthinking-04-metro-volunteer-banner-en.jpg
 translationOf: justthinking/justthinking-04-metro-volunteer
 excerpt: "Over the National Day holiday, I spent a few days as a bilingual volunteer with the Guangzhou Metro. This piece is about the people I met, the English I learned, and the conclusion I only reached afterwards: a better system should leave its volunteers idle."

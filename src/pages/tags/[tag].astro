@@ -2,16 +2,19 @@
 // 标签归档页 `/tags/<tag>/`：标签从中文文章的 frontmatter 汇总
 import TagPage from '../../components/pages/TagPage.astro';
 import { getCollection } from 'astro:content';
+import { tagsInLang } from '../../tags-map';
 
 export async function getStaticPaths() {
   const posts = await getCollection('posts');
-  const tags = [...new Set(posts.flatMap(post => post.data.tags || []))];
+  // RAY-548：标签先按对照表规范化（中文页取中文写法）再建路由，
+  // 保证目录名与文章页里的标签链接是同一个写法
+  const tags = [...new Set(tagsInLang(posts.flatMap(post => post.data.tags || []), 'zh'))];
   return tags.map(tag => ({
     params: { tag },
     props: {
       tag,
       posts: posts
-        .filter(p => p.data.tags?.includes(tag))
+        .filter(p => tagsInLang(p.data.tags, 'zh').includes(tag))
         .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
     }
   }));
