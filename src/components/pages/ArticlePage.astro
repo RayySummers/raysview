@@ -4,13 +4,18 @@
  *
  * 中文文章来自 `posts`、英文文章来自 `posts-en`，模板同一份；
  * 页面文件只负责 `getStaticPaths` 从哪个集合取数据。
+ *
+ * RAY-545：h1 去掉「 | 系列名 #NN」后缀，标签行里的系列标签渲染成 pill；
+ * `<title>` / OG / JSON-LD 仍用 frontmatter 原标题（默认口径，可再调）。
  */
 import Base from '../../layouts/Base.astro';
 import { render, type CollectionEntry } from 'astro:content';
 import TableOfContents from '../TableOfContents.astro';
 import Icon from '../Icon.astro';
+import SeriesPill from '../SeriesPill.astro';
 import { langFromPath, useTranslations } from '../../i18n';
 import { hrefFor } from '../../i18n/routes';
+import { displayPostTitle, displayTags } from '../../series';
 import { tagsInLang } from '../../tags-map';
 
 interface Props {
@@ -115,17 +120,21 @@ const articleLd = {
   )}
 
   <h1 class="post-title" style="font-size: var(--post-title-size); font-weight: 620; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-3); line-height: 1.1; font-family: var(--font-sans); font-optical-sizing: auto;">
-    {post.data.title}
+    {displayPostTitle(post.data.title)}
   </h1>
 
   <div style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-5);">
     <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
     {tagsInLang(post.data.tags, lang).length > 0 && (
       <span style="margin-left: var(--space-2);">
-        {tagsInLang(post.data.tags, lang).map((tag, i) => (
+        {displayTags(tagsInLang(post.data.tags, lang)).map((entry, i) => (
           <>
             {i > 0 && ' '}
-            <a href={hrefFor(`/tags/${tag}/`, lang)} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">#{tag}</a>
+            {entry.series ? (
+              <SeriesPill series={entry.series} />
+            ) : (
+              <a href={hrefFor(`/tags/${entry.tag}/`, lang)} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">#{entry.tag}</a>
+            )}
           </>
         ))}
       </span>
