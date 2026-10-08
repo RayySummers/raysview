@@ -311,11 +311,20 @@ html {
   line-height: 1.8;
 }
 
-/* 文章正文中文行高：1.8 → 1.9，仅作用于文章正文 p/li（blockquote 内的 p 同样命中）。
-   不改全局 :lang(zh)，避免头部/卡片/代码块等其余部分的行高被放大。 */
+/* 文章正文行高（RAY-528，2026-10-08 起）：中文 1.6、英文 1.2。
+   方框字上下没有升降部、需要更多行间呼吸（1.6）；西文有小写升降部、行距可以更紧（1.2）。
+   两条规则都用无单位倍数：每个字号各自按自己的 font-size 算出固定行高
+   （正文 18px → 中文 28.8px / 英文 21.6px），不被父级倍数连带缩放。
+   只作用于文章正文 p/li（blockquote 内的 p 同样命中），不改全局 :lang(zh)，
+   避免头部/卡片/列表/标签等其余部分的行高被改动。 */
 article.heti p:lang(zh),
 article.heti li:lang(zh) {
-  line-height: 1.9;
+  line-height: 1.6;
+}
+
+article.heti p:lang(en),
+article.heti li:lang(en) {
+  line-height: 1.2;
 }
 
 article.heti p {
