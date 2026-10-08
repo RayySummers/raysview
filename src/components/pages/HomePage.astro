@@ -46,7 +46,10 @@ const nav = [
 </Base>
 
 <style>
-  /* RAY-408 精确映射 + RAY-412 校正：首页 3 tab rest 350→320 Regular（400↔320，330→320 微调实现 CJK 与 Roboto 400 视觉等重），hover 800→700 Heavy（800↔700，中英文同名等重） */
+  /* RAY-408 精确映射 + RAY-412 校正：首页 3 tab rest 350→320 Regular（400↔320，330→320 微调实现 CJK 与 Roboto 400 视觉等重）。
+     RAY-527 降档：hover 由 700 收到 620（＝静止 320 ＋ 300 档，约 SemiBold 观感）——
+     320 直接跳 700 在中英文两支上都偏 Black，Ray 2026-10-08 反馈 SemiBold 档即够。
+     620 落在 MiSans VF wght 轴 150–700 与 Roboto Flex 100–1000 之内，两支都无需取整夹取。 */
   .nav-link {
     position: relative;
     display: inline-block;
@@ -67,7 +70,7 @@ const nav = [
     transition: transform 200ms ease-out;
   }
   .nav-link:hover {
-    font-weight: 700;
+    font-weight: 620; /* RAY-527：320 → 620（+300 档），过渡参数不变（100ms ease-out，见上） */
   }
   .nav-link:hover::after {
     transform: scaleX(1);

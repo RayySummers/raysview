@@ -41,8 +41,9 @@ const t = useTranslations(lang);
 </Base>
 
 <style>
-  /* RAY-525：文章标题 hover = 变粗（320 → 700、100ms）＋ 下划线出现（transparent → currentColor），
-     与 PostListPage / SeriesPage 同款，参数对齐 .nav-link（PostListPage 顶部系列链接）。 */
+  /* RAY-525：文章标题 hover = 变粗（320 → 620、100ms）＋ 下划线出现（transparent → currentColor），
+     与 PostListPage / SeriesPage 同款，参数对齐 .nav-link（PostListPage 顶部系列链接）。
+     RAY-527：变粗档由 700 降到 620（＝静止 320 ＋ 300，约 SemiBold 观感）。 */
   .post-title-link {
     display: block;
     text-decoration: none;
@@ -60,7 +61,7 @@ const t = useTranslations(lang);
       font-weight 100ms ease-out;
   }
   .post-title:hover {
-    font-weight: 700;
+    font-weight: 620; /* RAY-527：320 → 620（+300 档），与 .nav-link 同档 */
     text-decoration-color: currentColor;
   }
 </style>
