@@ -327,7 +327,8 @@ Roboto Flex is a variable font loaded with the `opsz` and `wght` axes (`@fontsou
 > 「链接 hover 时的加粗效果就是我想要文章标题多粗」——620 的语义由「hover 专属」变为「hover 与页面大标题共用」；
 > 其余刻度不变（正文静止 320、正文 h2/h3 520、列表标题 hover 620）。决策记录见下方 `2026-10-08 (RAY-531)` 条目。
 >
-> **文章正文行高**只认 RAY-530 口径（中文 **1.8** / 英文 **1.2**）——RAY-528 上线 1.6，同日复核原帖后重校为 1.8；只作用于 `article.heti` 内的 `p`/`li`；
+> **文章正文行高**只认 RAY-550 口径（中文 **1.8** / 英文 **1.4**）——中文由 RAY-530 复核原帖后重校为 1.8，
+> 英文由 RAY-550 定为 1.4（Ray 判 RAY-528/530 的 1.2 太密）；只作用于 `article.heti` 内的 `p`/`li` 与折叠区 summary；
 > 文章以外的正文（头部 / 卡片 / 列表 / 标签）仍是中文 1.8（`:lang(zh)`）、英文 1.65（`html`）。
 > 文章内的标题、代码块、引用块另有来源，见 [Chinese Typography](#chinese-typography)。
 
@@ -346,7 +347,7 @@ For Chinese text, increase line-height to 1.8 for readability:
 ```
 （全站口径，**2026-10-08 起保持不变**：头部 / 卡片 / 列表 / 标签 / 文章内代码块与引用块都走它。）
 
-文章正文（阅读页）另有一套行高 —— **中文 1.8、英文 1.2**（2026-10-08：RAY-528 上线 1.6，同日 RAY-530 复核原帖后重校为 1.8；更早中文 1.9，英文继承文章容器的 1.65）：
+文章正文（阅读页）另有一套行高 —— **中文 1.8、英文 1.4**（2026-10-09 RAY-550：英文 1.2 → 1.4，Ray 判 1.2 太密；中文口径 2026-10-08 由 RAY-528 上线 1.6、同日 RAY-530 复核原帖后重校为 1.8，此后未动；更早中文 1.9，英文继承文章容器的 1.65）：
 
 ```css
 article.heti p:lang(zh),
@@ -356,17 +357,23 @@ article.heti li:lang(zh) {
 
 article.heti p:lang(en),
 article.heti li:lang(en) {
-  line-height: 1.2;   /* 18px → 21.6px；改动前继承 1.65 → 29.7px */
+  line-height: 1.4;   /* 18px → 25.2px；RAY-550 的 1.2 → 21.6px，更早继承 1.65 → 29.7px */
 }
+
+/* 「AI 声明」折叠区 summary 跟随正文段落：中文 1.8 / 英文 1.4（RAY-544 起，RAY-550 同步英文档） */
+article.heti .ai-disclosure__summary:lang(zh) { line-height: 1.8; }
+article.heti .ai-disclosure__summary:lang(en) { line-height: 1.4; }
 ```
 
-- **依据**：方框字上下没有升降部，需要更多行间呼吸（1.8×）；西文有小写升降部，行距可以更紧（1.2×）。
+- **依据**：方框字上下没有升降部，需要更多行间呼吸（1.8×）；西文有小写升降部，行距可以更紧
+  （RAY-550 起 1.4×——Ray 原话「英文行高 1.4 might be cool」，1.2 判为太密）。
   中文取原帖「字号 1.5–2 倍」区间里偏松的一档：该帖 10 磅配 18 磅（1.8×）自评为「挺好」，1.6 只是其「省版面」偏好值。
 - **固定值原则**：两条规则都用**无单位倍数**，每个字号各自按自己的 `font-size` 算出固定行高
-  （正文 18px → 中文 32.4px / 英文 21.6px；脚注 14px → 25.2px / 16.8px），不被父级倍数连带缩放。
-- **范围**：只作用于文章正文 `p`/`li`（`blockquote` 内的 `p` 同样命中）。文章内标题（h1–h6）、代码块、引用块
-  由 `heti.min.css`（CDN，固定 px）与本仓库既有规则接管，本单不动；逐档实测表见 `docs/qa/RAY-530/`（1.8 重校）
-  与 `docs/qa/RAY-528/`（1.6 基线）。
+  （正文 18px → 中文 32.4px / 英文 25.2px；脚注 14px → 25.2px / 19.6px），不被父级倍数连带缩放。
+- **范围**：只作用于文章正文 `p`/`li`（`blockquote` 内的 `p` 同样命中）与「AI 声明」折叠区 `summary`。
+  文章内标题（h1–h6）、代码块、引用块
+  由 `heti.min.css`（CDN，固定 px）与本仓库既有规则接管，本单不动；逐档实测表见 `docs/qa/RAY-550/`（英文 1.4）
+  、`docs/qa/RAY-530/`（中文 1.8 重校）与 `docs/qa/RAY-528/`（1.6 基线）。
 
 ---
 
@@ -840,6 +847,25 @@ margin-right: auto;
 - **Note**: mock 的文章页把 pill 单独放在 meta 行上方、标签行里仍留 `#JustThinking`；
   本次按需求正文「标签行里第一条命中 SERIES_TAGS 的 tag 渲染为填充胶囊」实现（pill 在标签行内、
   不再重复出现原系列标签）。若 Ray 想按 mock 的位置摆放，改一行即可。
+
+### 2026-10-09 (RAY-550): 英文正文行高 1.2 → 1.4（Ray 挑定）
+- **Decision**: `src/styles/global.css` 里 `article.heti p:lang(en), article.heti li:lang(en)` 由
+  RAY-528/530 的 **1.2 → 1.4**；同一上下文的第二处 1.2 ——「AI 声明」折叠区
+  `article.heti .ai-disclosure__summary:lang(en)`（RAY-544 新增）同步 **1.2 → 1.4**。
+  全库 grep 确认英文文章上下文里只有这两条 `line-height: 1.2`（构建产物 164 条 CSS 规则中 `:lang(en)` 仅此两条）。
+  其余一切不动：中文 `article.heti p/li:lang(zh)` 保持 **1.8**、summary:lang(zh) 保持 1.8、
+  全局 `:lang(zh) 1.8`、文章容器内联 1.65、`pre` 1.6、`blockquote` 自身 1.1、heti 标题固定 px。
+- **Rationale**: Ray 2026-10-09 挑定（原话「英文行高 1.4 might be cool」）——RAY-528 上线的 1.2 判为太密。
+  1.4 仍是**无单位倍数**，逐档固定行高：正文 18px → **25.2px**、脚注 14px → **19.6px**、
+  段落内行内 code（0.9em=16.2px）随段落倍数 → 22.68px；中英各走各的倍数，互不连带。
+  实测（Playwright + 无头 Chrome，1280×900，before/after 两份 `pnpm build` 产物）：
+  英文正文 18px **21.6 → 25.2px**（1.2 → 1.4）、英文脚注 14px **16.8 → 19.6px**、
+  折叠区 summary **21.6 → 25.2px**（仍是单行，盒高＝行高）；中文侧正文 18px **32.4px 不变**、
+  脚注 14px 25.2px 不变，中文明暗两主题截图 before/after **逐字节相同**；
+  英文 38 个 `p`/`li` 的行盒数**零变化**（换行点不漂移）；两份产物 46 个 HTML 页（归一化 CSS 文件名 hash 后）
+  **逐字节相同**；无横向溢出、0 JS 报错；`pnpm build` + `.github/scripts/check-build.sh` 通过。
+- **Status**: In review（RAY-550）
+- **Refs**: `src/styles/global.css`；逐档行高表、before/after 读数与明暗截图见 `docs/qa/RAY-550/README.md`
 
 ---
 
