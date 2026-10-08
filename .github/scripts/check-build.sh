@@ -47,9 +47,28 @@ done <<<"$wechat_srcs"
 [[ -f "$DIST_DIR/images/wechat-icon.png" ]] || fail "构建产物缺少 $DIST_DIR/images/wechat-icon.png"
 wechat_pages=$(grep -rl "$WECHAT_ICON_SRC" "$DIST_DIR" --include='*.html' | wc -l)
 
+# RAY-544：文章页的「AI 声明」区必须是可折叠的 <details class="ai-disclosure" open>：
+# 默认展开、summary 里带 chevron。区块由 astro.config.mjs 的 rehypeAiDisclosure 插件在
+# 渲染层统一生成（历史文章内容不改），所以这里断言三件事：
+#   1. 每一处折叠区都带 open（默认展开）；
+#   2. 折叠区所在页面数与源文件里带「※ AI 声明 / ※ AI Disclosure」的文章数一致 ——
+#      这条能抓住「插件只对部分文章生效」（justthinking-02 标题与说明同段的情况就是这样）。
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+ai_src=$(grep -rlE '※ \*\*AI (声明|Disclosure)\*\*' "$REPO_ROOT/src/content/posts" "$REPO_ROOT/src/content/posts-en" 2>/dev/null | wc -l || true)
+ai_tags=$(grep -rho '<details class="ai-disclosure"[^>]*>' "$DIST_DIR" --include='*.html' | sort -u || true)
+[[ -n "$ai_tags" ]] || fail "构建产物里找不到 AI 声明折叠区 <details class=\"ai-disclosure\">（RAY-544）"
+while IFS= read -r tag; do
+  [[ "$tag" == *" open"* ]] || fail "AI 声明区没有默认展开（缺 open 属性）：$tag（RAY-544）"
+done <<<"$ai_tags"
+ai_pages=$(grep -rl '<details class="ai-disclosure"' "$DIST_DIR" --include='*.html' | wc -l || true)
+[[ "$ai_pages" -eq "$ai_src" ]] || fail "AI 声明折叠区出现在 $ai_pages 个页面，源文件里有 $ai_src 篇文章带 AI 声明，数量对不上（RAY-544）"
+ai_chevrons=$(grep -rho 'class="ms-icon ai-disclosure__chevron"' "$DIST_DIR" --include='*.html' | wc -l || true)
+[[ "$ai_chevrons" -eq "$ai_pages" ]] || fail "AI 声明区的 chevron 图标有 $ai_chevrons 个，折叠区有 $ai_pages 个，数量对不上（RAY-544）"
+
 echo "  dist 体积 : $(du -sh "$DIST_DIR" | cut -f1)"
 echo "  HTML 页面 : $html_count"
 echo "  公众号图标: $wechat_pages 个页面，src=/images/wechat-icon.png"
+echo "  AI 声明区 : $ai_pages 个页面（源文件 $ai_src 篇），默认展开 + chevron"
 echo "  images    : $(find "$DIST_DIR/images" -type f | wc -l) 个文件"
 echo "  fonts     : $(find "$DIST_DIR/fonts" -type f | wc -l) 个文件"
 echo "  assets    : $(find "$DIST_DIR/assets" -type f | wc -l) 个文件"
