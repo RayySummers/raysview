@@ -113,7 +113,7 @@ const articleLd = {
     />
   )}
 
-  <h1 class="post-title" style="font-size: var(--post-title-size); font-weight: 700; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-3); line-height: 1.1; font-family: var(--font-sans); font-optical-sizing: auto;">
+  <h1 class="post-title" style="font-size: var(--post-title-size); font-weight: 520; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-3); line-height: 1.1; font-family: var(--font-sans); font-optical-sizing: auto;">
     {post.data.title}
   </h1>
 
@@ -173,6 +173,8 @@ const articleLd = {
   /* 文章页标题字号：较全局 --text-3xl (48px) 略降 → 40px（页面级 token，仅文章页生效；--text-3xl 保留给 videos 等场景） */
   .post-title {
     --post-title-size: 40px;
+    /* RAY-529：页标题字重 700(Heavy) → 520(SemiBold 对位档，同 RAY-408 正文 h1–h6)。
+       字重写在元素内联 style 上（见上方 <h1>），此处仅作说明，避免两处声明打架。 */
   }
   .back-btn {
     display: inline-block;
