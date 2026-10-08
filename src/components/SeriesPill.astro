@@ -1,0 +1,23 @@
+---
+/**
+ * 系列 pill（RAY-545）
+ *
+ * 标签行里的系列标签：显示 i18n 系列短名（中文「随便想想」/ 英文「JustThinking」），
+ * 渲染成填充胶囊，点击进该系列的索引页 `/posts/<系列>/`。
+ * 样式写在 src/styles/global.css 的 `.series-pill`（/posts 列表与文章页共用一份，
+ * 也保证线上 HTML 里的类名就是干净的 `series-pill`，方便验收/监控断言）。
+ */
+import { langFromPath, useTranslations } from '../i18n';
+import { hrefFor } from '../i18n/routes';
+import type { Series } from '../series';
+
+interface Props {
+  series: Series;
+}
+
+const { series } = Astro.props;
+const lang = langFromPath(Astro.url.pathname);
+const t = useTranslations(lang);
+---
+
+<a class="series-pill" href={hrefFor(`/posts/${series}/`, lang)}>#{t(`series.${series}.pill`)}</a>

@@ -38,16 +38,19 @@
   "series": {
     "justthinking": {
       "name": "随便想想 / JustThinking",
+      "pill": "随便想想",
       "subtitle": "散落的想法",
       "empty": "随便想想 系列文章陆续更新中。"
     },
     "biweekly": {
       "name": "半月记 / Biweekly",
+      "pill": "半月记",
       "subtitle": "系列文章",
       "empty": "Biweekly 系列文章陆续更新中。"
     },
     "raydesign": {
       "name": "Ray 的设计课 / RayDesign",
+      "pill": "Ray 的设计课",
       "subtitle": "系列文章",
       "empty": "RayDesign 系列文章陆续更新中。"
     }

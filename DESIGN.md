@@ -497,6 +497,14 @@ text-decoration: none;
 /* Container */
 margin-bottom: 16px;
 
+/* Cover (RAY-545)：与系列页同款 —— listBanner ?? banner，块级、定高裁切 */
+display: block;
+height: 200px;
+overflow: hidden;
+margin-bottom: 8px;
+/* img */
+width: 100%; height: 100%; object-fit: cover; display: block;
+
 /* Title */
 font-size: 16px;
 font-weight: 400;
@@ -521,6 +529,7 @@ span:not(:last-child)::after { content: ", "; }
 **States:**
 - Title hover: text-decoration-color = currentColor
 - Tag hover: color = --color-text-primary, underline
+- Series tag: 渲染为 `.series-pill`（见 Tag Pill），排在标签行第一位
 
 ### Month Group Header (Archive)
 ```css
@@ -533,13 +542,25 @@ margin-bottom: 16px;
 ```
 
 ### Tag Pill
+系列标签（frontmatter `tags` 里命中 JustThinking / biweekly / RayDesign 的那一枚）在**所有标签行**里
+渲染成填充胶囊（RAY-545）：/posts 列表、文章页 meta 行。显示名取 i18n 短名
+（`series.<x>.pill`：中文「随便想想 / 半月记 / Ray 的设计课」，英文「JustThinking / Biweekly / RayDesign」），
+带「#」前缀，点击进系列索引页 `/posts/<系列>/`；展示层把它提到标签行第一位。
+
 ```css
-font-size: 12px;
-color: var(--color-text-secondary);
+display: inline-block;
+padding: 2px 8px;
+border-radius: 999px;
+background: var(--color-text-primary);
+color: var(--color-bg);   /* 浅色＝黑底白字，深色自动反相成白底黑字 */
+line-height: 1;
+font-size: inherit;       /* 跟随所在标签行：/posts 12px（高 16px）、文章页 14px（高 18px） */
+white-space: nowrap;
 text-decoration: none;
 ```
 **States:**
-- Hover: color = --color-text-primary, underline
+- Hover: opacity = 0.8（不换色、不加下划线）
+- 其余标签维持文本链接：`color: var(--color-text-secondary)`，hover 时 `--color-text-primary` + 下划线
 
 ### Footer
 ```css
@@ -796,6 +817,29 @@ margin-right: auto;
 - **Refs**: `src/components/pages/ArticlePage.astro`、`src/components/pages/SeriesPage.astro`；
   逐页读数（文章页 + 全部系列页，含英文页，明暗两主题）、窄屏回流与 hover 复原对照见
   `docs/qa/RAY-531/README.md`
+
+### 2026-10-09 (RAY-545): 文章呈现 —— /posts 列表加 banner ＋ 系列名移进 pill hashtag
+- **Decision**: 三件事一起改，中英共用同一份模板：
+  1. `/posts` 列表每篇加 banner 封面，取值 `listBanner ?? banner`，块级、**height 200px**、
+     `object-fit: cover`、下距 `--space-2` —— 与系列页同款（容器 `class="list-cover"` 为断言钩子）；
+  2. 展示层标题统一去掉「 | 系列名 #NN」后缀（新增 `displayPostTitle()`，替换原来只管 RayDesign 的
+     `seriesPostTitle()`），命中处：/posts 列表、系列页、文章页 h1、标签页、站内搜索下拉；
+     frontmatter 原文、`<title>`、OG、JSON-LD `headline` 保持带后缀（默认口径，可再调）；
+  3. 标签行里的系列标签渲染成填充胶囊 `.series-pill`（`<SeriesPill>` 组件）：底色 `--color-text-primary`、
+     文字 `--color-bg`、圆角 999px、无下划线、含「#」前缀，显示 i18n 短名（新增 `series.<x>.pill` 词条），
+     点击进 `/posts/<系列>/`；其余标签维持原文本链接。样式放 `src/styles/global.css`（两页共用一份）。
+- **Rationale**: Ray 的线上 mock（本单两张图）：/posts 加封面与系列页观感一致；标题不再背系列后缀，
+  系列改由 pill 承担。**系列标签前置**是本次的展示层决定：biweekly 的 frontmatter 里系列标签排第 6 位，
+  原位渲染会让 pill 埋在行尾，与「系列以第一枚 hashtag 呈现」及 mock 不符，故只在展示层提到首位
+  （frontmatter 与 `/tags/<tag>/` 路由不动）。pill 字号不写死、继承所在标签行，
+  /posts 12px → 高 16px、文章页 14px → 高 18px，与 mock 的观感一致。
+- **Status**: In review（RAY-545）
+- **Refs**: `src/series.ts`（`displayPostTitle` / `displayTags` / `seriesOfTag`）、
+  `src/components/SeriesPill.astro`（新增）、`src/styles/global.css`、四个页面组件、`src/search-index.ts`；
+  42 项断言 + 明暗/中英截图见 `docs/qa/RAY-545/README.md`
+- **Note**: mock 的文章页把 pill 单独放在 meta 行上方、标签行里仍留 `#JustThinking`；
+  本次按需求正文「标签行里第一条命中 SERIES_TAGS 的 tag 渲染为填充胶囊」实现（pill 在标签行内、
+  不再重复出现原系列标签）。若 Ray 想按 mock 的位置摆放，改一行即可。
 
 ---
 

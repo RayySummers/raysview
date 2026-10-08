@@ -9,7 +9,7 @@ import Base from '../../layouts/Base.astro';
 import Icon from '../Icon.astro';
 import { langFromPath, useTranslations } from '../../i18n';
 import { hrefFor } from '../../i18n/routes';
-import { seriesPostTitle, type Series } from '../../series';
+import { displayPostTitle, type Series } from '../../series';
 
 interface Props {
   series: Series;
@@ -51,7 +51,7 @@ const subtitle = t(`series.${series}.subtitle`);
         )}
         <a href={hrefFor(`/posts/${post.id}/`, lang)} class="post-title-link">
           <h2 class="post-title">
-            {seriesPostTitle(series, post.data.title)}
+            {displayPostTitle(post.data.title)}
           </h2>
         </a>
         <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">

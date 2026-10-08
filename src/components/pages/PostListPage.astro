@@ -4,13 +4,16 @@
  *
  * 中文列出 `posts` 集合，英文列出 `posts-en` 集合 —— 后者第一阶段还是空的，
  * 所以英文版目前会显示「No posts yet.」，等译文进来就自动有内容。
+ *
+ * RAY-545：每篇加 banner 封面（同系列页），标题去掉「 | 系列名 #NN」后缀，系列标签渲染成 pill。
  */
 import Base from '../../layouts/Base.astro';
 import Icon from '../Icon.astro';
+import SeriesPill from '../SeriesPill.astro';
 import { getCollection } from 'astro:content';
 import { langFromPath, useTranslations } from '../../i18n';
 import { hrefFor } from '../../i18n/routes';
-import { SERIES } from '../../series';
+import { SERIES, displayPostTitle, displayTags } from '../../series';
 
 const lang = langFromPath(Astro.url.pathname);
 const t = useTranslations(lang);
@@ -61,21 +64,37 @@ const periodStyle =
       <div>
         {periodPosts.map((post) => (
           <article style="margin-bottom: var(--space-3);">
+            {/* RAY-545：每篇加 banner 封面，取值与样式同系列页（listBanner ?? banner；块级、高 200px、object-fit: cover）。
+                class="list-cover" 是验收/监控断言的稳定钩子（样式仍按系列页的写法内联，两处观感一致）。 */}
+            {(post.data.listBanner ?? post.data.banner) && (
+              <a class="list-cover" href={hrefFor(`/posts/${post.id}/`, lang)} style="display: block; margin-bottom: var(--space-2); overflow: hidden; height: 200px;">
+                <img
+                  src={post.data.listBanner ?? post.data.banner}
+                  alt=""
+                  style="width: 100%; height: 100%; object-fit: cover; display: block;"
+                  data-zoomable
+                />
+              </a>
+            )}
             <a href={hrefFor(`/posts/${post.id}/`, lang)} class="post-title-link">
               <h3 class="post-title">
-                {post.data.title}
+                {displayPostTitle(post.data.title)}
               </h3>
             </a>
             <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">
               <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
               {post.data.tags && post.data.tags.length > 0 && (
                 <span style="margin-left: var(--space-2);">
-                  {post.data.tags.map((tag, idx) => (
+                  {displayTags(post.data.tags).map((entry, idx) => (
                     <>
                       {idx > 0 && ' '}
-                      <a href={hrefFor(`/tags/${tag}/`, lang)} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
-                        #{tag}
-                      </a>
+                      {entry.series ? (
+                        <SeriesPill series={entry.series} />
+                      ) : (
+                        <a href={hrefFor(`/tags/${entry.tag}/`, lang)} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">
+                          #{entry.tag}
+                        </a>
+                      )}
                     </>
                   ))}
                 </span>

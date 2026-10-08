@@ -1,0 +1,598 @@
+{
+  "baseUrl": "http://127.0.0.1:4381",
+  "checks": [
+    {
+      "name": "/posts light: 每篇都有封面",
+      "ok": true,
+      "detail": "7/7"
+    },
+    {
+      "name": "/posts light: 封面高 200px + object-fit cover",
+      "ok": true,
+      "detail": "200/cover 200/cover 200/cover 200/cover 200/cover 200/cover 200/cover"
+    },
+    {
+      "name": "/posts light: 标题无「| 系列名 #NN」",
+      "ok": true,
+      "detail": "[\"广州地铁志愿有感\",\"你的蓝色和我的蓝色一样吗？\",\"谁有权给一个概念命名？——从 Token 与「词元」之争说起\",\"「静音车厢」为何总是静不下来？我推演了 6 种解法\",\"AI 的 4D 框架、AI 诚信声明、薄荷是牙膏味的、建站\",\"RayView 有博客网站啦！\",\"关于 Emoji 的一切\"]"
+    },
+    {
+      "name": "/posts light: 有系列 pill 且文字为短名",
+      "ok": true,
+      "detail": "[\"#随便想想\",\"#随便想想\",\"#随便想想\",\"#随便想想\",\"#半月记\",\"#Ray 的设计课\"]"
+    },
+    {
+      "name": "/posts light: pill 链接指向系列页",
+      "ok": true,
+      "detail": "[\"/posts/justthinking/\",\"/posts/justthinking/\",\"/posts/justthinking/\",\"/posts/justthinking/\",\"/posts/biweekly/\",\"/posts/raydesign/\"]"
+    },
+    {
+      "name": "/posts light: pill 在标签行首位",
+      "ok": true,
+      "detail": "[true,true,true,true,true,true]"
+    },
+    {
+      "name": "/posts light: pill 圆角 999px 且无下划线",
+      "ok": true,
+      "detail": "[\"999px/none\",\"999px/none\",\"999px/none\",\"999px/none\",\"999px/none\",\"999px/none\"]"
+    },
+    {
+      "name": "/posts light: pill 文字对比度 ≥ 4.5",
+      "ok": true,
+      "detail": "16.36"
+    },
+    {
+      "name": "/posts light: 主题生效",
+      "ok": true,
+      "detail": "light"
+    },
+    {
+      "name": "/posts dark: 每篇都有封面",
+      "ok": true,
+      "detail": "7/7"
+    },
+    {
+      "name": "/posts dark: 封面高 200px + object-fit cover",
+      "ok": true,
+      "detail": "200/cover 200/cover 200/cover 200/cover 200/cover 200/cover 200/cover"
+    },
+    {
+      "name": "/posts dark: 标题无「| 系列名 #NN」",
+      "ok": true,
+      "detail": "[\"广州地铁志愿有感\",\"你的蓝色和我的蓝色一样吗？\",\"谁有权给一个概念命名？——从 Token 与「词元」之争说起\",\"「静音车厢」为何总是静不下来？我推演了 6 种解法\",\"AI 的 4D 框架、AI 诚信声明、薄荷是牙膏味的、建站\",\"RayView 有博客网站啦！\",\"关于 Emoji 的一切\"]"
+    },
+    {
+      "name": "/posts dark: 有系列 pill 且文字为短名",
+      "ok": true,
+      "detail": "[\"#随便想想\",\"#随便想想\",\"#随便想想\",\"#随便想想\",\"#半月记\",\"#Ray 的设计课\"]"
+    },
+    {
+      "name": "/posts dark: pill 链接指向系列页",
+      "ok": true,
+      "detail": "[\"/posts/justthinking/\",\"/posts/justthinking/\",\"/posts/justthinking/\",\"/posts/justthinking/\",\"/posts/biweekly/\",\"/posts/raydesign/\"]"
+    },
+    {
+      "name": "/posts dark: pill 在标签行首位",
+      "ok": true,
+      "detail": "[true,true,true,true,true,true]"
+    },
+    {
+      "name": "/posts dark: pill 圆角 999px 且无下划线",
+      "ok": true,
+      "detail": "[\"999px/none\",\"999px/none\",\"999px/none\",\"999px/none\",\"999px/none\",\"999px/none\"]"
+    },
+    {
+      "name": "/posts dark: pill 文字对比度 ≥ 4.5",
+      "ok": true,
+      "detail": "16.21"
+    },
+    {
+      "name": "/posts dark: 主题生效",
+      "ok": true,
+      "detail": "dark"
+    },
+    {
+      "name": "/en/posts: 封面 + 英文 pill 短名",
+      "ok": true,
+      "detail": "[{\"text\":\"#JustThinking\",\"href\":\"/en/posts/justthinking/\",\"background\":\"rgb(27, 27, 27)\",\"color\":\"rgb(249, 249, 249)\",\"radius\":\"999px\",\"fontSize\":\"12px\",\"height\":16,\"width\":94,\"textDecorationLine\":\"none\",\"firstTag\":true}]"
+    },
+    {
+      "name": "/en/posts: 标题无后缀",
+      "ok": true,
+      "detail": "[\"Metro Volunteering\"]"
+    },
+    {
+      "name": "文章 /posts/justthinking/justthinking-04-metro-volunteer/ light: h1 无后缀",
+      "ok": true,
+      "detail": "广州地铁志愿有感"
+    },
+    {
+      "name": "文章 /posts/justthinking/justthinking-04-metro-volunteer/ light: <title> 保留后缀",
+      "ok": true,
+      "detail": "广州地铁志愿有感 | 随便想想 #04 - 睿见 RayView"
+    },
+    {
+      "name": "文章 /posts/justthinking/justthinking-04-metro-volunteer/ light: pill 文字/href",
+      "ok": true,
+      "detail": "{\"text\":\"#随便想想\",\"href\":\"/posts/justthinking/\",\"background\":\"rgb(27, 27, 27)\",\"color\":\"rgb(249, 249, 249)\",\"radius\":\"999px\",\"fontSize\":\"14px\",\"height\":18,\"textDecorationLine\":\"none\",\"inMetaRow\":true}"
+    },
+    {
+      "name": "文章 /posts/justthinking/justthinking-04-metro-volunteer/ light: pill 在标签行内",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "文章 /posts/justthinking/justthinking-04-metro-volunteer/ light: pill 圆角/无下划线/对比度",
+      "ok": true,
+      "detail": "{\"r\":\"999px\",\"d\":\"none\",\"c\":\"16.36\"}"
+    },
+    {
+      "name": "文章 /posts/justthinking/justthinking-04-metro-volunteer/ dark: h1 无后缀",
+      "ok": true,
+      "detail": "广州地铁志愿有感"
+    },
+    {
+      "name": "文章 /posts/justthinking/justthinking-04-metro-volunteer/ dark: <title> 保留后缀",
+      "ok": true,
+      "detail": "广州地铁志愿有感 | 随便想想 #04 - 睿见 RayView"
+    },
+    {
+      "name": "文章 /posts/justthinking/justthinking-04-metro-volunteer/ dark: pill 文字/href",
+      "ok": true,
+      "detail": "{\"text\":\"#随便想想\",\"href\":\"/posts/justthinking/\",\"background\":\"rgb(226, 226, 226)\",\"color\":\"rgb(0, 0, 0)\",\"radius\":\"999px\",\"fontSize\":\"14px\",\"height\":18,\"textDecorationLine\":\"none\",\"inMetaRow\":true}"
+    },
+    {
+      "name": "文章 /posts/justthinking/justthinking-04-metro-volunteer/ dark: pill 在标签行内",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "文章 /posts/justthinking/justthinking-04-metro-volunteer/ dark: pill 圆角/无下划线/对比度",
+      "ok": true,
+      "detail": "{\"r\":\"999px\",\"d\":\"none\",\"c\":\"16.21\"}"
+    },
+    {
+      "name": "文章 /posts/biweekly/biweekly-2605-a/ light: h1 无后缀",
+      "ok": true,
+      "detail": "AI 的 4D 框架、AI 诚信声明、薄荷是牙膏味的、建站"
+    },
+    {
+      "name": "文章 /posts/biweekly/biweekly-2605-a/ light: <title> 保留后缀",
+      "ok": true,
+      "detail": "AI 的 4D 框架、AI 诚信声明、薄荷是牙膏味的、建站 | 半月记2026.05.A - 睿见 RayView"
+    },
+    {
+      "name": "文章 /posts/biweekly/biweekly-2605-a/ light: pill 文字/href",
+      "ok": true,
+      "detail": "{\"text\":\"#半月记\",\"href\":\"/posts/biweekly/\",\"background\":\"rgb(27, 27, 27)\",\"color\":\"rgb(249, 249, 249)\",\"radius\":\"999px\",\"fontSize\":\"14px\",\"height\":18,\"textDecorationLine\":\"none\",\"inMetaRow\":true}"
+    },
+    {
+      "name": "文章 /posts/biweekly/biweekly-2605-a/ light: pill 在标签行内",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "文章 /posts/biweekly/biweekly-2605-a/ light: pill 圆角/无下划线/对比度",
+      "ok": true,
+      "detail": "{\"r\":\"999px\",\"d\":\"none\",\"c\":\"16.36\"}"
+    },
+    {
+      "name": "文章 /en/posts/justthinking/justthinking-04-metro-volunteer/ light: h1 无后缀",
+      "ok": true,
+      "detail": "Metro Volunteering"
+    },
+    {
+      "name": "文章 /en/posts/justthinking/justthinking-04-metro-volunteer/ light: <title> 保留后缀",
+      "ok": true,
+      "detail": "Metro Volunteering | JustThinking #04 - RayView"
+    },
+    {
+      "name": "文章 /en/posts/justthinking/justthinking-04-metro-volunteer/ light: pill 文字/href",
+      "ok": true,
+      "detail": "{\"text\":\"#JustThinking\",\"href\":\"/en/posts/justthinking/\",\"background\":\"rgb(27, 27, 27)\",\"color\":\"rgb(249, 249, 249)\",\"radius\":\"999px\",\"fontSize\":\"14px\",\"height\":18,\"textDecorationLine\":\"none\",\"inMetaRow\":true}"
+    },
+    {
+      "name": "文章 /en/posts/justthinking/justthinking-04-metro-volunteer/ light: pill 在标签行内",
+      "ok": true,
+      "detail": "true"
+    },
+    {
+      "name": "文章 /en/posts/justthinking/justthinking-04-metro-volunteer/ light: pill 圆角/无下划线/对比度",
+      "ok": true,
+      "detail": "{\"r\":\"999px\",\"d\":\"none\",\"c\":\"16.36\"}"
+    },
+    {
+      "name": "点击 /posts 的 pill 进系列页",
+      "ok": true,
+      "detail": "http://127.0.0.1:4381/posts/justthinking/"
+    },
+    {
+      "name": "标签页标题无后缀",
+      "ok": true,
+      "detail": "[\"广州地铁志愿有感\",\"你的蓝色和我的蓝色一样吗？\",\"谁有权给一个概念命名？——从 Token 与「词元」之争说起\",\"「静音车厢」为何总是静不下来？我推演了 6 种解法\"]"
+    }
+  ],
+  "readings": [
+    {
+      "page": "/posts/",
+      "theme": "light",
+      "covers": [
+        {
+          "href": "/posts/justthinking/justthinking-04-metro-volunteer/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/justthinking-04-metro-volunteer-banner.jpg"
+        },
+        {
+          "href": "/posts/justthinking/justthinking-03-blue-green/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/justthinking-03-blue-green-banner.jpg"
+        },
+        {
+          "href": "/posts/justthinking/justthinking-02-token-ciyuan/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/justthinking-02-token-ciyuan-list.jpg"
+        },
+        {
+          "href": "/posts/justthinking/justthinking-01-quiet-carriage/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/justthinking-01-quiet-carriage-banner.jpg"
+        },
+        {
+          "href": "/posts/biweekly/biweekly-2605-a/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/biweekly-26.05-a-banner.jpg"
+        },
+        {
+          "href": "/posts/welcome/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/welcome-banner.jpg"
+        },
+        {
+          "href": "/posts/raydesign/emoji-everything/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/emoji-everything-banner.jpg"
+        }
+      ],
+      "titles": [
+        "广州地铁志愿有感",
+        "你的蓝色和我的蓝色一样吗？",
+        "谁有权给一个概念命名？——从 Token 与「词元」之争说起",
+        "「静音车厢」为何总是静不下来？我推演了 6 种解法",
+        "AI 的 4D 框架、AI 诚信声明、薄荷是牙膏味的、建站",
+        "RayView 有博客网站啦！",
+        "关于 Emoji 的一切"
+      ],
+      "pills": [
+        {
+          "text": "#随便想想",
+          "href": "/posts/justthinking/",
+          "background": "rgb(27, 27, 27)",
+          "color": "rgb(249, 249, 249)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 73,
+          "textDecorationLine": "none",
+          "firstTag": true
+        },
+        {
+          "text": "#随便想想",
+          "href": "/posts/justthinking/",
+          "background": "rgb(27, 27, 27)",
+          "color": "rgb(249, 249, 249)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 73,
+          "textDecorationLine": "none",
+          "firstTag": true
+        },
+        {
+          "text": "#随便想想",
+          "href": "/posts/justthinking/",
+          "background": "rgb(27, 27, 27)",
+          "color": "rgb(249, 249, 249)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 73,
+          "textDecorationLine": "none",
+          "firstTag": true
+        },
+        {
+          "text": "#随便想想",
+          "href": "/posts/justthinking/",
+          "background": "rgb(27, 27, 27)",
+          "color": "rgb(249, 249, 249)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 73,
+          "textDecorationLine": "none",
+          "firstTag": true
+        },
+        {
+          "text": "#半月记",
+          "href": "/posts/biweekly/",
+          "background": "rgb(27, 27, 27)",
+          "color": "rgb(249, 249, 249)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 61,
+          "textDecorationLine": "none",
+          "firstTag": true
+        },
+        null,
+        {
+          "text": "#Ray 的设计课",
+          "href": "/posts/raydesign/",
+          "background": "rgb(27, 27, 27)",
+          "color": "rgb(249, 249, 249)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 96,
+          "textDecorationLine": "none",
+          "firstTag": true
+        }
+      ]
+    },
+    {
+      "page": "/posts/",
+      "theme": "dark",
+      "covers": [
+        {
+          "href": "/posts/justthinking/justthinking-04-metro-volunteer/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/justthinking-04-metro-volunteer-banner.jpg"
+        },
+        {
+          "href": "/posts/justthinking/justthinking-03-blue-green/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/justthinking-03-blue-green-banner.jpg"
+        },
+        {
+          "href": "/posts/justthinking/justthinking-02-token-ciyuan/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/justthinking-02-token-ciyuan-list.jpg"
+        },
+        {
+          "href": "/posts/justthinking/justthinking-01-quiet-carriage/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/justthinking-01-quiet-carriage-banner.jpg"
+        },
+        {
+          "href": "/posts/biweekly/biweekly-2605-a/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/biweekly-26.05-a-banner.jpg"
+        },
+        {
+          "href": "/posts/welcome/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/welcome-banner.jpg"
+        },
+        {
+          "href": "/posts/raydesign/emoji-everything/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/emoji-everything-banner.jpg"
+        }
+      ],
+      "titles": [
+        "广州地铁志愿有感",
+        "你的蓝色和我的蓝色一样吗？",
+        "谁有权给一个概念命名？——从 Token 与「词元」之争说起",
+        "「静音车厢」为何总是静不下来？我推演了 6 种解法",
+        "AI 的 4D 框架、AI 诚信声明、薄荷是牙膏味的、建站",
+        "RayView 有博客网站啦！",
+        "关于 Emoji 的一切"
+      ],
+      "pills": [
+        {
+          "text": "#随便想想",
+          "href": "/posts/justthinking/",
+          "background": "rgb(226, 226, 226)",
+          "color": "rgb(0, 0, 0)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 73,
+          "textDecorationLine": "none",
+          "firstTag": true
+        },
+        {
+          "text": "#随便想想",
+          "href": "/posts/justthinking/",
+          "background": "rgb(226, 226, 226)",
+          "color": "rgb(0, 0, 0)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 73,
+          "textDecorationLine": "none",
+          "firstTag": true
+        },
+        {
+          "text": "#随便想想",
+          "href": "/posts/justthinking/",
+          "background": "rgb(226, 226, 226)",
+          "color": "rgb(0, 0, 0)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 73,
+          "textDecorationLine": "none",
+          "firstTag": true
+        },
+        {
+          "text": "#随便想想",
+          "href": "/posts/justthinking/",
+          "background": "rgb(226, 226, 226)",
+          "color": "rgb(0, 0, 0)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 73,
+          "textDecorationLine": "none",
+          "firstTag": true
+        },
+        {
+          "text": "#半月记",
+          "href": "/posts/biweekly/",
+          "background": "rgb(226, 226, 226)",
+          "color": "rgb(0, 0, 0)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 61,
+          "textDecorationLine": "none",
+          "firstTag": true
+        },
+        null,
+        {
+          "text": "#Ray 的设计课",
+          "href": "/posts/raydesign/",
+          "background": "rgb(226, 226, 226)",
+          "color": "rgb(0, 0, 0)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 96,
+          "textDecorationLine": "none",
+          "firstTag": true
+        }
+      ]
+    },
+    {
+      "page": "/en/posts/",
+      "theme": "light",
+      "covers": [
+        {
+          "href": "/en/posts/justthinking/justthinking-04-metro-volunteer/",
+          "height": 200,
+          "objectFit": "cover",
+          "imgWidth": 584,
+          "src": "/images/posts/justthinking-04-metro-volunteer-banner-en.jpg"
+        }
+      ],
+      "titles": [
+        "Metro Volunteering"
+      ],
+      "pills": [
+        {
+          "text": "#JustThinking",
+          "href": "/en/posts/justthinking/",
+          "background": "rgb(27, 27, 27)",
+          "color": "rgb(249, 249, 249)",
+          "radius": "999px",
+          "fontSize": "12px",
+          "height": 16,
+          "width": 94,
+          "textDecorationLine": "none",
+          "firstTag": true
+        }
+      ]
+    },
+    {
+      "page": "/posts/justthinking/justthinking-04-metro-volunteer/",
+      "theme": "light",
+      "h1": "广州地铁志愿有感",
+      "title": "广州地铁志愿有感 | 随便想想 #04 - 睿见 RayView",
+      "pill": {
+        "text": "#随便想想",
+        "href": "/posts/justthinking/",
+        "background": "rgb(27, 27, 27)",
+        "color": "rgb(249, 249, 249)",
+        "radius": "999px",
+        "fontSize": "14px",
+        "height": 18,
+        "textDecorationLine": "none",
+        "inMetaRow": true
+      },
+      "metaText": "2026-10-08 #随便想想 #志愿服务 #地铁"
+    },
+    {
+      "page": "/posts/justthinking/justthinking-04-metro-volunteer/",
+      "theme": "dark",
+      "h1": "广州地铁志愿有感",
+      "title": "广州地铁志愿有感 | 随便想想 #04 - 睿见 RayView",
+      "pill": {
+        "text": "#随便想想",
+        "href": "/posts/justthinking/",
+        "background": "rgb(226, 226, 226)",
+        "color": "rgb(0, 0, 0)",
+        "radius": "999px",
+        "fontSize": "14px",
+        "height": 18,
+        "textDecorationLine": "none",
+        "inMetaRow": true
+      },
+      "metaText": "2026-10-08 #随便想想 #志愿服务 #地铁"
+    },
+    {
+      "page": "/posts/biweekly/biweekly-2605-a/",
+      "theme": "light",
+      "h1": "AI 的 4D 框架、AI 诚信声明、薄荷是牙膏味的、建站",
+      "title": "AI 的 4D 框架、AI 诚信声明、薄荷是牙膏味的、建站 | 半月记2026.05.A - 睿见 RayView",
+      "pill": {
+        "text": "#半月记",
+        "href": "/posts/biweekly/",
+        "background": "rgb(27, 27, 27)",
+        "color": "rgb(249, 249, 249)",
+        "radius": "999px",
+        "fontSize": "14px",
+        "height": 18,
+        "textDecorationLine": "none",
+        "inMetaRow": true
+      },
+      "metaText": "2026-05-21 #半月记 #ai #anthropic #mint #toothpaste #website"
+    },
+    {
+      "page": "/en/posts/justthinking/justthinking-04-metro-volunteer/",
+      "theme": "light",
+      "h1": "Metro Volunteering",
+      "title": "Metro Volunteering | JustThinking #04 - RayView",
+      "pill": {
+        "text": "#JustThinking",
+        "href": "/en/posts/justthinking/",
+        "background": "rgb(27, 27, 27)",
+        "color": "rgb(249, 249, 249)",
+        "radius": "999px",
+        "fontSize": "14px",
+        "height": 18,
+        "textDecorationLine": "none",
+        "inMetaRow": true
+      },
+      "metaText": "2026-10-08 #JustThinking #志愿服务 #地铁"
+    }
+  ],
+  "failures": []
+}
