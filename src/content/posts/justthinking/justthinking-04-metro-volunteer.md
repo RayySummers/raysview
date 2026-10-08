@@ -6,6 +6,7 @@ tags:
   - 志愿服务
   - 地铁
 banner: /images/posts/justthinking-04-metro-volunteer-banner.jpg
+wechatUrl: "https://mp.weixin.qq.com/s/sR7e_i-bN1YDzjVFOMN9wQ"
 excerpt: "国庆假期，我在广州地铁做了几天双语志愿者。这篇写我遇到的人、学到的英语，和一句做完才想明白的话：更好的系统，或许应该让志愿者闲着。"
 ---
 
@@ -37,20 +38,20 @@ excerpt: "国庆假期，我在广州地铁做了几天双语志愿者。这篇�
 
 应试英语是一回事，真的用英语是另一回事。“终点站”“换乘站”“换乘（动词）”“找零”“外汇兑换”“纸币”“n 面额的纸币”“站台”“站厅”“乘车码”“进站”“出站”“末班车”……这些词应试里很少用到，我都在这次活动中学到了。
 
-乘车码——ride code
-支付密码——payment password
-终点站——terminal
-换乘站——interchange
-换乘——transfer
-找零——change
-外汇兑换——currency exchange
-纸币——banknotes（售票机这么写的，美式英语用 bills）
-n 面额的纸币——n yuan notes（同上）
-站台——platform
-站厅——concourse
-进站——tap in
-出站——tap out
-末班车——last train
+乘车码——ride code  
+支付密码——payment password  
+终点站——terminal  
+换乘站——interchange  
+换乘——transfer  
+找零——change  
+外汇兑换——currency exchange  
+纸币——banknotes（售票机这么写的，美式英语用 bills）  
+n 面额的纸币——n yuan notes（同上）  
+站台——platform  
+站厅——concourse  
+进站——tap in  
+出站——tap out  
+末班车——last train  
 …………
 
 回答完外国人的问题，我会微笑点头送别。也是最后一天上岗前，我才学会用“have a good one”来收尾。
