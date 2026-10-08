@@ -9,6 +9,7 @@ banner: /images/posts/justthinking-04-metro-volunteer-banner-en.jpg
 translationOf: justthinking/justthinking-04-metro-volunteer
 excerpt: "Over the National Day holiday, I spent a few days as a bilingual volunteer with the Guangzhou Metro. This piece is about the people I met, the English I learned, and the conclusion I only reached afterwards: a better system should leave its volunteers idle."
 ---
+
 Over the National Day holiday, I signed up for a bilingual volunteering program with the Guangzhou Metro, giving directions and solving problems at Airport North Station and Gaozeng Station. When I signed up, I figured it would be simple enough: the metro is always busy, so it wouldn't be boring. A few days in, what I got out of it went well beyond "a volunteering session."
 
 Airport North Station sits beside Terminal 2 of Baiyun Airport: Exit B leads straight into the terminal; Exit A opens onto a coach station, ride-hailing pickups, and the shuttle bus to T2. The concourse is huge and always full—plenty of travelers from other provinces, and plenty from abroad. Being a transport hub, it brings a constant stream of people and stories.
