@@ -317,8 +317,15 @@ Roboto Flex is a variable font loaded with the `opsz` and `wght` axes (`@fontsou
 | text-xl | 24px | 600 | 1.3 | h3 |
 | text-2xl | 32px | 600 | 1.2 | h2 |
 | text-3xl | 48px | 600 | 1.1 | h1 (hero, e.g. videos 敬请期待) |
+| `.post-title`（文章页大标题） | 40px | **620** | 1.1 | `ArticlePage.astro` 的 `h1.post-title`（页面级 token `--post-title-size`）—— 2026-10-08 Ray 指定＝hover 加粗档（RAY-531） |
+| 系列页大标题 | `--text-2xl`（32px） | **620** | 1.1 | `SeriesPage.astro` 的 H1（中英共用模板，3 中文 + 3 英文页）—— 同上（RAY-531） |
 
-> **Article page title** — `--post-title-size: 40px` (page-scoped token in `src/pages/posts/[...slug].astro`), applied to the article H1 via `.post-title`. Slightly smaller than `--text-3xl` (48px) so the reading page feels calmer; the global token stays 48px for hero contexts.
+> **Article page title** — `--post-title-size: 40px` (page-scoped token in `src/pages/posts/[...slug].astro`), applied to the article H1 via `.post-title`. Slightly smaller than `--text-3xl` (48px) so the reading page feels calmer; the global token stays 48px for hero contexts. 字重 **620**（2026-10-08 Ray 指定＝hover 加粗档；RAY-529 曾收到 520，RAY-531 改为 620）。
+>
+> **页面大标题字重 = 620** —— 上表最后两行（文章页 `.post-title` 40px、系列页 H1 32px）同取 **620**，
+> 即 RAY-527 定义的全站 hover 加粗档（静止 320 + 300 档）。Ray 2026-10-08 原话：
+> 「链接 hover 时的加粗效果就是我想要文章标题多粗」——620 的语义由「hover 专属」变为「hover 与页面大标题共用」；
+> 其余刻度不变（正文静止 320、正文 h2/h3 520、列表标题 hover 620）。决策记录见下方 `2026-10-08 (RAY-531)` 条目。
 >
 > **文章正文行高**只认 RAY-530 口径（中文 **1.8** / 英文 **1.2**）——RAY-528 上线 1.6，同日复核原帖后重校为 1.8；只作用于 `article.heti` 内的 `p`/`li`；
 > 文章以外的正文（头部 / 卡片 / 列表 / 标签）仍是中文 1.8（`:lang(zh)`）、英文 1.65（`html`）。
@@ -775,6 +782,20 @@ margin-right: auto;
   中文脚注 14px **22.4 → 25.2px**、英文正文 18px **21.6px 不变**；换行点与行数零漂移、无横向溢出。
 - **Status**: In review（RAY-530）
 - **Refs**: `src/styles/global.css`；逐档行高表与 before/after 读数见 `docs/qa/RAY-530/README.md`
+
+### 2026-10-08 (RAY-531): 页面大标题字重 520 → 620（Ray 指定＝hover 档）
+- **Decision**: 文章页标题（`ArticlePage.astro` 的 `h1.post-title`，40px）与系列页 H1
+  （`SeriesPage.astro`，32px）的 `font-weight` 由 RAY-529 的 **520 → 620**。
+  只动上述两处**字重**：字号 / 行高 1.1 / `--tracking-tight` / `opsz` / 间距 / 颜色一律不动；
+  正文内嵌 `article.heti h1`、hover 规则本身、其它任何样式都不在本次范围。
+- **Rationale**: Ray 目视校准后点名指定（原话）：「链接 hover 时的加粗效果就是我想要文章标题多粗」
+  → 取全站 hover 加粗档 **620**（RAY-527 标准：静止 320 + 300 档），不引入新档位。
+  此前注记曾以「避免与 hover 语义重叠」为由不取 620（见上方 RAY-529 条目）——Ray 本次点名要该档，
+  本次照改；620 的语义由「hover 专属」变为「**hover 与页面大标题共用**」。
+- **Status**: In review（RAY-531）
+- **Refs**: `src/components/pages/ArticlePage.astro`、`src/components/pages/SeriesPage.astro`；
+  逐页读数（文章页 + 全部系列页，含英文页，明暗两主题）、窄屏回流与 hover 复原对照见
+  `docs/qa/RAY-531/README.md`
 
 ---
 
