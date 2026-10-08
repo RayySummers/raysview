@@ -313,12 +313,16 @@ Roboto Flex is a variable font loaded with the `opsz` and `wght` axes (`@fontsou
 | text-xs | 12px | 400 | 1.5 | Meta, dates, tags |
 | text-sm | 14px | 400 | 1.5 | Secondary body |
 | text-base | 16px | 400 | 1.65 | Primary body |
-| text-lg | 18px | 400 | 1.65 | Large body, post content |
+| text-lg | 18px | 400 | **1.6（中）/ 1.2（英）** | Article body — `article.heti` 内 `p`/`li`（RAY-528，2026-10-08） |
 | text-xl | 24px | 600 | 1.3 | h3 |
 | text-2xl | 32px | 600 | 1.2 | h2 |
 | text-3xl | 48px | 600 | 1.1 | h1 (hero, e.g. videos 敬请期待) |
 
 > **Article page title** — `--post-title-size: 40px` (page-scoped token in `src/pages/posts/[...slug].astro`), applied to the article H1 via `.post-title`. Slightly smaller than `--text-3xl` (48px) so the reading page feels calmer; the global token stays 48px for hero contexts.
+>
+> **文章正文行高**只认 RAY-528 口径（中文 **1.6** / 英文 **1.2**），只作用于 `article.heti` 内的 `p`/`li`；
+> 文章以外的正文（头部 / 卡片 / 列表 / 标签）仍是中文 1.8（`:lang(zh)`）、英文 1.65（`html`）。
+> 文章内的标题、代码块、引用块另有来源，见 [Chinese Typography](#chinese-typography)。
 
 ### Letter Spacing
 ```css
@@ -333,13 +337,27 @@ For Chinese text, increase line-height to 1.8 for readability:
   line-height: 1.8;
 }
 ```
-Article body (reading experience) uses a slightly looser rhythm — 1.9 — scoped to the article so header/cards/code blocks are unaffected:
+（全站口径，**2026-10-08 起保持不变**：头部 / 卡片 / 列表 / 标签 / 文章内代码块与引用块都走它。）
+
+文章正文（阅读页）另有一套行高 —— **中文 1.6、英文 1.2**（2026-10-08，RAY-528 起；此前中文 1.9，英文继承文章容器的 1.65）：
+
 ```css
 article.heti p:lang(zh),
 article.heti li:lang(zh) {
-  line-height: 1.9;
+  line-height: 1.6;   /* 18px → 28.8px；改动前 1.9 → 34.2px */
+}
+
+article.heti p:lang(en),
+article.heti li:lang(en) {
+  line-height: 1.2;   /* 18px → 21.6px；改动前继承 1.65 → 29.7px */
 }
 ```
+
+- **依据**：方框字上下没有升降部，需要更多行间呼吸（1.6×）；西文有小写升降部，行距可以更紧（1.2×）。
+- **固定值原则**：两条规则都用**无单位倍数**，每个字号各自按自己的 `font-size` 算出固定行高
+  （正文 18px → 中文 28.8px / 英文 21.6px；脚注 14px → 22.4px / 16.8px），不被父级倍数连带缩放。
+- **范围**：只作用于文章正文 `p`/`li`（`blockquote` 内的 `p` 同样命中）。文章内标题（h1–h6）、代码块、引用块
+  由 `heti.min.css`（CDN，固定 px）与本仓库既有规则接管，本单不动；逐档实测表见 `docs/qa/RAY-528/`。
 
 ---
 
@@ -715,6 +733,19 @@ margin-right: auto;
 - **Status**: Approved
 - **Refs**: `src/components/ProgressiveBlur.astro`；缺口对比图（无带子 / 30% / 45% × 明暗两主题）见
   `~/.hermes-hari/workspace/rayview-pb-spike/zoom_compare.png`
+
+### 2026-10-08 (RAY-528): 文章正文行高 —— 中文 1.6 / 英文 1.2
+- **Decision**: `src/styles/global.css` 里 `article.heti p:lang(zh), article.heti li:lang(zh)` 由 **1.9 → 1.6**，
+  并新增对称的 `article.heti p:lang(en), article.heti li:lang(en)` = **1.2**。
+  两条都用无单位倍数（每个字号按自己的 `font-size` 算固定行高），只命中文章正文 `p`/`li`（含 `blockquote` 内的 `p`）。
+  全局 `:lang(zh) 1.8`、文章容器内联 1.65、`pre` 1.6、`blockquote` 1.1 与 heti 的标题固定 px 一律不动。
+- **Rationale**: Ray 的排版惯例 —— 中文方框字上下无升降部、需要更多行间呼吸（1.6×）；
+  西文有小写升降部、行距可以更紧（1.2×）。英文正文此前没有自己的规则、继承文章容器 1.65，
+  和中文的 1.9 一样都属于「倍数顺带缩放」的写法；改成正文专属倍数后逐档可查。
+  实测（Playwright + 无头 Chrome，1280×900）：中文正文 18px **34.2 → 28.8px**、
+  英文正文 18px **29.7 → 21.6px**，两者换行点与行数零变化，阅读页无横向溢出。
+- **Status**: Approved（Ray 2026-10-08 决定先试这版，数值取自其文档排版惯例）
+- **Refs**: `src/styles/global.css`；逐档行高表与 before/after 读数见 `docs/qa/RAY-528/README.md`
 
 ---
 
