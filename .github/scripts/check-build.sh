@@ -65,6 +65,15 @@ ai_pages=$(grep -rl '<details class="ai-disclosure"' "$DIST_DIR" --include='*.ht
 ai_chevrons=$(grep -rho 'class="ms-icon ai-disclosure__chevron"' "$DIST_DIR" --include='*.html' | wc -l || true)
 [[ "$ai_chevrons" -eq "$ai_pages" ]] || fail "AI 声明区的 chevron 图标有 $ai_chevrons 个，折叠区有 $ai_pages 个，数量对不上（RAY-544）"
 
+# RAY-549：折叠区的左对齐修正与平滑开合都在 CSS 里，构建产物必须带上（minify / @supports 都可能吞规则）：
+#   1. summary 的 padding-inline-start:0（覆盖 heti.min.css 的 summary{padding-inline-start:1em}，18px 缩进）；
+#   2. ::details-content 的 block-size 过渡（平滑开合；兜底脚本见 ArticlePage.astro）。
+ai_css=$(find "$DIST_DIR/assets" -name '*.css' -type f | head -1)
+[[ -n "$ai_css" ]] || fail "构建产物里找不到 CSS 资源（RAY-549）"
+grep -qE '\.ai-disclosure__summary\{[^}]*padding-inline-start:0' "$ai_css" \
+  || fail "构建产物里的折叠区 summary 没有 padding-inline-start:0，左对齐修正丢了（RAY-549）"
+grep -q 'ai-disclosure::details-content' "$ai_css" \
+  || fail "构建产物里没有 ::details-content 过渡规则，平滑开合 CSS 丢了（RAY-549）"
 # RAY-547：JT#04《广州地铁志愿有感》的中英对照词表必须逐行渲染。
 # 词表在源文件里是同一个段落里的连续多行，靠行尾两个空格（CommonMark 硬换行）分行；
 # 行尾空格一旦被删掉（或被编辑器 trim），Markdown 会把整块并成一个段落 ——
@@ -98,6 +107,7 @@ echo "  dist 体积 : $(du -sh "$DIST_DIR" | cut -f1)"
 echo "  HTML 页面 : $html_count"
 echo "  公众号图标: $wechat_pages 个页面，src=/images/wechat-icon.png"
 echo "  AI 声明区 : $ai_pages 个页面（源文件 $ai_src 篇），默认展开 + chevron"
+echo "  折叠区样式: 左对齐修正 + ::details-content 过渡 已在 $(basename "$ai_css")"
 echo "  词表逐行  : JT#04 中英词表逐行渲染（硬换行数 = 源文件行数 - 1）"
 echo "  images    : $(find "$DIST_DIR/images" -type f | wc -l) 个文件"
 echo "  fonts     : $(find "$DIST_DIR/fonts" -type f | wc -l) 个文件"

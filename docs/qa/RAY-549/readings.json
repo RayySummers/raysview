@@ -1,0 +1,1245 @@
+{
+  "baseUrl": "http://127.0.0.1:44488",
+  "browsers": {
+    "chromium": {
+      "checks": [
+        {
+          "name": "summary padding-left 归零",
+          "ok": true,
+          "detail": {
+            "paddingLeft": "0px",
+            "paddingInlineStart": "0px",
+            "summaryLeft": 348,
+            "labelLeft": 348,
+            "bodyPLeft": 348,
+            "beforePLeft": 348,
+            "fontSize": "18px",
+            "lineHeight": "32.4px",
+            "open": true,
+            "detailsH": 248.3
+          }
+        },
+        {
+          "name": "summary 与正文左缘平齐",
+          "ok": true,
+          "detail": {
+            "summaryLeft": 348,
+            "labelLeft": 348,
+            "bodyPLeft": 348,
+            "beforePLeft": 348
+          }
+        },
+        {
+          "name": "收起是渐变不是瞬跳",
+          "ok": true,
+          "detail": {
+            "start": 248.3,
+            "end": 54,
+            "intermediate": 11,
+            "distinct": 13,
+            "beginMs": 60,
+            "settleMs": 240,
+            "durationMs": 180,
+            "samples": 55,
+            "first5": [
+              [
+                6,
+                248.3
+              ],
+              [
+                23,
+                248.3
+              ],
+              [
+                44,
+                248.3
+              ],
+              [
+                60,
+                222.1
+              ],
+              [
+                78,
+                197.8
+              ]
+            ]
+          }
+        },
+        {
+          "name": "收起时长 ≈200ms",
+          "ok": true,
+          "detail": {
+            "start": 248.3,
+            "end": 54,
+            "intermediate": 11,
+            "distinct": 13,
+            "beginMs": 60,
+            "settleMs": 240,
+            "durationMs": 180,
+            "samples": 55,
+            "first5": [
+              [
+                6,
+                248.3
+              ],
+              [
+                23,
+                248.3
+              ],
+              [
+                44,
+                248.3
+              ],
+              [
+                60,
+                222.1
+              ],
+              [
+                78,
+                197.8
+              ]
+            ]
+          }
+        },
+        {
+          "name": "收起后 open=false / 内容 hidden / 块高回到 summary",
+          "ok": true,
+          "detail": {
+            "open": false,
+            "detailsH": 54,
+            "contentVisibility": "hidden",
+            "blockSize": "0px",
+            "chevron": "matrix(-1, 0, 0, -1, 0, 0)"
+          }
+        },
+        {
+          "name": "收起后 chevron 旋转 180°",
+          "ok": true,
+          "detail": "matrix(-1, 0, 0, -1, 0, 0)"
+        },
+        {
+          "name": "展开是渐变不是瞬跳",
+          "ok": true,
+          "detail": {
+            "start": 54,
+            "end": 248.3,
+            "intermediate": 11,
+            "distinct": 13,
+            "beginMs": 70,
+            "settleMs": 253,
+            "durationMs": 183,
+            "samples": 38,
+            "first5": [
+              [
+                3,
+                54
+              ],
+              [
+                20,
+                54
+              ],
+              [
+                37,
+                54
+              ],
+              [
+                53,
+                54
+              ],
+              [
+                70,
+                80.3
+              ]
+            ]
+          }
+        },
+        {
+          "name": "展开时长 ≈200ms",
+          "ok": true,
+          "detail": {
+            "start": 54,
+            "end": 248.3,
+            "intermediate": 11,
+            "distinct": 13,
+            "beginMs": 70,
+            "settleMs": 253,
+            "durationMs": 183,
+            "samples": 38,
+            "first5": [
+              [
+                3,
+                54
+              ],
+              [
+                20,
+                54
+              ],
+              [
+                37,
+                54
+              ],
+              [
+                53,
+                54
+              ],
+              [
+                70,
+                80.3
+              ]
+            ]
+          }
+        },
+        {
+          "name": "展开后 open=true / 内容 visible / chevron 未旋转",
+          "ok": true,
+          "detail": {
+            "open": true,
+            "detailsH": 248.3,
+            "contentVisibility": "visible",
+            "blockSize": "194.344px",
+            "chevron": "none"
+          }
+        },
+        {
+          "name": "键盘 Enter 收起 / Space 展开",
+          "ok": true,
+          "detail": {
+            "afterEnter": false,
+            "afterSpace": true
+          }
+        },
+        {
+          "name": "展开态块高/文档高无偏差",
+          "ok": true,
+          "detail": {
+            "withNewCss": {
+              "detailsH": 248.33,
+              "docH": 5410
+            },
+            "neutralized": {
+              "detailsH": 248.33,
+              "docH": 5410
+            }
+          }
+        },
+        {
+          "name": "深色主题下左缘同样平齐",
+          "ok": true,
+          "detail": {
+            "paddingLeft": "0px",
+            "paddingInlineStart": "0px",
+            "summaryLeft": 348,
+            "labelLeft": 348,
+            "bodyPLeft": 348,
+            "beforePLeft": 348,
+            "fontSize": "18px",
+            "lineHeight": "32.4px",
+            "open": true,
+            "detailsH": 248.3
+          }
+        },
+        {
+          "name": "英文页左缘平齐",
+          "ok": true,
+          "detail": {
+            "paddingLeft": "0px",
+            "paddingInlineStart": "0px",
+            "summaryLeft": 348,
+            "labelLeft": 348,
+            "bodyPLeft": 348,
+            "beforePLeft": 348,
+            "fontSize": "18px",
+            "lineHeight": "21.6px",
+            "open": true,
+            "detailsH": 237.5
+          }
+        },
+        {
+          "name": "英文页收起是渐变",
+          "ok": true,
+          "detail": {
+            "start": 237.5,
+            "end": 43.2,
+            "intermediate": 11,
+            "distinct": 13,
+            "beginMs": 79,
+            "settleMs": 270,
+            "durationMs": 191,
+            "samples": 39,
+            "first5": [
+              [
+                1,
+                237.5
+              ],
+              [
+                11,
+                237.5
+              ],
+              [
+                25,
+                237.5
+              ],
+              [
+                42,
+                237.5
+              ],
+              [
+                58,
+                237.5
+              ]
+            ]
+          }
+        },
+        {
+          "name": "英文页收起到位",
+          "ok": true,
+          "detail": {
+            "open": false,
+            "detailsH": 43.2,
+            "contentVisibility": "hidden",
+            "blockSize": "0px",
+            "chevron": "matrix(-1, 0, 0, -1, 0, 0)"
+          }
+        },
+        {
+          "name": "英文页可再展开",
+          "ok": true,
+          "detail": {
+            "open": true,
+            "detailsH": 237.5,
+            "contentVisibility": "visible",
+            "blockSize": "194.344px",
+            "chevron": "none"
+          }
+        },
+        {
+          "name": "reduced-motion 直切（无中间帧）",
+          "ok": true,
+          "detail": {
+            "start": 248.3,
+            "end": 54,
+            "intermediate": 0,
+            "distinct": 2,
+            "beginMs": 77,
+            "settleMs": 77,
+            "durationMs": 0,
+            "samples": 15,
+            "first5": [
+              [
+                1,
+                248.3
+              ],
+              [
+                10,
+                248.3
+              ],
+              [
+                27,
+                248.3
+              ],
+              [
+                43,
+                248.3
+              ],
+              [
+                60,
+                248.3
+              ]
+            ]
+          }
+        },
+        {
+          "name": "reduced-motion 仍能收起",
+          "ok": true,
+          "detail": {
+            "open": false,
+            "detailsH": 54,
+            "contentVisibility": "hidden",
+            "blockSize": "0px",
+            "chevron": "matrix(-1, 0, 0, -1, 0, 0)"
+          }
+        },
+        {
+          "name": "无 JS：默认展开",
+          "ok": true,
+          "detail": {
+            "initialAttr": "",
+            "initialH": 248.328125,
+            "afterClickAttr": null,
+            "afterClickH": 53.984375,
+            "bodyVisible": false,
+            "afterEnterAttr": "",
+            "afterEnterH": 248.328125
+          }
+        },
+        {
+          "name": "无 JS：点击可收起",
+          "ok": true,
+          "detail": {
+            "initialAttr": "",
+            "initialH": 248.328125,
+            "afterClickAttr": null,
+            "afterClickH": 53.984375,
+            "bodyVisible": false,
+            "afterEnterAttr": "",
+            "afterEnterH": 248.328125
+          }
+        },
+        {
+          "name": "无 JS：键盘可再展开",
+          "ok": true,
+          "detail": {
+            "initialAttr": "",
+            "initialH": 248.328125,
+            "afterClickAttr": null,
+            "afterClickH": 53.984375,
+            "bodyVisible": false,
+            "afterEnterAttr": "",
+            "afterEnterH": 248.328125
+          }
+        },
+        {
+          "name": "控制台无 error",
+          "ok": true,
+          "detail": []
+        }
+      ],
+      "features": {
+        "detailsContent": true,
+        "interpolate": true,
+        "reduced": false
+      },
+      "layoutZhLight": {
+        "paddingLeft": "0px",
+        "paddingInlineStart": "0px",
+        "summaryLeft": 348,
+        "labelLeft": 348,
+        "bodyPLeft": 348,
+        "beforePLeft": 348,
+        "fontSize": "18px",
+        "lineHeight": "32.4px",
+        "open": true,
+        "detailsH": 248.3
+      },
+      "closeCurve": {
+        "start": 248.3,
+        "end": 54,
+        "intermediate": 11,
+        "distinct": 13,
+        "beginMs": 60,
+        "settleMs": 240,
+        "durationMs": 180,
+        "samples": 55,
+        "first5": [
+          [
+            6,
+            248.3
+          ],
+          [
+            23,
+            248.3
+          ],
+          [
+            44,
+            248.3
+          ],
+          [
+            60,
+            222.1
+          ],
+          [
+            78,
+            197.8
+          ]
+        ]
+      },
+      "stateClosed": {
+        "open": false,
+        "detailsH": 54,
+        "contentVisibility": "hidden",
+        "blockSize": "0px",
+        "chevron": "matrix(-1, 0, 0, -1, 0, 0)"
+      },
+      "openCurve": {
+        "start": 54,
+        "end": 248.3,
+        "intermediate": 11,
+        "distinct": 13,
+        "beginMs": 70,
+        "settleMs": 253,
+        "durationMs": 183,
+        "samples": 38,
+        "first5": [
+          [
+            3,
+            54
+          ],
+          [
+            20,
+            54
+          ],
+          [
+            37,
+            54
+          ],
+          [
+            53,
+            54
+          ],
+          [
+            70,
+            80.3
+          ]
+        ]
+      },
+      "stateOpen": {
+        "open": true,
+        "detailsH": 248.3,
+        "contentVisibility": "visible",
+        "blockSize": "194.344px",
+        "chevron": "none"
+      },
+      "keyboard": {
+        "afterEnter": false,
+        "afterSpace": true
+      },
+      "geometry": {
+        "withNewCss": {
+          "detailsH": 248.33,
+          "docH": 5410
+        },
+        "neutralized": {
+          "detailsH": 248.33,
+          "docH": 5410
+        }
+      },
+      "themeAttr": "dark",
+      "layoutZhDark": {
+        "paddingLeft": "0px",
+        "paddingInlineStart": "0px",
+        "summaryLeft": 348,
+        "labelLeft": 348,
+        "bodyPLeft": 348,
+        "beforePLeft": 348,
+        "fontSize": "18px",
+        "lineHeight": "32.4px",
+        "open": true,
+        "detailsH": 248.3
+      },
+      "layoutEnLight": {
+        "paddingLeft": "0px",
+        "paddingInlineStart": "0px",
+        "summaryLeft": 348,
+        "labelLeft": 348,
+        "bodyPLeft": 348,
+        "beforePLeft": 348,
+        "fontSize": "18px",
+        "lineHeight": "21.6px",
+        "open": true,
+        "detailsH": 237.5
+      },
+      "enCloseCurve": {
+        "start": 237.5,
+        "end": 43.2,
+        "intermediate": 11,
+        "distinct": 13,
+        "beginMs": 79,
+        "settleMs": 270,
+        "durationMs": 191,
+        "samples": 39,
+        "first5": [
+          [
+            1,
+            237.5
+          ],
+          [
+            11,
+            237.5
+          ],
+          [
+            25,
+            237.5
+          ],
+          [
+            42,
+            237.5
+          ],
+          [
+            58,
+            237.5
+          ]
+        ]
+      },
+      "stateEnOpen": {
+        "open": true,
+        "detailsH": 237.5,
+        "contentVisibility": "visible",
+        "blockSize": "194.344px",
+        "chevron": "none"
+      },
+      "reducedCurve": {
+        "start": 248.3,
+        "end": 54,
+        "intermediate": 0,
+        "distinct": 2,
+        "beginMs": 77,
+        "settleMs": 77,
+        "durationMs": 0,
+        "samples": 15,
+        "first5": [
+          [
+            1,
+            248.3
+          ],
+          [
+            10,
+            248.3
+          ],
+          [
+            27,
+            248.3
+          ],
+          [
+            43,
+            248.3
+          ],
+          [
+            60,
+            248.3
+          ]
+        ]
+      },
+      "noJs": {
+        "initialAttr": "",
+        "initialH": 248.328125,
+        "afterClickAttr": null,
+        "afterClickH": 53.984375,
+        "bodyVisible": false,
+        "afterEnterAttr": "",
+        "afterEnterH": 248.328125
+      },
+      "consoleErrors": []
+    },
+    "firefox": {
+      "checks": [
+        {
+          "name": "summary padding-left 归零",
+          "ok": true,
+          "detail": {
+            "paddingLeft": "0px",
+            "paddingInlineStart": "0px",
+            "summaryLeft": 348,
+            "labelLeft": 348,
+            "bodyPLeft": 348,
+            "beforePLeft": 348,
+            "fontSize": "18px",
+            "lineHeight": "32.4px",
+            "open": true,
+            "detailsH": 248.4
+          }
+        },
+        {
+          "name": "summary 与正文左缘平齐",
+          "ok": true,
+          "detail": {
+            "summaryLeft": 348,
+            "labelLeft": 348,
+            "bodyPLeft": 348,
+            "beforePLeft": 348
+          }
+        },
+        {
+          "name": "收起是渐变不是瞬跳",
+          "ok": true,
+          "detail": {
+            "start": 248.4,
+            "end": 54,
+            "intermediate": 11,
+            "distinct": 13,
+            "beginMs": 148,
+            "settleMs": 331,
+            "durationMs": 183,
+            "samples": 60,
+            "first5": [
+              [
+                108,
+                248.4
+              ],
+              [
+                114,
+                248.4
+              ],
+              [
+                132,
+                248.4
+              ],
+              [
+                141,
+                248.4
+              ],
+              [
+                148,
+                221.4
+              ]
+            ]
+          }
+        },
+        {
+          "name": "收起时长 ≈200ms",
+          "ok": true,
+          "detail": {
+            "start": 248.4,
+            "end": 54,
+            "intermediate": 11,
+            "distinct": 13,
+            "beginMs": 148,
+            "settleMs": 331,
+            "durationMs": 183,
+            "samples": 60,
+            "first5": [
+              [
+                108,
+                248.4
+              ],
+              [
+                114,
+                248.4
+              ],
+              [
+                132,
+                248.4
+              ],
+              [
+                141,
+                248.4
+              ],
+              [
+                148,
+                221.4
+              ]
+            ]
+          }
+        },
+        {
+          "name": "收起后 open=false / 内容 hidden / 块高回到 summary",
+          "ok": true,
+          "detail": {
+            "open": false,
+            "detailsH": 54,
+            "contentVisibility": "hidden",
+            "blockSize": "0px",
+            "chevron": "matrix(-1, 0, 0, -1, 0, 0)"
+          }
+        },
+        {
+          "name": "收起后 chevron 旋转 180°",
+          "ok": true,
+          "detail": "matrix(-1, 0, 0, -1, 0, 0)"
+        },
+        {
+          "name": "展开是渐变不是瞬跳",
+          "ok": true,
+          "detail": {
+            "start": 54,
+            "end": 248.4,
+            "intermediate": 11,
+            "distinct": 13,
+            "beginMs": 69,
+            "settleMs": 251,
+            "durationMs": 182,
+            "samples": 41,
+            "first5": [
+              [
+                1,
+                54
+              ],
+              [
+                1,
+                54
+              ],
+              [
+                17,
+                54
+              ],
+              [
+                35,
+                54
+              ],
+              [
+                52,
+                54
+              ]
+            ]
+          }
+        },
+        {
+          "name": "展开时长 ≈200ms",
+          "ok": true,
+          "detail": {
+            "start": 54,
+            "end": 248.4,
+            "intermediate": 11,
+            "distinct": 13,
+            "beginMs": 69,
+            "settleMs": 251,
+            "durationMs": 182,
+            "samples": 41,
+            "first5": [
+              [
+                1,
+                54
+              ],
+              [
+                1,
+                54
+              ],
+              [
+                17,
+                54
+              ],
+              [
+                35,
+                54
+              ],
+              [
+                52,
+                54
+              ]
+            ]
+          }
+        },
+        {
+          "name": "展开后 open=true / 内容 visible / chevron 未旋转",
+          "ok": true,
+          "detail": {
+            "open": true,
+            "detailsH": 248.4,
+            "contentVisibility": "visible",
+            "blockSize": "auto",
+            "chevron": "none"
+          }
+        },
+        {
+          "name": "键盘 Enter 收起 / Space 展开",
+          "ok": true,
+          "detail": {
+            "afterEnter": false,
+            "afterSpace": true
+          }
+        },
+        {
+          "name": "展开态块高/文档高无偏差",
+          "ok": true,
+          "detail": {
+            "withNewCss": {
+              "detailsH": 248.4,
+              "docH": 5411
+            },
+            "neutralized": {
+              "detailsH": 248.4,
+              "docH": 5411
+            }
+          }
+        },
+        {
+          "name": "深色主题下左缘同样平齐",
+          "ok": true,
+          "detail": {
+            "paddingLeft": "0px",
+            "paddingInlineStart": "0px",
+            "summaryLeft": 348,
+            "labelLeft": 348,
+            "bodyPLeft": 348,
+            "beforePLeft": 348,
+            "fontSize": "18px",
+            "lineHeight": "32.4px",
+            "open": true,
+            "detailsH": 248.4
+          }
+        },
+        {
+          "name": "英文页左缘平齐",
+          "ok": true,
+          "detail": {
+            "paddingLeft": "0px",
+            "paddingInlineStart": "0px",
+            "summaryLeft": 348,
+            "labelLeft": 348,
+            "bodyPLeft": 348,
+            "beforePLeft": 348,
+            "fontSize": "18px",
+            "lineHeight": "21.6px",
+            "open": true,
+            "detailsH": 216
+          }
+        },
+        {
+          "name": "英文页收起是渐变",
+          "ok": true,
+          "detail": {
+            "start": 216,
+            "end": 43.2,
+            "intermediate": 11,
+            "distinct": 13,
+            "beginMs": 280,
+            "settleMs": 461,
+            "durationMs": 181,
+            "samples": 49,
+            "first5": [
+              [
+                17,
+                216
+              ],
+              [
+                27,
+                216
+              ],
+              [
+                44,
+                216
+              ],
+              [
+                60,
+                216
+              ],
+              [
+                77,
+                216
+              ]
+            ]
+          }
+        },
+        {
+          "name": "英文页收起到位",
+          "ok": true,
+          "detail": {
+            "open": false,
+            "detailsH": 43.2,
+            "contentVisibility": "hidden",
+            "blockSize": "0px",
+            "chevron": "matrix(-1, 0, 0, -1, 0, 0)"
+          }
+        },
+        {
+          "name": "英文页可再展开",
+          "ok": true,
+          "detail": {
+            "open": true,
+            "detailsH": 216,
+            "contentVisibility": "visible",
+            "blockSize": "auto",
+            "chevron": "none"
+          }
+        },
+        {
+          "name": "reduced-motion 直切（无中间帧）",
+          "ok": true,
+          "detail": {
+            "start": 248.4,
+            "end": 54,
+            "intermediate": 0,
+            "distinct": 2,
+            "beginMs": 225,
+            "settleMs": 225,
+            "durationMs": 0,
+            "samples": 24,
+            "first5": [
+              [
+                0,
+                248.4
+              ],
+              [
+                19,
+                248.4
+              ],
+              [
+                24,
+                248.4
+              ],
+              [
+                41,
+                248.4
+              ],
+              [
+                58,
+                248.4
+              ]
+            ]
+          }
+        },
+        {
+          "name": "reduced-motion 仍能收起",
+          "ok": true,
+          "detail": {
+            "open": false,
+            "detailsH": 54,
+            "contentVisibility": "hidden",
+            "blockSize": "0px",
+            "chevron": "matrix(-1, 0, 0, -1, 0, 0)"
+          }
+        },
+        {
+          "name": "无 JS：默认展开",
+          "ok": true,
+          "detail": {
+            "initialAttr": "",
+            "initialH": 248.39990234375,
+            "afterClickAttr": null,
+            "afterClickH": 54,
+            "bodyVisible": false,
+            "afterEnterAttr": "",
+            "afterEnterH": 248.4000244140625
+          }
+        },
+        {
+          "name": "无 JS：点击可收起",
+          "ok": true,
+          "detail": {
+            "initialAttr": "",
+            "initialH": 248.39990234375,
+            "afterClickAttr": null,
+            "afterClickH": 54,
+            "bodyVisible": false,
+            "afterEnterAttr": "",
+            "afterEnterH": 248.4000244140625
+          }
+        },
+        {
+          "name": "无 JS：键盘可再展开",
+          "ok": true,
+          "detail": {
+            "initialAttr": "",
+            "initialH": 248.39990234375,
+            "afterClickAttr": null,
+            "afterClickH": 54,
+            "bodyVisible": false,
+            "afterEnterAttr": "",
+            "afterEnterH": 248.4000244140625
+          }
+        },
+        {
+          "name": "控制台无 error",
+          "ok": true,
+          "detail": []
+        }
+      ],
+      "features": {
+        "detailsContent": true,
+        "interpolate": false,
+        "reduced": false
+      },
+      "layoutZhLight": {
+        "paddingLeft": "0px",
+        "paddingInlineStart": "0px",
+        "summaryLeft": 348,
+        "labelLeft": 348,
+        "bodyPLeft": 348,
+        "beforePLeft": 348,
+        "fontSize": "18px",
+        "lineHeight": "32.4px",
+        "open": true,
+        "detailsH": 248.4
+      },
+      "closeCurve": {
+        "start": 248.4,
+        "end": 54,
+        "intermediate": 11,
+        "distinct": 13,
+        "beginMs": 148,
+        "settleMs": 331,
+        "durationMs": 183,
+        "samples": 60,
+        "first5": [
+          [
+            108,
+            248.4
+          ],
+          [
+            114,
+            248.4
+          ],
+          [
+            132,
+            248.4
+          ],
+          [
+            141,
+            248.4
+          ],
+          [
+            148,
+            221.4
+          ]
+        ]
+      },
+      "stateClosed": {
+        "open": false,
+        "detailsH": 54,
+        "contentVisibility": "hidden",
+        "blockSize": "0px",
+        "chevron": "matrix(-1, 0, 0, -1, 0, 0)"
+      },
+      "openCurve": {
+        "start": 54,
+        "end": 248.4,
+        "intermediate": 11,
+        "distinct": 13,
+        "beginMs": 69,
+        "settleMs": 251,
+        "durationMs": 182,
+        "samples": 41,
+        "first5": [
+          [
+            1,
+            54
+          ],
+          [
+            1,
+            54
+          ],
+          [
+            17,
+            54
+          ],
+          [
+            35,
+            54
+          ],
+          [
+            52,
+            54
+          ]
+        ]
+      },
+      "stateOpen": {
+        "open": true,
+        "detailsH": 248.4,
+        "contentVisibility": "visible",
+        "blockSize": "auto",
+        "chevron": "none"
+      },
+      "keyboard": {
+        "afterEnter": false,
+        "afterSpace": true
+      },
+      "geometry": {
+        "withNewCss": {
+          "detailsH": 248.4,
+          "docH": 5411
+        },
+        "neutralized": {
+          "detailsH": 248.4,
+          "docH": 5411
+        }
+      },
+      "themeAttr": "dark",
+      "layoutZhDark": {
+        "paddingLeft": "0px",
+        "paddingInlineStart": "0px",
+        "summaryLeft": 348,
+        "labelLeft": 348,
+        "bodyPLeft": 348,
+        "beforePLeft": 348,
+        "fontSize": "18px",
+        "lineHeight": "32.4px",
+        "open": true,
+        "detailsH": 248.4
+      },
+      "layoutEnLight": {
+        "paddingLeft": "0px",
+        "paddingInlineStart": "0px",
+        "summaryLeft": 348,
+        "labelLeft": 348,
+        "bodyPLeft": 348,
+        "beforePLeft": 348,
+        "fontSize": "18px",
+        "lineHeight": "21.6px",
+        "open": true,
+        "detailsH": 216
+      },
+      "enCloseCurve": {
+        "start": 216,
+        "end": 43.2,
+        "intermediate": 11,
+        "distinct": 13,
+        "beginMs": 280,
+        "settleMs": 461,
+        "durationMs": 181,
+        "samples": 49,
+        "first5": [
+          [
+            17,
+            216
+          ],
+          [
+            27,
+            216
+          ],
+          [
+            44,
+            216
+          ],
+          [
+            60,
+            216
+          ],
+          [
+            77,
+            216
+          ]
+        ]
+      },
+      "stateEnOpen": {
+        "open": true,
+        "detailsH": 216,
+        "contentVisibility": "visible",
+        "blockSize": "auto",
+        "chevron": "none"
+      },
+      "reducedCurve": {
+        "start": 248.4,
+        "end": 54,
+        "intermediate": 0,
+        "distinct": 2,
+        "beginMs": 225,
+        "settleMs": 225,
+        "durationMs": 0,
+        "samples": 24,
+        "first5": [
+          [
+            0,
+            248.4
+          ],
+          [
+            19,
+            248.4
+          ],
+          [
+            24,
+            248.4
+          ],
+          [
+            41,
+            248.4
+          ],
+          [
+            58,
+            248.4
+          ]
+        ]
+      },
+      "noJs": {
+        "initialAttr": "",
+        "initialH": 248.39990234375,
+        "afterClickAttr": null,
+        "afterClickH": 54,
+        "bodyVisible": false,
+        "afterEnterAttr": "",
+        "afterEnterH": 248.4000244140625
+      },
+      "consoleErrors": []
+    }
+  },
+  "failures": [],
+  "current": "firefox"
+}

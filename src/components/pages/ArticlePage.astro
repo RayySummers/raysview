@@ -273,4 +273,48 @@ const articleLd = {
       });
     });
   }
+
+  // RAY-549：「AI 声明」折叠区的平滑开合 —— 渐进增强兜底。
+  // 支持 ::details-content + interpolate-size 的浏览器由 global.css 的 CSS 过渡接管；
+  // 这里只在缺其中之一的浏览器（Firefox、旧 Safari 等）上用 Web Animations 补同一段
+  // 200ms ease-out（时长对齐 --transition-base）。prefers-reduced-motion 直切；
+  // 脚本没跑起来时保持原生 details/summary 行为，功能不受影响。
+  const disclosures = document.querySelectorAll('details.ai-disclosure');
+  const cssAnimates =
+    window.CSS?.supports?.('selector(::details-content)') &&
+    CSS.supports('interpolate-size', 'allow-keywords');
+  if (disclosures.length && !cssAnimates) {
+    const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    disclosures.forEach(box => {
+      const summary = box.querySelector('summary');
+      const body = box.querySelector('.ai-disclosure__body');
+      if (!summary || !body) return;
+      let anim = null;
+      let wantOpen = box.open; // 动画期间 box.open 仍是旧值，用意图值判定方向
+      summary.addEventListener('click', event => {
+        event.preventDefault(); // 接管原生开合（键盘 Enter/Space 也走 click）
+        wantOpen = !wantOpen;
+        // 收起态下 body 仍有布局高度（只是被 details 裁掉），不能直接量：
+        // 此时视觉高度是 0；正在动画中则量到的就是当前帧高度。
+        const from = box.open ? body.getBoundingClientRect().height : 0;
+        anim?.cancel();
+        if (wantOpen) box.open = true;
+        const to = wantOpen ? body.getBoundingClientRect().height : 0;
+        if (reduceMotion.matches || from === to) {
+          box.open = wantOpen;
+          return;
+        }
+        body.style.overflow = 'hidden';
+        anim = body.animate([{ height: `${from}px` }, { height: `${to}px` }], {
+          duration: 200,
+          easing: 'ease-out'
+        });
+        anim.onfinish = () => {
+          body.style.overflow = '';
+          anim = null;
+          if (!wantOpen) box.open = false;
+        };
+      });
+    });
+  }
 </script>

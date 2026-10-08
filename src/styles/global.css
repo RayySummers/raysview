@@ -759,16 +759,21 @@ article.heti .footnotes a:hover {
   vertical-align: -4px;
 }
 
-/* ===== 「AI 声明」折叠区（RAY-544）=====
+/* ===== 「AI 声明」折叠区（RAY-544 / RAY-549）=====
    <details class="ai-disclosure" open> 由 astro.config.mjs 的 rehypeAiDisclosure 插件
    在渲染层统一生成（中英文章共用同一份模板），历史文章内容不用逐篇改。
-   默认展开；summary 用原生 details/summary 行为，零 JS、键盘（Enter/Space）可操作。
+   默认展开；summary 用原生 details/summary 行为，键盘（Enter/Space）可操作。
    展开态与原来那两段正文段落视觉一致：summary 复刻 article.heti p 的字号/行高/下边距，
    只多一个右侧 chevron。 */
 article.heti .ai-disclosure__summary {
   display: flex;
   align-items: center;
   gap: var(--space-2);
+  /* RAY-549：heti.min.css 里有 `summary { padding-inline-start: 1em }`，在 18px 字号下
+     就是 18px 左缩进，summary 文字比正文段落右移一格。显式归零（逻辑属性 + 物理属性
+     各写一遍覆盖各引擎），让「※ AI 声明」与正文段落左缘平齐。 */
+  padding-inline-start: 0;
+  padding-left: 0;
   /* 点击热区贴合文字（同脚注标题的 width: fit-content），不让整行空白都可点 */
   width: fit-content;
   max-width: 100%;
@@ -796,11 +801,12 @@ article.heti .ai-disclosure__summary::marker {
   content: '';
 }
 
-/* chevron：展开态朝下，收起态转 180°（静默过渡，不打断阅读） */
+/* chevron：展开态朝下，收起态转 180°（静默过渡，不打断阅读）。
+   RAY-549：时长由 180ms 对齐到 --transition-base（200ms），与内容区开合同步。 */
 .ai-disclosure__chevron {
   color: var(--color-text-secondary);
   transition:
-    transform 180ms ease-out,
+    transform var(--transition-base),
     color var(--transition-fast);
 }
 
@@ -825,10 +831,44 @@ article.heti .ai-disclosure__summary:focus-visible {
    这样折叠区与后续内容（目录、脚注区）的外边距行为与改动前那两段正文完全一致。 */
 .ai-disclosure {
   margin-bottom: 1.2em;
+  /* RAY-549：允许关键字尺寸参与插值，::details-content 的 block-size 才能 0 ↔ auto 平滑过渡。
+     只挂在折叠区上（该属性可继承），不做全站 opt-in。 */
+  interpolate-size: allow-keywords;
 }
 
 .ai-disclosure__body > :last-child {
   margin-bottom: 0;
+}
+
+/* ===== 平滑开合（RAY-549）=====
+   ::details-content 是 details 内容区的 UA 伪元素，把它的 block-size 从 0 过渡到 auto
+   （配合上面 .ai-disclosure 的 interpolate-size: allow-keywords）；content-visibility
+   必须一起过渡并 allow-discrete —— 收起时它要在动画**结束后**才翻成 hidden，否则内容
+   会在高度动画开始前就消失，看到的还是瞬跳。
+   不支持这两个特性的浏览器（Firefox 等）由 ArticlePage.astro 里的兜底脚本接管；
+   脚本也没跑起来时保持原生直切 —— 功能始终可用。 */
+@supports selector(::details-content) {
+  .ai-disclosure::details-content {
+    block-size: 0;
+    /* 必须用 clip 而不是 hidden：hidden 会把它变成滚动容器（BFC），
+       实测块高 194.34px → 206.34px（多 12px），整页跟着下移 12px；
+       clip 只裁剪、不建滚动容器，展开态几何与改动前逐像素一致。 */
+    overflow: clip;
+    transition:
+      block-size var(--transition-base),
+      content-visibility var(--transition-base) allow-discrete;
+  }
+
+  .ai-disclosure[open]::details-content {
+    block-size: auto;
+  }
+
+  /* 关掉动效偏好：直切（与兜底脚本的 reduced-motion 分支一致） */
+  @media (prefers-reduced-motion: reduce) {
+    .ai-disclosure::details-content {
+      transition: none;
+    }
+  }
 }
 
 .toc-item.depth-3 {
