@@ -30,6 +30,10 @@
  * 参数不变（wght 350 / opsz 24 / FILL 0 / GRAD 0、25），保留 scale(1,-1) 那层 <g>。
  * 它的入口不在 Astro 组件里，而是 astro.config.mjs 的 rehypeFootnoteLabel 插件：
  * 插件会直接读这两个文件取 path 的 d 值拼成同构的 .ms-icon 节点树。
+ *
+ * RAY-544 补充：文章「AI 声明」折叠区右侧的 chevron 用 keyboard_arrow_down（码点 E313），
+ * 生成参数与 reply 完全一致（wght 350 / opsz 24 / FILL 0 / GRAD 0、25，保留 scale(1,-1) 那层 <g>）。
+ * 入口同样在 astro.config.mjs（rehypeAiDisclosure 插件）；收起态由 CSS 旋转 180°。
  */
 
 import arrowBackLight from './arrow_back-light.svg?raw';
@@ -50,6 +54,8 @@ import translateLight from './translate-light.svg?raw';
 import translateDark from './translate-dark.svg?raw';
 import replyLight from './reply-light.svg?raw';
 import replyDark from './reply-dark.svg?raw';
+import keyboardArrowDownLight from './keyboard_arrow_down-light.svg?raw';
+import keyboardArrowDownDark from './keyboard_arrow_down-dark.svg?raw';
 
 export interface MaterialIconPair {
   /** 浅色主题（GRAD 0） */
@@ -68,6 +74,7 @@ export const MATERIAL_ICONS = {
   desktop_windows: { light: desktopWindowsLight, dark: desktopWindowsDark },
   translate: { light: translateLight, dark: translateDark },
   reply: { light: replyLight, dark: replyDark },
+  keyboard_arrow_down: { light: keyboardArrowDownLight, dark: keyboardArrowDownDark },
 } satisfies Record<string, MaterialIconPair>;
 
 export type MaterialIconName = keyof typeof MATERIAL_ICONS;

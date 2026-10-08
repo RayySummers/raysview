@@ -757,6 +757,78 @@ article.heti .footnotes a:hover {
   vertical-align: -4px;
 }
 
+/* ===== 「AI 声明」折叠区（RAY-544）=====
+   <details class="ai-disclosure" open> 由 astro.config.mjs 的 rehypeAiDisclosure 插件
+   在渲染层统一生成（中英文章共用同一份模板），历史文章内容不用逐篇改。
+   默认展开；summary 用原生 details/summary 行为，零 JS、键盘（Enter/Space）可操作。
+   展开态与原来那两段正文段落视觉一致：summary 复刻 article.heti p 的字号/行高/下边距，
+   只多一个右侧 chevron。 */
+article.heti .ai-disclosure__summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  /* 点击热区贴合文字（同脚注标题的 width: fit-content），不让整行空白都可点 */
+  width: fit-content;
+  max-width: 100%;
+  margin-bottom: 1.2em;
+  font-weight: inherit;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 行高跟随正文段落：中文 1.8 / 英文 1.2（同 RAY-528 的 article.heti p 规则） */
+article.heti .ai-disclosure__summary:lang(zh) {
+  line-height: 1.8;
+}
+
+article.heti .ai-disclosure__summary:lang(en) {
+  line-height: 1.2;
+}
+
+/* 去掉浏览器默认的三角 marker（各引擎写法不同，都要写） */
+article.heti .ai-disclosure__summary::-webkit-details-marker {
+  display: none;
+}
+
+article.heti .ai-disclosure__summary::marker {
+  content: '';
+}
+
+/* chevron：展开态朝下，收起态转 180°（静默过渡，不打断阅读） */
+.ai-disclosure__chevron {
+  color: var(--color-text-secondary);
+  transition:
+    transform 180ms ease-out,
+    color var(--transition-fast);
+}
+
+.ai-disclosure:not([open]) .ai-disclosure__chevron {
+  transform: rotate(180deg);
+}
+
+.ai-disclosure__summary:hover .ai-disclosure__chevron {
+  color: var(--color-text-primary);
+}
+
+/* 键盘焦点可见：Chrome 默认不给 summary 画焦点环（实测 outline-style: none），
+   显式补一个，键盘用户 Tab 过来能看见焦点在哪（WCAG 2.4.7）。 */
+article.heti .ai-disclosure__summary:focus-visible {
+  outline: 2px solid var(--color-text-primary);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+
+/* details 的内容区（UA 的 shadow slot）不参与外边距折叠，最后一段的 1.2em 下边距
+   会实打实撑高整块、给页面底部多留一段空白。把它收进 details 自身：
+   这样折叠区与后续内容（目录、脚注区）的外边距行为与改动前那两段正文完全一致。 */
+.ai-disclosure {
+  margin-bottom: 1.2em;
+}
+
+.ai-disclosure__body > :last-child {
+  margin-bottom: 0;
+}
+
 .toc-item.depth-3 {
   padding-left: var(--space-5);
   font-size: var(--text-xs);
