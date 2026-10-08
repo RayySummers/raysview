@@ -311,10 +311,12 @@ html {
   line-height: 1.8;
 }
 
-/* 文章正文行高（RAY-528 2026-10-08 上线，RAY-530 同日复核原帖后重校）：中文 1.8、英文 1.2。
-   方框字上下没有升降部、需要更多行间呼吸（1.8）；西文有小写升降部、行距可以更紧（1.2）。
+/* 文章正文行高（RAY-528 2026-10-08 上线，RAY-530 同日复核原帖后重校，RAY-550 定英文档）：
+   中文 1.8、英文 1.4。
+   方框字上下没有升降部、需要更多行间呼吸（1.8）；西文有小写升降部、行距可以更紧
+   （RAY-550 起 1.4 —— Ray 判 1.2 太密，原话「英文行高 1.4 might be cool」）。
    两条规则都用无单位倍数：每个字号各自按自己的 font-size 算出固定行高
-   （正文 18px → 中文 32.4px / 英文 21.6px），不被父级倍数连带缩放。
+   （正文 18px → 中文 32.4px / 英文 25.2px），不被父级倍数连带缩放。
    只作用于文章正文 p/li（blockquote 内的 p 同样命中），不改全局 :lang(zh)，
    避免头部/卡片/列表/标签等其余部分的行高被改动。 */
 article.heti p:lang(zh),
@@ -324,7 +326,7 @@ article.heti li:lang(zh) {
 
 article.heti p:lang(en),
 article.heti li:lang(en) {
-  line-height: 1.2;
+  line-height: 1.4;
 }
 
 article.heti p {
@@ -776,13 +778,13 @@ article.heti .ai-disclosure__summary {
   user-select: none;
 }
 
-/* 行高跟随正文段落：中文 1.8 / 英文 1.2（同 RAY-528 的 article.heti p 规则） */
+/* 行高跟随正文段落：中文 1.8 / 英文 1.4（同上方 article.heti p 规则；英文 RAY-550 起 1.4） */
 article.heti .ai-disclosure__summary:lang(zh) {
   line-height: 1.8;
 }
 
 article.heti .ai-disclosure__summary:lang(en) {
-  line-height: 1.2;
+  line-height: 1.4;
 }
 
 /* 去掉浏览器默认的三角 marker（各引擎写法不同，都要写） */
