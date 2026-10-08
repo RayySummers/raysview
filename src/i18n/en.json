@@ -41,16 +41,19 @@
   "series": {
     "justthinking": {
       "name": "JustThinking",
+      "pill": "JustThinking",
       "subtitle": "Scattered thoughts",
       "empty": "Articles in the JustThinking series are on the way."
     },
     "biweekly": {
       "name": "Biweekly",
+      "pill": "Biweekly",
       "subtitle": "A series of posts",
       "empty": "Articles in the Biweekly series are on the way."
     },
     "raydesign": {
       "name": "RayDesign",
+      "pill": "RayDesign",
       "subtitle": "A series of posts",
       "empty": "Articles in the RayDesign series are on the way."
     }

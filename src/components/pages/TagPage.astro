@@ -4,10 +4,13 @@
  *
  * noindex：tag 归档页内容与文章页重复，主动不索引（保留 canonical 供去重/引用）。
  * 若未来有意做 tag 流量，去掉 noindex 即可。
+ *
+ * RAY-545：列表标题同样去掉「 | 系列名 #NN」后缀（与 /posts、系列页、文章页 h1 一致）。
  */
 import Base from '../../layouts/Base.astro';
 import { langFromPath, useTranslations } from '../../i18n';
 import { hrefFor } from '../../i18n/routes';
+import { displayPostTitle } from '../../series';
 
 interface Props {
   tag: string;
@@ -27,7 +30,7 @@ const t = useTranslations(lang);
       <article style="margin-bottom: var(--space-3);">
         <a href={hrefFor(`/posts/${post.id}/`, lang)} class="post-title-link">
           <h3 class="post-title">
-            {post.data.title}
+            {displayPostTitle(post.data.title)}
           </h3>
         </a>
         <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">

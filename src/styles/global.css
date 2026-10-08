@@ -846,6 +846,30 @@ article.heti .footnotes a:hover {
   text-transform: uppercase;
 }
 
+/* ===== 系列 pill（RAY-545）=====
+   标签行里的系列标签（.series-pill，由 <SeriesPill> 渲染）：/posts 列表与文章页共用一份样式。
+   填充胶囊：底色 --color-text-primary、文字 --color-bg —— 浅色是黑底白字，深色主题自动反相成白底黑字，
+   两个主题都不需要额外规则。
+   字号不写死，继承所在标签行（/posts 列表 --text-xs 12px、文章页 --text-sm 14px）；
+   line-height: 1 让胶囊高度＝文字行高＋上下各 2px 内边距（12px 字号 → 16px 高），与 mock 的观感一致。
+   圆角 999px 全圆；文字含「#」前缀（由组件拼），无下划线。 */
+.series-pill {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--color-text-primary);
+  color: var(--color-bg);
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+/* hover 不换色、不加下划线，只用透明度给一点可点击反馈（对齐页脚 / 微信入口的静默交互） */
+.series-pill:hover {
+  opacity: 0.8;
+}
+
 /* 纯数字日期 YYYY-MM-DD — RAY-391 回退为 Roboto Flex Variable，不含 ss04 / MiSans Date，与正文数字一致。
    历史 class="font-date" / time.font-date / .post-date 保留为空壳兼容，避免旧引用报错，实际已不启用 MiSans。 */
 .font-date,
