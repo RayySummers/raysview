@@ -20,6 +20,7 @@
  *   - 正文直角引号惯例：英文双引号 "…" → 「…」（脚注定义与链接原文保留）
  *   - 所有 WeMD 主题样式内联化；主色 #FAAD14 → #edd363（含 rgba(250,173,20,*) → rgba(237,211,99,*)）；
  *     文字级强调（链接/上标/行内代码/脚注编号/有序列表序号）用深金 #b8860b 保证白底可读性（#edd363 对比度仅 1.49:1）
+ *   - 「※ **AI 声明**」标题行与其后的说明段落 → 灰色 #b2b2b2（与正文 #333333 区分；字号/行高/间距/粗体不变）
  *
  * 用法：
  *   node convert.mjs <input.md> [-o <output.html>] [--map <image-map.json>]
@@ -41,6 +42,7 @@ const MONO_STACK = "Menlo, Monaco, Consolas, 'Courier New', monospace";
 const PRIMARY = '#edd363'; // 主色（装饰性元素：色条/下划线/列表符号/脚注标题区）
 const PRIMARY_50 = 'rgba(237,211,99,0.5)'; // 主色 50%（原 rgba(250,173,20,0.5)）
 const TEXT_ACCENT = '#b8860b'; // 文字级强调色：链接/上标/行内代码/脚注编号/ol 序号（白底可读，对比度约 3.25:1）
+const NOTICE_GRAY = '#b2b2b2'; // AI 声明区块文字色：标题「※ **AI 声明**」与紧随的说明段落（与正文 #333333 区分）
 
 const STYLE = {
   section:
@@ -87,6 +89,9 @@ const STYLE = {
   fnNum: `color:${TEXT_ACCENT};font-weight:bold;display:inline-block;width:32px;`,
   fnUrl: `color:${TEXT_ACCENT};`,
 };
+
+// AI 声明区块（标题 + 说明段落）：只在正文段落样式上追加文字色，字号/行高/间距/粗体一律不变
+STYLE.pNotice = STYLE.p + `color:${NOTICE_GRAY};`;
 
 // ---------- 工具 ----------
 function escapeHtml(s) {
@@ -160,11 +165,11 @@ function inlineParse(text) {
   return text;
 }
 
-/** 普通段落：转义 + 直角引号 + 行内解析；多行合并时用 <br/> */
-function paragraphHtml(text) {
+/** 普通段落：转义 + 直角引号 + 行内解析；多行合并时用 <br/>（style 缺省为正文段落样式） */
+function paragraphHtml(text, style = STYLE.p) {
   const parts = text.split(/\n/).map((ln) => escapeHtml(normalizeQuotes(ln)));
   const inner = parts.map((p) => inlineParse(p)).join('<br/>');
-  return `<p style="${STYLE.p}">${inner}</p>`;
+  return `<p style="${style}">${inner}</p>`;
 }
 
 // ---------- 文档解析 ----------
@@ -210,9 +215,23 @@ const QUOTE_RE = /^>\s?(.*)$/;
 const UL_RE = /^(\s*)[-*+]\s+(.*)$/;
 const OL_RE = /^(\s*)\d+\.\s+(.*)$/;
 const CAPTION_RE = /^（.+）$/;
+// AI 声明标题行（惯例「※ **AI 声明**」独立成行；容忍 ※ 省略与空格差异）
+const AI_NOTICE_RE = /^※?\s*\*\*\s*AI\s*声明\s*\*\*\s*$/;
 
 function isCaptionLine(line) {
   return CAPTION_RE.test(line.trim()) && line.trim().length <= 60;
+}
+
+/** 该行是否开启新的块级元素（空行也算）——普通段落收集到此为止 */
+function isBlockStart(lines, i) {
+  const t = lines[i].trim();
+  if (t === '') return true;
+  return (
+    HR_RE.test(t) || HEADING_RE.test(t) || EMBED_RE.test(t) ||
+    QUOTE_RE.test(t) || FN_DEF_RE.test(t) || t.startsWith('```') ||
+    UL_RE.test(t) || OL_RE.test(t) ||
+    (t.startsWith('|') && i + 1 < lines.length && /^\|[\s:|-]+\|$/.test(lines[i + 1].trim()))
+  );
 }
 
 /** 解析行列表，产出 block 数组：{type:'p'|'h'|'hr'|'img'|'ul'|'ol'|'quote'|'pre'|'table', ...} */
@@ -325,18 +344,33 @@ function parseBlocks(lines, imageMap) {
       continue;
     }
 
+    // AI 声明：标题行所在段落 + 紧随其后的说明段落改用灰色（NOTICE_GRAY），段落切分与正文完全一致
+    // （标题行与说明文字之间无空行时本就是一个段落，如 #02；有空行时是标题、说明两段，如 #01/#03/#04）
+    if (AI_NOTICE_RE.test(line)) {
+      const noticeHead = [];
+      while (i < lines.length && !isBlockStart(lines, i)) {
+        noticeHead.push(lines[i]);
+        i++;
+      }
+      blocks.push({ type: 'p', text: noticeHead.join('\n'), notice: true });
+      let j = i;
+      while (j < lines.length && lines[j].trim() === '') j++;
+      const noticeBody = [];
+      while (j < lines.length && !isBlockStart(lines, j)) {
+        noticeBody.push(lines[j]);
+        j++;
+      }
+      if (noticeBody.length) {
+        blocks.push({ type: 'p', text: noticeBody.join('\n'), notice: true });
+        i = j;
+      }
+      continue;
+    }
+
     // 普通段落：连续非空、非块级开头的行合并
     const para = [];
-    while (i < lines.length) {
-      const l = lines[i];
-      const t = l.trim();
-      if (t === '') break;
-      if (
-        HR_RE.test(t) || HEADING_RE.test(t) || EMBED_RE.test(t) ||
-        QUOTE_RE.test(t) || FN_DEF_RE.test(t) || t.startsWith('```') ||
-        UL_RE.test(t) || OL_RE.test(t) || (t.startsWith('|') && i + 1 < lines.length && /^\|[\s:|-]+\|$/.test(lines[i + 1].trim()))
-      ) break;
-      para.push(l);
+    while (i < lines.length && !isBlockStart(lines, i)) {
+      para.push(lines[i]);
       i++;
     }
     if (para.length) {
@@ -352,7 +386,7 @@ function parseBlocks(lines, imageMap) {
 function renderBlock(b, imageMap) {
   switch (b.type) {
     case 'p':
-      return paragraphHtml(b.text);
+      return paragraphHtml(b.text, b.notice ? STYLE.pNotice : STYLE.p);
     case 'h': {
       // 站内脚注区标题（#### 引用资料… / ## 参考文献）由「参考资料」块替代，不再单独渲染
       if (/^(引用资料|参考文献)/.test(b.text)) return '';
