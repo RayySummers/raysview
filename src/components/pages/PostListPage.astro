@@ -117,7 +117,7 @@ const periodStyle =
     transition: transform 200ms ease-out;
   }
   .nav-link:hover {
-    font-weight: 700;
+    font-weight: 620; /* RAY-527：320 → 620（+300 档，约 SemiBold），不再跳到 700；过渡仍 100ms ease-out */
   }
   .nav-link:hover::after {
     transform: scaleX(1);
@@ -127,7 +127,7 @@ const periodStyle =
   }
 
   /* RAY-525：文章标题 hover = 变粗 ＋ 下划线出现，对齐同页系列链接（.nav-link）的观感。
-     变粗沿用 .nav-link 的参数（320 → 700、100ms ease-out，见上）；
+     变粗沿用 .nav-link 的参数（320 → 620、100ms ease-out，见上；RAY-527 由 700 降到 620）；
      下划线按 DESIGN.md「Post Card → Title hover」规范：transparent → currentColor，
      过渡沿用原有的 --transition-fast（150ms），保持「静默交互」的轻量感。
      外层 <a> 仍是整行点击热区（display:block 不变），故把 h3 收窄成 fit-content，
@@ -150,7 +150,7 @@ const periodStyle =
       font-weight 100ms ease-out;
   }
   .post-title:hover {
-    font-weight: 700;
+    font-weight: 620; /* RAY-527：320 → 620（+300 档），与 .nav-link 同档 */
     text-decoration-color: currentColor;
   }
 </style>
