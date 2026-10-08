@@ -16,6 +16,7 @@ import SeriesPill from '../SeriesPill.astro';
 import { langFromPath, useTranslations } from '../../i18n';
 import { hrefFor } from '../../i18n/routes';
 import { displayPostTitle, displayTags } from '../../series';
+import { tagsInLang } from '../../tags-map';
 
 interface Props {
   post: CollectionEntry<'posts'> | CollectionEntry<'postsEn'>;
@@ -124,9 +125,9 @@ const articleLd = {
 
   <div style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-5);">
     <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
-    {post.data.tags && post.data.tags.length > 0 && (
+    {tagsInLang(post.data.tags, lang).length > 0 && (
       <span style="margin-left: var(--space-2);">
-        {displayTags(post.data.tags).map((entry, i) => (
+        {displayTags(tagsInLang(post.data.tags, lang)).map((entry, i) => (
           <>
             {i > 0 && ' '}
             {entry.series ? (

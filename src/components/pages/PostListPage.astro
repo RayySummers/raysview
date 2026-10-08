@@ -14,6 +14,7 @@ import { getCollection } from 'astro:content';
 import { langFromPath, useTranslations } from '../../i18n';
 import { hrefFor } from '../../i18n/routes';
 import { SERIES, displayPostTitle, displayTags } from '../../series';
+import { tagsInLang } from '../../tags-map';
 
 const lang = langFromPath(Astro.url.pathname);
 const t = useTranslations(lang);
@@ -83,9 +84,9 @@ const periodStyle =
             </a>
             <div style="font-size: var(--text-xs); color: var(--color-text-secondary); margin-top: var(--space-1);">
               <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
-              {post.data.tags && post.data.tags.length > 0 && (
+              {tagsInLang(post.data.tags, lang).length > 0 && (
                 <span style="margin-left: var(--space-2);">
-                  {displayTags(post.data.tags).map((entry, idx) => (
+                  {displayTags(tagsInLang(post.data.tags, lang)).map((entry, idx) => (
                     <>
                       {idx > 0 && ' '}
                       {entry.series ? (
