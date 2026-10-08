@@ -82,7 +82,7 @@ AI 没有眼睛，没有视锥细胞，也没有任何颜色感受。但你问�
 
 我们之所以能讨论颜色，不是因为我们心里的感受一致，而是因为我们共享同一套语言约定。约定不是感受，它不需要每个人内心世界雷同，只需要大家在公共场合用词的方式足够接近。剩下的私人感受，谁也进不去，也正因为进不去，才不用去管它。
 
-[^1]: Mineault, Patrick. "Is my blue your blue?" 2024. https://ismy.blue/。相关报道见 The Guardian、New York Post 等 2024 年 9 月的报道。
+[^1]: Mineault, Patrick. "Is my blue your blue?" 2024. https://ismy.blue/ 。相关报道见 The Guardian、New York Post 等 2024 年 9 月的报道。
 
 [^2]: Berlin, Brent, and Paul Kay. 1969. *Basic Color Terms: Their Universality and Evolution*. Berkeley: University of California Press.
 
