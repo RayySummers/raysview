@@ -257,13 +257,13 @@ Icon shows current target state, not current active state.
 
 ### Font Stack
 
-> **现状（对齐 `global.css`，RAY-476 补正）** —— 本站**没有** Inter；
-> CJK 汉字的主字体是 **MiSans**（`--font-sans` 的第一顺位），不是 Zhudou Sans。
-> 以代码为准：两者冲突时 `global.css` 赢。
+> **现状（对齐 `global.css`，RAY-552 补正）** —— 本站**没有** Inter。
+> 栈序就是「谁认领谁」：**标点 / 符号 → Zhudou Sans、西文与数字 → Roboto Flex、
+> CJK 汉字 → MiSans**，其余顺位兜底。以代码为准：两者冲突时 `global.css` 赢。
 
 ```css
-/* 正文 / 界面（--font-sans）：MiSans → Zhudou Sans → Roboto Flex → Geist Sans → Source Han Sans SC */
---font-sans: "MiSans", "Zhudou Sans", "Roboto Flex Variable", "Geist Sans", "Source Han Sans SC",
+/* 正文 / 界面（--font-sans）：Zhudou Sans → Roboto Flex → MiSans → Geist Sans → Source Han Sans SC */
+--font-sans: "Zhudou Sans", "Roboto Flex Variable", "MiSans", "Geist Sans", "Source Han Sans SC",
              ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
 /* 展示 / 纯拉丁（--font-display） */
@@ -282,14 +282,36 @@ Icon shows current target state, not current active state.
 font-family: "Sarasa Mono SC", "JetBrains Mono", Consolas, ui-monospace, monospace;
 ```
 
+### 认领模型（RAY-552）
+
+`@font-face` 的 `unicode-range` 决定每个字体**认领哪些码位**；栈从左到右，同一字符由
+**先认领且真有字形**的字体渲染，认领了却没有字形就继续往右找。分工因此天然落在各家的 range 上：
+
+| 字符类别 | 认领者 | 依据 |
+|---|---|---|
+| 全角 / CJK 标点与符号（，。：；《》「」“”…） | **Zhudou Sans** | 只圈标点 / 符号区，不碰汉字与西文 |
+| 拉丁、数字、半角标点（`, . ? !`） | **Roboto Flex Variable** | `U+0000-00FF` 等拉丁区 |
+| CJK 汉字 | **MiSans** | `U+3400-4DBF`、`U+4E00-9FFF`、`U+F900-FAFF` 等 |
+| 其余 | Geist Sans → Source Han Sans SC | 顺位兜底 |
+
+标点与它周围的汉字由**同一字体**（煮豆）渲染，字体内部的挤压 / kern 才会生效 ——
+这正是 `：“` 这类标点挤压从根上不再依赖补丁的原因（RAY-552 的报障）。
+
+⚠️ **约束：Zhudou 必须排在 Roboto 之前。** 两家都认领 `U+2000-206F`（引号、破折号、省略号所在区），
+现状与目标都要求这些字符由 Zhudou 渲染，顺序颠倒会把引号让给 Roboto。
+
+**与旧的「逐字排除」模型（RAY-390）的关系**：RAY-390 让 MiSans 先认领、再逐字从它的
+`unicode-range` 挖掉标点来移交，漏挖一个码位（`：` `；` `《》`）挤压就失效。RAY-552 改为栈序决定，
+MiSans 的排除名单**不再承担移交职责**（留着无害；「清理成只管汉字」列为后续可选，本单不动）。
+
 ### 实际加载的字体族（`@font-face`）
 
 | 字体族 | 来源 | 覆盖范围 |
 |--------|------|----------|
-| `MiSans` | 本地 `/fonts/MiSans-VF.woff2`（构建时按用字子集化，见 `scripts/subset-misans.mjs`） | CJK 汉字；**排除**数字 / 拉丁，以及全角 / CJK 标点（RAY-390） |
+| `MiSans` | 本地 `/fonts/MiSans-VF.woff2`（构建时按用字子集化，见 `scripts/subset-misans.mjs`） | CJK 汉字；**排除**数字 / 拉丁，以及全角 / CJK 标点（RAY-390；RAY-552 起不再承担移交职责） |
 | `MiSans Date` | 同一个 MiSans VF 文件 | 仅 `U+0030-0039` 数字与 `U+002D`，供 `.date-cjk` 齐线等宽（SS04/tnum） |
-| `Zhudou Sans` | 本地 `/fonts/ZhudouSansVF.woff2` | 标点兜底：`U+3000-303F`、`U+FF00-FFEF`、`U+2000-206F`、`U+2190-21FF`、`U+2600-26FF`、`U+2700-27BF`，带 `ss02` |
-| `Roboto Flex Variable` | `@fontsource-variable/roboto-flex/opsz.css` | 拉丁 / 数字 / 半角标点，可变轴 `wght` 100–1000 + `opsz` 8–144 |
+| `Zhudou Sans` | 本地 `/fonts/ZhudouSansVF.woff2` | 标点 / 符号**主字体（栈首）**：`U+3000-303F`、`U+FF00-FFEF`、`U+2000-206F`、`U+2190-21FF`、`U+2600-26FF`、`U+2700-27BF`，带 `ss02` |
+| `Roboto Flex Variable` | `@fontsource-variable/roboto-flex/opsz.css` | 拉丁 / 数字 / 半角标点（栈第二），可变轴 `wght` 100–1000 + `opsz` 8–144 |
 | `Geist Sans` | jsDelivr CDN（`@fontsource/geist-sans`，逐字重 100–900） | 拉丁备用 |
 | `Source Han Sans SC` | jsDelivr CDN（`@fontpkg/source-han-sans-sc-vf`） | CJK 兜底，含全角标点 |
 | `FnHover` | 本地 `roboto-flex-latin-gradonly.woff2`（wght 钉死 400，只留 GRAD）+ Source Han Sans SC | 脚注链接 hover 加粗：**只变笔画不变字宽**，避免网址换行 |
@@ -297,7 +319,7 @@ font-family: "Sarasa Mono SC", "JetBrains Mono", Consolas, ui-monospace, monospa
 | `Noto Serif SC` | Google Fonts | `article.heti blockquote` 引用块 |
 
 `.date-cjk` 另有专用栈 `"MiSans", "MiSans Date", "Source Han Sans SC", sans-serif`。
-字体栈本身在 RAY-476 **未做任何改动**。
+字体栈在 RAY-476 **未做任何改动**；顺序在 **RAY-552** 重排为 Zhudou → Roboto → MiSans（见上「认领模型」）。
 
 ### Roboto Flex OpenType Features
 Roboto Flex is a variable font loaded with the `opsz` and `wght` axes (`@fontsource-variable/roboto-flex/opsz.css`).

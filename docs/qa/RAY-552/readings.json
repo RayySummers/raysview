@@ -1,0 +1,1914 @@
+{
+  "baseUrl": "http://127.0.0.1:44552",
+  "generatedAt": "2026-10-09T04:38:40.692Z",
+  "states": {
+    "after": {
+      "fontSansComputed": "\"Zhudou Sans\", \"Roboto Flex Variable\", \"MiSans\", \"Geist Sans\", \"Source Han Sans SC\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "pairsReal": {
+        "anchor": "JT#04",
+        "needle": "：“",
+        "pairWidth": 27.734,
+        "rects": 1,
+        "em": 18.375,
+        "ratio": 1.509,
+        "fontSize": "18px",
+        "fontFamily": "\"Zhudou Sans\", \"Roboto Flex Variable\", MiSans, \"Geist Sans\","
+      },
+      "pairsReal2": {
+        "anchor": "JT#02",
+        "needle": "，「",
+        "pairWidth": 27.734,
+        "rects": 1,
+        "em": 18.375,
+        "ratio": 1.509,
+        "fontSize": "18px",
+        "fontFamily": "\"Zhudou Sans\", \"Roboto Flex Variable\", MiSans, \"Geist Sans\","
+      },
+      "probePairs": {
+        "styleFrom": "article.heti",
+        "fontSize": "18px",
+        "fontWeight": "400",
+        "em": 18.375,
+        "pairs": {
+          "。》": {
+            "width": 27.734,
+            "ratio": 1.509
+          },
+          "》《": {
+            "width": 18.734,
+            "ratio": 1.02
+          },
+          "：“": {
+            "width": 27.734,
+            "ratio": 1.509
+          },
+          "，「": {
+            "width": 27.734,
+            "ratio": 1.509
+          },
+          "。。": {
+            "width": 27.734,
+            "ratio": 1.509
+          }
+        }
+      },
+      "probePairsTitle": {
+        "styleFrom": "h1.post-title",
+        "fontSize": "40px",
+        "fontWeight": "620",
+        "em": 39.203,
+        "pairs": {
+          "《》": {
+            "width": 78.406,
+            "ratio": 2
+          },
+          "：“": {
+            "width": 58.406,
+            "ratio": 1.49
+          },
+          "。》": {
+            "width": 58.406,
+            "ratio": 1.49
+          }
+        }
+      },
+      "platformFonts": {
+        "han": {
+          "text": "乘",
+          "note": "汉字",
+          "renderedBy": [
+            {
+              "family": "MiSans VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "han2": {
+          "text": "这",
+          "note": "汉字(第二样本)",
+          "renderedBy": [
+            {
+              "family": "MiSans VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "digit": {
+          "text": "2",
+          "note": "数字",
+          "renderedBy": [
+            {
+              "family": "Roboto Flex",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "latin": {
+          "text": "R",
+          "note": "西文",
+          "renderedBy": [
+            {
+              "family": "Roboto Flex",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "fw-colon": {
+          "text": "：",
+          "note": "全角冒号",
+          "renderedBy": [
+            {
+              "family": "煮豆黑體 ExtraLight",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "fw-semi": {
+          "text": "；",
+          "note": "全角分号",
+          "renderedBy": [
+            {
+              "family": "煮豆黑體 ExtraLight",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "quote-open": {
+          "text": "“",
+          "note": "左双引号",
+          "renderedBy": [
+            {
+              "family": "煮豆黑體 ExtraLight",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "bookmark": {
+          "text": "《",
+          "note": "书名号",
+          "renderedBy": [
+            {
+              "family": "煮豆黑體 ExtraLight",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "ideographic-period": {
+          "text": "。",
+          "note": "句号",
+          "renderedBy": [
+            {
+              "family": "煮豆黑體 ExtraLight",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "corner-bracket": {
+          "text": "「",
+          "note": "直角引号",
+          "renderedBy": [
+            {
+              "family": "煮豆黑體 ExtraLight",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "hw-comma": {
+          "text": ",",
+          "note": "半角逗号",
+          "renderedBy": [
+            {
+              "family": "Roboto Flex",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "hw-period": {
+          "text": ".",
+          "note": "半角句点",
+          "renderedBy": [
+            {
+              "family": "Roboto Flex",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "no-glyph-3003": {
+          "text": "〃",
+          "note": "煮豆认领但疑似无字形（U+3003）",
+          "renderedBy": [
+            {
+              "family": "Geist",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "no-glyph-3007": {
+          "text": "〇",
+          "note": "煮豆认领但疑似无字形（U+3007）",
+          "renderedBy": [
+            {
+              "family": "Source Han Sans SC VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "no-glyph-ff5e": {
+          "text": "～",
+          "note": "煮豆认领但疑似无字形（U+FF5E）",
+          "renderedBy": [
+            {
+              "family": "Source Han Sans SC VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        }
+      },
+      "consoleErrors": [],
+      "consoleErrorsReal": [],
+      "fontsLoaded": [
+        "Zhudou Sans 100 900",
+        "MiSans 100 900",
+        "Geist Sans 400",
+        "Source Han Sans SC 100 900",
+        "Geist Mono Variable 100 900",
+        "Roboto Flex Variable 100 1000"
+      ]
+    },
+    "before": {
+      "fontSansComputed": "\"MiSans\", \"Zhudou Sans\", \"Roboto Flex Variable\", \"Geist Sans\", \"Source Han Sans SC\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "pairsReal": {
+        "anchor": "JT#04",
+        "needle": "：“",
+        "pairWidth": 36.734,
+        "rects": 1,
+        "em": 18.375,
+        "ratio": 1.999,
+        "fontSize": "18px",
+        "fontFamily": "MiSans, \"Zhudou Sans\", \"Roboto Flex Variable\", \"Geist Sans\","
+      },
+      "pairsReal2": {
+        "anchor": "JT#02",
+        "needle": "，「",
+        "pairWidth": 27.734,
+        "rects": 1,
+        "em": 18.375,
+        "ratio": 1.509,
+        "fontSize": "18px",
+        "fontFamily": "MiSans, \"Zhudou Sans\", \"Roboto Flex Variable\", \"Geist Sans\","
+      },
+      "probePairs": {
+        "styleFrom": "article.heti",
+        "fontSize": "18px",
+        "fontWeight": "400",
+        "em": 18.375,
+        "pairs": {
+          "。》": {
+            "width": 36.734,
+            "ratio": 1.999
+          },
+          "》《": {
+            "width": 36.734,
+            "ratio": 1.999
+          },
+          "：“": {
+            "width": 36.734,
+            "ratio": 1.999
+          },
+          "，「": {
+            "width": 27.734,
+            "ratio": 1.509
+          },
+          "。。": {
+            "width": 27.734,
+            "ratio": 1.509
+          }
+        }
+      },
+      "probePairsTitle": {
+        "styleFrom": "h1.post-title",
+        "fontSize": "40px",
+        "fontWeight": "620",
+        "em": 39.203,
+        "pairs": {
+          "《》": {
+            "width": 78.406,
+            "ratio": 2
+          },
+          "：“": {
+            "width": 78.406,
+            "ratio": 2
+          },
+          "。》": {
+            "width": 78.406,
+            "ratio": 2
+          }
+        }
+      },
+      "platformFonts": {
+        "han": {
+          "text": "乘",
+          "note": "汉字",
+          "renderedBy": [
+            {
+              "family": "MiSans VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "han2": {
+          "text": "这",
+          "note": "汉字(第二样本)",
+          "renderedBy": [
+            {
+              "family": "MiSans VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "digit": {
+          "text": "2",
+          "note": "数字",
+          "renderedBy": [
+            {
+              "family": "Roboto Flex",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "latin": {
+          "text": "R",
+          "note": "西文",
+          "renderedBy": [
+            {
+              "family": "Roboto Flex",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "fw-colon": {
+          "text": "：",
+          "note": "全角冒号",
+          "renderedBy": [
+            {
+              "family": "MiSans VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "fw-semi": {
+          "text": "；",
+          "note": "全角分号",
+          "renderedBy": [
+            {
+              "family": "MiSans VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "quote-open": {
+          "text": "“",
+          "note": "左双引号",
+          "renderedBy": [
+            {
+              "family": "煮豆黑體 ExtraLight",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "bookmark": {
+          "text": "《",
+          "note": "书名号",
+          "renderedBy": [
+            {
+              "family": "MiSans VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "ideographic-period": {
+          "text": "。",
+          "note": "句号",
+          "renderedBy": [
+            {
+              "family": "煮豆黑體 ExtraLight",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "corner-bracket": {
+          "text": "「",
+          "note": "直角引号",
+          "renderedBy": [
+            {
+              "family": "煮豆黑體 ExtraLight",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "hw-comma": {
+          "text": ",",
+          "note": "半角逗号",
+          "renderedBy": [
+            {
+              "family": "Roboto Flex",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "hw-period": {
+          "text": ".",
+          "note": "半角句点",
+          "renderedBy": [
+            {
+              "family": "Roboto Flex",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "no-glyph-3003": {
+          "text": "〃",
+          "note": "煮豆认领但疑似无字形（U+3003）",
+          "renderedBy": [
+            {
+              "family": "Geist",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "no-glyph-3007": {
+          "text": "〇",
+          "note": "煮豆认领但疑似无字形（U+3007）",
+          "renderedBy": [
+            {
+              "family": "Source Han Sans SC VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        },
+        "no-glyph-ff5e": {
+          "text": "～",
+          "note": "煮豆认领但疑似无字形（U+FF5E）",
+          "renderedBy": [
+            {
+              "family": "Source Han Sans SC VF",
+              "glyphs": 1,
+              "custom": true
+            }
+          ]
+        }
+      },
+      "consoleErrors": [],
+      "consoleErrorsReal": [],
+      "fontsLoaded": [
+        "Zhudou Sans 100 900",
+        "MiSans 100 900",
+        "Geist Sans 400",
+        "Source Han Sans SC 100 900",
+        "Geist Mono Variable 100 900",
+        "Roboto Flex Variable 100 1000"
+      ]
+    }
+  },
+  "failures": [],
+  "checks": [
+    {
+      "scope": "after",
+      "name": "console 无 error（已滤掉纯传输层抖动）",
+      "ok": true,
+      "detail": {
+        "real": [],
+        "raw": []
+      }
+    },
+    {
+      "scope": "after",
+      "name": "五个必需字体族全部加载完成",
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "loaded": [
+          "Zhudou Sans 100 900",
+          "MiSans 100 900",
+          "Geist Sans 400",
+          "Source Han Sans SC 100 900",
+          "Geist Mono Variable 100 900",
+          "Roboto Flex Variable 100 1000"
+        ]
+      }
+    },
+    {
+      "scope": "before",
+      "name": "console 无 error（已滤掉纯传输层抖动）",
+      "ok": true,
+      "detail": {
+        "real": [],
+        "raw": []
+      }
+    },
+    {
+      "scope": "before",
+      "name": "五个必需字体族全部加载完成",
+      "ok": true,
+      "detail": {
+        "missing": [],
+        "loaded": [
+          "Zhudou Sans 100 900",
+          "MiSans 100 900",
+          "Geist Sans 400",
+          "Source Han Sans SC 100 900",
+          "Geist Mono Variable 100 900",
+          "Roboto Flex Variable 100 1000"
+        ]
+      }
+    },
+    {
+      "scope": "after",
+      "name": "--font-sans 顺序 = Zhudou → Roboto → MiSans",
+      "ok": true,
+      "detail": "\"Zhudou Sans\", \"Roboto Flex Variable\", \"MiSans\", \"Geist Sans\", \"Source Han Sans SC\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+    },
+    {
+      "scope": "before",
+      "name": "--font-sans 顺序 = MiSans → Zhudou → Roboto（对照）",
+      "ok": true,
+      "detail": "\"MiSans\", \"Zhudou Sans\", \"Roboto Flex Variable\", \"Geist Sans\", \"Source Han Sans SC\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+    },
+    {
+      "scope": "after",
+      "name": "挤压 ：“ (JT#04 真实正文) ≈ 1.5em",
+      "ok": true,
+      "detail": {
+        "ratio": 1.509,
+        "expect": 1.5,
+        "before": 1.999
+      }
+    },
+    {
+      "scope": "after",
+      "name": "挤压 ，「 (JT#02 真实正文) ≈ 1.5em",
+      "ok": true,
+      "detail": {
+        "ratio": 1.509,
+        "expect": 1.5,
+        "before": 1.509
+      }
+    },
+    {
+      "scope": "after",
+      "name": "挤压 。》 (正文合成探针) ≈ 1.5em",
+      "ok": true,
+      "detail": {
+        "ratio": 1.509,
+        "expect": 1.5,
+        "before": 1.999
+      }
+    },
+    {
+      "scope": "after",
+      "name": "挤压 》《 (正文合成探针) ≈ 1em",
+      "ok": true,
+      "detail": {
+        "ratio": 1.02,
+        "expect": 1,
+        "before": 1.999
+      }
+    },
+    {
+      "scope": "after",
+      "name": "挤压 ：“ (正文合成探针) ≈ 1.5em",
+      "ok": true,
+      "detail": {
+        "ratio": 1.509,
+        "expect": 1.5,
+        "before": 1.999
+      }
+    },
+    {
+      "scope": "after",
+      "name": "挤压 ：“ (620 标题探针) ≈ 1.5em",
+      "ok": true,
+      "detail": {
+        "ratio": 1.49,
+        "expect": 1.5,
+        "before": 2
+      }
+    },
+    {
+      "scope": "before",
+      "name": "旧栈对照 ：“ (JT#04 真实正文) = 2em（挤压失效）",
+      "ok": true,
+      "detail": {
+        "ratio": 1.999,
+        "expect": 2
+      }
+    },
+    {
+      "scope": "before",
+      "name": "旧栈对照 。》 (正文合成探针) = 2em（挤压失效）",
+      "ok": true,
+      "detail": {
+        "ratio": 1.999,
+        "expect": 2
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 汉字 → MiSans",
+      "ok": true,
+      "detail": {
+        "after": "MiSans VF",
+        "before": "MiSans VF"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 汉字(第二样本) → MiSans",
+      "ok": true,
+      "detail": {
+        "after": "MiSans VF",
+        "before": "MiSans VF"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 数字 → Roboto Flex Variable",
+      "ok": true,
+      "detail": {
+        "after": "Roboto Flex",
+        "before": "Roboto Flex"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 西文 → Roboto Flex Variable",
+      "ok": true,
+      "detail": {
+        "after": "Roboto Flex",
+        "before": "Roboto Flex"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 全角冒号 → Zhudou Sans",
+      "ok": true,
+      "detail": {
+        "after": "煮豆黑體 ExtraLight",
+        "before": "MiSans VF"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 全角分号 → Zhudou Sans",
+      "ok": true,
+      "detail": {
+        "after": "煮豆黑體 ExtraLight",
+        "before": "MiSans VF"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 左双引号 → Zhudou Sans",
+      "ok": true,
+      "detail": {
+        "after": "煮豆黑體 ExtraLight",
+        "before": "煮豆黑體 ExtraLight"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 书名号 → Zhudou Sans",
+      "ok": true,
+      "detail": {
+        "after": "煮豆黑體 ExtraLight",
+        "before": "MiSans VF"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 句号 → Zhudou Sans",
+      "ok": true,
+      "detail": {
+        "after": "煮豆黑體 ExtraLight",
+        "before": "煮豆黑體 ExtraLight"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 直角引号 → Zhudou Sans",
+      "ok": true,
+      "detail": {
+        "after": "煮豆黑體 ExtraLight",
+        "before": "煮豆黑體 ExtraLight"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 半角逗号 → Roboto Flex Variable",
+      "ok": true,
+      "detail": {
+        "after": "Roboto Flex",
+        "before": "Roboto Flex"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "运行时字体 半角句点 → Roboto Flex Variable",
+      "ok": true,
+      "detail": {
+        "after": "Roboto Flex",
+        "before": "Roboto Flex"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "回退安定性 〃 两套栈一致",
+      "ok": true,
+      "detail": {
+        "after": "Geist",
+        "before": "Geist"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "回退安定性 〇 两套栈一致",
+      "ok": true,
+      "detail": {
+        "after": "Source Han Sans SC VF",
+        "before": "Source Han Sans SC VF"
+      }
+    },
+    {
+      "scope": "after",
+      "name": "回退安定性 ～ 两套栈一致",
+      "ok": true,
+      "detail": {
+        "after": "Source Han Sans SC VF",
+        "before": "Source Han Sans SC VF"
+      }
+    },
+    {
+      "scope": "before",
+      "name": "旧栈根因复现：： 由 MiSans 认领（挤压失效）",
+      "ok": true,
+      "detail": "MiSans VF"
+    },
+    {
+      "scope": "before",
+      "name": "旧栈根因复现：； 由 MiSans 认领（挤压失效）",
+      "ok": true,
+      "detail": "MiSans VF"
+    },
+    {
+      "scope": "before",
+      "name": "旧栈根因复现：《 由 MiSans 认领（挤压失效）",
+      "ok": true,
+      "detail": "MiSans VF"
+    },
+    {
+      "scope": "sweep",
+      "name": "页面尺寸未变 home · light",
+      "ok": true,
+      "detail": {
+        "before": 900,
+        "after": 900,
+        "sizeMismatch": false
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "布局几何未变 home · light（header/main/footer）",
+      "ok": true,
+      "detail": {
+        "header": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ],
+        "main": [
+          {
+            "x": 300,
+            "w": 680
+          },
+          {
+            "x": 300,
+            "w": 680
+          }
+        ],
+        "footer": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ]
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "视觉 diff home · light 在合理范围",
+      "ok": true,
+      "detail": {
+        "diffRatio": 0,
+        "diffPixels": 0,
+        "bbox": null
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "页面尺寸未变 home · dark",
+      "ok": true,
+      "detail": {
+        "before": 900,
+        "after": 900,
+        "sizeMismatch": false
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "布局几何未变 home · dark（header/main/footer）",
+      "ok": true,
+      "detail": {
+        "header": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ],
+        "main": [
+          {
+            "x": 300,
+            "w": 680
+          },
+          {
+            "x": 300,
+            "w": 680
+          }
+        ],
+        "footer": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ]
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "视觉 diff home · dark 在合理范围",
+      "ok": true,
+      "detail": {
+        "diffRatio": 0,
+        "diffPixels": 0,
+        "bbox": null
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "页面尺寸未变 list · light",
+      "ok": true,
+      "detail": {
+        "before": 2719,
+        "after": 2719,
+        "sizeMismatch": false
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "布局几何未变 list · light（header/main/footer）",
+      "ok": true,
+      "detail": {
+        "header": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ],
+        "main": [
+          {
+            "x": 300,
+            "w": 680
+          },
+          {
+            "x": 300,
+            "w": 680
+          }
+        ],
+        "footer": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ]
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "视觉 diff list · light 在合理范围",
+      "ok": true,
+      "detail": {
+        "diffRatio": 0,
+        "diffPixels": 0,
+        "bbox": null
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "页面尺寸未变 list · dark",
+      "ok": true,
+      "detail": {
+        "before": 2719,
+        "after": 2719,
+        "sizeMismatch": false
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "布局几何未变 list · dark（header/main/footer）",
+      "ok": true,
+      "detail": {
+        "header": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ],
+        "main": [
+          {
+            "x": 300,
+            "w": 680
+          },
+          {
+            "x": 300,
+            "w": 680
+          }
+        ],
+        "footer": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ]
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "视觉 diff list · dark 在合理范围",
+      "ok": true,
+      "detail": {
+        "diffRatio": 0,
+        "diffPixels": 0,
+        "bbox": null
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "页面尺寸未变 article-zh · light",
+      "ok": true,
+      "detail": {
+        "before": 5714,
+        "after": 5714,
+        "sizeMismatch": false
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "布局几何未变 article-zh · light（header/main/footer）",
+      "ok": true,
+      "detail": {
+        "header": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ],
+        "main": [
+          {
+            "x": 300,
+            "w": 680
+          },
+          {
+            "x": 300,
+            "w": 680
+          }
+        ],
+        "footer": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ]
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "视觉 diff article-zh · light 在合理范围",
+      "ok": true,
+      "detail": {
+        "diffRatio": 0.012059,
+        "diffPixels": 88200,
+        "bbox": {
+          "x": 348,
+          "y": 902,
+          "w": 578,
+          "h": 4169
+        }
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "页面尺寸未变 article-zh · dark",
+      "ok": true,
+      "detail": {
+        "before": 5714,
+        "after": 5714,
+        "sizeMismatch": false
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "布局几何未变 article-zh · dark（header/main/footer）",
+      "ok": true,
+      "detail": {
+        "header": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ],
+        "main": [
+          {
+            "x": 300,
+            "w": 680
+          },
+          {
+            "x": 300,
+            "w": 680
+          }
+        ],
+        "footer": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ]
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "视觉 diff article-zh · dark 在合理范围",
+      "ok": true,
+      "detail": {
+        "diffRatio": 0.012344,
+        "diffPixels": 90285,
+        "bbox": {
+          "x": 348,
+          "y": 902,
+          "w": 578,
+          "h": 4169
+        }
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "页面尺寸未变 article-en · light",
+      "ok": true,
+      "detail": {
+        "before": 6188,
+        "after": 6188,
+        "sizeMismatch": false
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "布局几何未变 article-en · light（header/main/footer）",
+      "ok": true,
+      "detail": {
+        "header": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ],
+        "main": [
+          {
+            "x": 300,
+            "w": 680
+          },
+          {
+            "x": 300,
+            "w": 680
+          }
+        ],
+        "footer": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ]
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "视觉 diff article-en · light 在合理范围",
+      "ok": true,
+      "detail": {
+        "diffRatio": 0,
+        "diffPixels": 0,
+        "bbox": null
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "页面尺寸未变 article-en · dark",
+      "ok": true,
+      "detail": {
+        "before": 6188,
+        "after": 6188,
+        "sizeMismatch": false
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "布局几何未变 article-en · dark（header/main/footer）",
+      "ok": true,
+      "detail": {
+        "header": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ],
+        "main": [
+          {
+            "x": 300,
+            "w": 680
+          },
+          {
+            "x": 300,
+            "w": 680
+          }
+        ],
+        "footer": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ]
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "视觉 diff article-en · dark 在合理范围",
+      "ok": true,
+      "detail": {
+        "diffRatio": 0,
+        "diffPixels": 0,
+        "bbox": null
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "页面尺寸未变 about · light",
+      "ok": true,
+      "detail": {
+        "before": 1811,
+        "after": 1811,
+        "sizeMismatch": false
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "布局几何未变 about · light（header/main/footer）",
+      "ok": true,
+      "detail": {
+        "header": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ],
+        "main": [
+          {
+            "x": 300,
+            "w": 680
+          },
+          {
+            "x": 300,
+            "w": 680
+          }
+        ],
+        "footer": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ]
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "视觉 diff about · light 在合理范围",
+      "ok": true,
+      "detail": {
+        "diffRatio": 0.00877,
+        "diffPixels": 20330,
+        "bbox": {
+          "x": 348,
+          "y": 277,
+          "w": 584,
+          "h": 1383
+        }
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "页面尺寸未变 about · dark",
+      "ok": true,
+      "detail": {
+        "before": 1811,
+        "after": 1811,
+        "sizeMismatch": false
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "布局几何未变 about · dark（header/main/footer）",
+      "ok": true,
+      "detail": {
+        "header": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ],
+        "main": [
+          {
+            "x": 300,
+            "w": 680
+          },
+          {
+            "x": 300,
+            "w": 680
+          }
+        ],
+        "footer": [
+          {
+            "x": 0,
+            "w": 1280
+          },
+          {
+            "x": 0,
+            "w": 1280
+          }
+        ]
+      }
+    },
+    {
+      "scope": "sweep",
+      "name": "视觉 diff about · dark 在合理范围",
+      "ok": true,
+      "detail": {
+        "diffRatio": 0.008918,
+        "diffPixels": 20672,
+        "bbox": {
+          "x": 348,
+          "y": 277,
+          "w": 584,
+          "h": 1383
+        }
+      }
+    }
+  ],
+  "sweep": [
+    {
+      "page": "home",
+      "theme": "light",
+      "width": 1280,
+      "height": 900,
+      "diffPixels": 0,
+      "diffRatio": 0,
+      "bbox": null,
+      "diffFile": null,
+      "geom": {
+        "after": {
+          "scrollHeight": 900,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        },
+        "before": {
+          "scrollHeight": 900,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        }
+      },
+      "files": {
+        "after": "shots/home-light-after.png",
+        "before": "shots/home-light-before.png"
+      }
+    },
+    {
+      "page": "home",
+      "theme": "dark",
+      "width": 1280,
+      "height": 900,
+      "diffPixels": 0,
+      "diffRatio": 0,
+      "bbox": null,
+      "diffFile": null,
+      "geom": {
+        "after": {
+          "scrollHeight": 900,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        },
+        "before": {
+          "scrollHeight": 900,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        }
+      },
+      "files": {
+        "after": "shots/home-dark-after.png",
+        "before": "shots/home-dark-before.png"
+      }
+    },
+    {
+      "page": "list",
+      "theme": "light",
+      "width": 1280,
+      "height": 2719,
+      "diffPixels": 0,
+      "diffRatio": 0,
+      "bbox": null,
+      "diffFile": null,
+      "geom": {
+        "after": {
+          "scrollHeight": 2719,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        },
+        "before": {
+          "scrollHeight": 2719,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        }
+      },
+      "files": {
+        "after": "shots/list-light-after.png",
+        "before": "shots/list-light-before.png"
+      }
+    },
+    {
+      "page": "list",
+      "theme": "dark",
+      "width": 1280,
+      "height": 2719,
+      "diffPixels": 0,
+      "diffRatio": 0,
+      "bbox": null,
+      "diffFile": null,
+      "geom": {
+        "after": {
+          "scrollHeight": 2719,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        },
+        "before": {
+          "scrollHeight": 2719,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        }
+      },
+      "files": {
+        "after": "shots/list-dark-after.png",
+        "before": "shots/list-dark-before.png"
+      }
+    },
+    {
+      "page": "article-zh",
+      "theme": "light",
+      "width": 1280,
+      "height": 5714,
+      "diffPixels": 88200,
+      "diffRatio": 0.012059,
+      "bbox": {
+        "x": 348,
+        "y": 902,
+        "w": 578,
+        "h": 4169
+      },
+      "diffFile": "shots/DIFF-article-zh-light.png",
+      "geom": {
+        "after": {
+          "scrollHeight": 5714,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": {
+            "x": 348,
+            "w": 584
+          }
+        },
+        "before": {
+          "scrollHeight": 5714,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": {
+            "x": 348,
+            "w": 584
+          }
+        }
+      },
+      "files": {
+        "after": "shots/article-zh-light-after.png",
+        "before": "shots/article-zh-light-before.png"
+      }
+    },
+    {
+      "page": "article-zh",
+      "theme": "dark",
+      "width": 1280,
+      "height": 5714,
+      "diffPixels": 90285,
+      "diffRatio": 0.012344,
+      "bbox": {
+        "x": 348,
+        "y": 902,
+        "w": 578,
+        "h": 4169
+      },
+      "diffFile": "shots/DIFF-article-zh-dark.png",
+      "geom": {
+        "after": {
+          "scrollHeight": 5714,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": {
+            "x": 348,
+            "w": 584
+          }
+        },
+        "before": {
+          "scrollHeight": 5714,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": {
+            "x": 348,
+            "w": 584
+          }
+        }
+      },
+      "files": {
+        "after": "shots/article-zh-dark-after.png",
+        "before": "shots/article-zh-dark-before.png"
+      }
+    },
+    {
+      "page": "article-en",
+      "theme": "light",
+      "width": 1280,
+      "height": 6188,
+      "diffPixels": 0,
+      "diffRatio": 0,
+      "bbox": null,
+      "diffFile": null,
+      "geom": {
+        "after": {
+          "scrollHeight": 6188,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": {
+            "x": 348,
+            "w": 584
+          }
+        },
+        "before": {
+          "scrollHeight": 6188,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": {
+            "x": 348,
+            "w": 584
+          }
+        }
+      },
+      "files": {
+        "after": "shots/article-en-light-after.png",
+        "before": "shots/article-en-light-before.png"
+      }
+    },
+    {
+      "page": "article-en",
+      "theme": "dark",
+      "width": 1280,
+      "height": 6188,
+      "diffPixels": 0,
+      "diffRatio": 0,
+      "bbox": null,
+      "diffFile": null,
+      "geom": {
+        "after": {
+          "scrollHeight": 6188,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": {
+            "x": 348,
+            "w": 584
+          }
+        },
+        "before": {
+          "scrollHeight": 6188,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": {
+            "x": 348,
+            "w": 584
+          }
+        }
+      },
+      "files": {
+        "after": "shots/article-en-dark-after.png",
+        "before": "shots/article-en-dark-before.png"
+      }
+    },
+    {
+      "page": "about",
+      "theme": "light",
+      "width": 1280,
+      "height": 1811,
+      "diffPixels": 20330,
+      "diffRatio": 0.00877,
+      "bbox": {
+        "x": 348,
+        "y": 277,
+        "w": 584,
+        "h": 1383
+      },
+      "diffFile": "shots/DIFF-about-light.png",
+      "geom": {
+        "after": {
+          "scrollHeight": 1811,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        },
+        "before": {
+          "scrollHeight": 1811,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        }
+      },
+      "files": {
+        "after": "shots/about-light-after.png",
+        "before": "shots/about-light-before.png"
+      }
+    },
+    {
+      "page": "about",
+      "theme": "dark",
+      "width": 1280,
+      "height": 1811,
+      "diffPixels": 20672,
+      "diffRatio": 0.008918,
+      "bbox": {
+        "x": 348,
+        "y": 277,
+        "w": 584,
+        "h": 1383
+      },
+      "diffFile": "shots/DIFF-about-dark.png",
+      "geom": {
+        "after": {
+          "scrollHeight": 1811,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        },
+        "before": {
+          "scrollHeight": 1811,
+          "header": {
+            "x": 0,
+            "w": 1280
+          },
+          "main": {
+            "x": 300,
+            "w": 680
+          },
+          "footer": {
+            "x": 0,
+            "w": 1280
+          },
+          "article": null
+        }
+      },
+      "files": {
+        "after": "shots/about-dark-after.png",
+        "before": "shots/about-dark-before.png"
+      }
+    }
+  ]
+}

@@ -9,11 +9,13 @@
 }
 
 /* MiSans — 中文字符（全量 CJK 汉字，不含全角/CJK 标点），VF 100–900
-   排除：数字/拉丁（由 Roboto Flex / Geist 接管）及全角/CJK 标点（回退至 Source Han Sans SC）
+   排除：数字/拉丁（由 Roboto Flex / Geist 接管）及全角/CJK 标点（由前面的 Zhudou Sans 认领）
    RAY-390：全角逗号/句号/问号/括号/直角引号/蝌蚪引号/感叹号/省略号/破折号
    （U+FF01, U+FF08-FF09, U+FF0C, U+FF1F, U+2013-2014, U+2018-2019, U+201C-201D, U+2026, U+3001-3002, U+300C-300F, U+3010-3011）
-   已从 MiSans 排除，fallback 至 --font-sans 中的 Source Han Sans SC；半角标点（U+0021/002C/002E/003F 等）仍走 Roboto Flex/Geist。
-   其余 General Punctuation 仅由 Zhudou Sans 兜底 */
+   已从 MiSans 排除，沿 --font-sans 顺位 fallback；半角标点（U+0021/002C/002E/003F 等）仍走 Roboto Flex/Geist。
+   其余 General Punctuation 仅由 Zhudou Sans 兜底。
+   RAY-552：栈序改为 Zhudou 在前，本名单不再承担「移交」职责（漏挖的 ：；《》 由栈序直接归位），
+   名单留着无害，本单不动。 */
 @font-face {
   font-family: "MiSans";
   src: url("/fonts/MiSans-VF.woff2") format("woff2-variations");
@@ -187,9 +189,14 @@
   --color-accent: #000000;
   --color-border: var(--rv-outline-variant);            /* tone 80，原 #E0E0E0 */
 
-  /* Typography — 顺序：MiSans(CJK汉字，不含全角标点) > Zhudou Sans(标点兜底) > Roboto Flex Variable(Latin/数字/半角标点) > Geist Sans(Latin 备用) > Source Han Sans SC(CJK 兜底，含全角标点)
-     RAY-390：全角/CJK 标点（，、。？！（）【】「」『』‘’“”…—–）已从 MiSans 排除回退至 Source Han；半角标点（, . ? ! ( )）仍走 Roboto Flex/Geist。 */
-  --font-sans: "MiSans", "Zhudou Sans", "Roboto Flex Variable", "Geist Sans", "Source Han Sans SC", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Typography — 顺序即「谁认领谁」：Zhudou Sans(标点/符号) > Roboto Flex Variable(Latin/数字/半角标点) > MiSans(CJK 汉字) > Geist Sans(Latin 备用) > Source Han Sans SC(CJK 兜底)
+     RAY-552：unicode-range 决定每个字体认领哪些码位，栈从左到右先认领且真有字形者胜 ——
+     标点/符号归煮豆（同一字体内部挤压/kern 生效）、西文数字归 Roboto、汉字归 MiSans。
+     旧的「MiSans 先认领、再逐字从其 unicode-range 挖掉来移交」补丁模式（RAY-390）不再是挤压生效的前提，
+     MiSans 的排除名单留着无害（本单不动）。
+     ⚠️ 约束：Zhudou 必须排在 Roboto 之前 —— 两家都认领 U+2000-206F（引号/破折号/省略号所在区），
+     顺序颠倒会把引号让给 Roboto。 */
+  --font-sans: "Zhudou Sans", "Roboto Flex Variable", "MiSans", "Geist Sans", "Source Han Sans SC", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Roboto Flex Variable", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", "Sarasa Mono SC", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   /* RAY-391 已弃用：--font-date 不再驱动 .font-date/time.font-date（纯数字 YYYY-MM-DD 已回退 Roboto Flex Variable，见下方 .font-date 空壳）；

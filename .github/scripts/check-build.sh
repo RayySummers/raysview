@@ -74,6 +74,17 @@ grep -qE '\.ai-disclosure__summary\{[^}]*padding-inline-start:0' "$ai_css" \
   || fail "构建产物里的折叠区 summary 没有 padding-inline-start:0，左对齐修正丢了（RAY-549）"
 grep -q 'ai-disclosure::details-content' "$ai_css" \
   || fail "构建产物里没有 ::details-content 过渡规则，平滑开合 CSS 丢了（RAY-549）"
+
+# RAY-552：字体栈顺序必须是 Zhudou Sans → Roboto Flex Variable → MiSans。
+# 顺序就是「谁认领谁」：Zhudou 认领标点/符号、Roboto 认领西文与数字、MiSans 认领 CJK 汉字。
+# 一旦回退（MiSans 回到首位），：；《》 这类标点会重新由 MiSans 认领，
+# 标点与相邻汉字不再同字体，字体内部的挤压/kern 就失效 —— 正是 Ray 报的「：“ 不压」。
+# 这里直接对产物断言，防止 CSS 被改回去而没人发现。
+font_sans=$(grep -rho -e '--font-sans:[^;}]*' "$DIST_DIR/assets" --include='*.css' | head -1 || true)
+[[ -n "$font_sans" ]] || fail "构建产物里找不到 --font-sans 声明（RAY-552）"
+[[ "$font_sans" == *'"Zhudou Sans"'*'"Roboto Flex Variable"'*'"MiSans"'* ]] \
+  || fail "--font-sans 顺序不是 Zhudou Sans → Roboto Flex Variable → MiSans（RAY-552）：$font_sans"
+
 # RAY-547：JT#04《广州地铁志愿有感》的中英对照词表必须逐行渲染。
 # 词表在源文件里是同一个段落里的连续多行，靠行尾两个空格（CommonMark 硬换行）分行；
 # 行尾空格一旦被删掉（或被编辑器 trim），Markdown 会把整块并成一个段落 ——
@@ -108,6 +119,7 @@ echo "  HTML 页面 : $html_count"
 echo "  公众号图标: $wechat_pages 个页面，src=/images/wechat-icon.png"
 echo "  AI 声明区 : $ai_pages 个页面（源文件 $ai_src 篇），默认展开 + chevron"
 echo "  折叠区样式: 左对齐修正 + ::details-content 过渡 已在 $(basename "$ai_css")"
+echo "  字体栈顺序: Zhudou Sans → Roboto Flex Variable → MiSans（RAY-552）"
 echo "  词表逐行  : JT#04 中英词表逐行渲染（硬换行数 = 源文件行数 - 1）"
 echo "  images    : $(find "$DIST_DIR/images" -type f | wc -l) 个文件"
 echo "  fonts     : $(find "$DIST_DIR/fonts" -type f | wc -l) 个文件"
