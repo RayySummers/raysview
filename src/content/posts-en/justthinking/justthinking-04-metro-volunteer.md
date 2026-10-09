@@ -12,7 +12,7 @@ excerpt: "Over the National Day holiday, I spent a few days as a bilingual volun
 
 Over the National Day holiday, I signed up for a bilingual volunteering program with the Guangzhou Metro, giving directions and solving problems at Airport North Station and Gaozeng Station. When I signed up, I figured it would be simple enough: the metro is always busy, so it wouldn't be boring. A few days in, what I got out of it went well beyond "a volunteering session."
 
-Airport North Station sits beside Terminal 2 of Baiyun Airport: Exit B leads straight into the terminal; Exit A opens onto a coach station, ride-hailing pickups, and the shuttle bus to T2. The concourse is huge and always full—plenty of travelers from other provinces, and plenty from abroad. Being a transport hub, it brings a constant stream of people and stories.
+Airport North Station sits beside Terminal 2 of Baiyun Airport: Exit B leads straight into the terminal; Exit A opens onto a coach station, ride-hailing pickups, and the shuttle bus to T3. The concourse is huge and always full—plenty of travelers from other provinces, and plenty from abroad. Being a transport hub, it brings a constant stream of people and stories.
 
 Guangzhou Metro rules say children under 1.3 meters ride free. Some parents come to the TVM (ticket vending machine) just to buy a ticket for their child: the kid has no phone, so no ride code. Others get their child through the gate and then find themselves stuck outside. When that happens, we guide them to the smart service center or the ticketing machines to refresh a code or a card.
 
