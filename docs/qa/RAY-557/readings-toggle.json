@@ -1,0 +1,116 @@
+{
+  "chrome": "/usr/bin/google-chrome",
+  "generatedAt": "2026-10-11T03:49:28.030Z",
+  "total": 3,
+  "passed": 3,
+  "results": [
+    {
+      "page": "zh-home",
+      "initialOk": true,
+      "clicksOk": true,
+      "initial": {
+        "theme": "light",
+        "stored": "light",
+        "sun": "block",
+        "moon": "none",
+        "system": "none"
+      },
+      "clicks": [
+        {
+          "theme": "dark",
+          "stored": "dark",
+          "sun": "none",
+          "moon": "block",
+          "system": "none"
+        },
+        {
+          "theme": "dark",
+          "stored": "system",
+          "sun": "none",
+          "moon": "none",
+          "system": "block"
+        },
+        {
+          "theme": "light",
+          "stored": "light",
+          "sun": "block",
+          "moon": "none",
+          "system": "none"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "page": "en-home",
+      "initialOk": true,
+      "clicksOk": true,
+      "initial": {
+        "theme": "light",
+        "stored": "light",
+        "sun": "block",
+        "moon": "none",
+        "system": "none"
+      },
+      "clicks": [
+        {
+          "theme": "dark",
+          "stored": "dark",
+          "sun": "none",
+          "moon": "block",
+          "system": "none"
+        },
+        {
+          "theme": "dark",
+          "stored": "system",
+          "sun": "none",
+          "moon": "none",
+          "system": "block"
+        },
+        {
+          "theme": "light",
+          "stored": "light",
+          "sun": "block",
+          "moon": "none",
+          "system": "none"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "page": "zh-about",
+      "initialOk": true,
+      "clicksOk": true,
+      "initial": {
+        "theme": "light",
+        "stored": "light",
+        "sun": "block",
+        "moon": "none",
+        "system": "none"
+      },
+      "clicks": [
+        {
+          "theme": "dark",
+          "stored": "dark",
+          "sun": "none",
+          "moon": "block",
+          "system": "none"
+        },
+        {
+          "theme": "dark",
+          "stored": "system",
+          "sun": "none",
+          "moon": "none",
+          "system": "block"
+        },
+        {
+          "theme": "light",
+          "stored": "light",
+          "sun": "block",
+          "moon": "none",
+          "system": "none"
+        }
+      ],
+      "pass": true
+    }
+  ]
+}
