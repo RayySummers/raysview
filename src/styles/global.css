@@ -111,6 +111,11 @@
 }
 
 :root {
+  /* RAY-557：color-scheme 只影响浏览器自绘的 UI（滚动条、表单控件、默认画布底色），
+     不参与本站任何配色 —— 页面配色始终由下面的 --color-* 决定。写在这里是为了让
+     滚动条这类浏览器 UI 别在暗色主题下继续走默认白。暗色由下方 [data-theme="dark"] 覆盖。 */
+  color-scheme: light;
+
   /* ==========================================================================
      Color — MD3 tonal palette（RAY-476）
      只取 Material Design 3 的 **color system**（tone 阶梯 + 语义角色），
@@ -238,6 +243,9 @@
 }
 
 [data-theme="dark"] {
+  /* RAY-557：与上方 :root 成对 —— 暗色下滚动条 / 表单控件也走深色。 */
+  color-scheme: dark;
+
   /* --- MD3 语义角色（暗色）---
      surface 组下沉到 tone 6 / 4，on-surface 抬到 tone 90 / 80。
      对比度：surface6 / on-surface90 = 14.34:1 AAA；surface6 / on-surface-variant80 = 10.88:1 AAA。
