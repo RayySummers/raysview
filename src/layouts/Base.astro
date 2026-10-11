@@ -82,6 +82,27 @@ const defaultAlternate = hasAlternates
 <html lang={HTML_LANG[lang]} data-base={base} data-page={page}>
   <head>
     <meta charset="UTF-8" />
+    {/* RAY-557：主题必须在首帧之前落地，否则跨页导航会先闪一下默认浅色。
+        必须是「经典」内联脚本才能及时执行：`<script type="module">`（Astro 对非 is:inline
+        脚本的默认产物）一律延迟，等浏览器解析完、首绘完成后才跑，浅色已经画出来了。
+        `is:inline` 让 Astro 原样输出这段脚本，产物里不带 type="module"，
+        于是它在解析期同步阻塞执行 —— 早于任何首帧，也早于下方样式表解码后的首次绘制。
+        逻辑与 Header.astro 的 applyTheme 一致（同样的键名、同样的三态语义，幂等）：
+        存的是 system 时按系统偏好解析成 light/dark 再写入 data-theme。 */}
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem('theme') || 'system';
+          const resolved = stored === 'system'
+            ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+            : stored;
+          document.documentElement.dataset.theme = resolved;
+        } catch (e) {
+          /* localStorage 被禁用（隐私模式 / 第三方 Cookie 拦截）时静默跳过，
+             后续 Header 脚本仍会尽力设置一次，页面不至于因为主题而报错。 */
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>

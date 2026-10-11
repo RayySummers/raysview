@@ -114,12 +114,46 @@ check_wordlist \
   "$DIST_DIR/en/posts/justthinking/justthinking-04-metro-volunteer/index.html" \
   'ride code——乘车码' '英文'
 
+# RAY-557：主题初始化必须是 <head> 里的「经典」内联脚本 —— 跨页导航不闪白全靠它。
+# Astro 对不带 is:inline 的 <script> 会产物化成**延迟**的 type="module"（落在 <body>），
+# 浏览器首帧先按默认浅色画完，脚本才把 data-theme 写上 —— Ray 看到的就是这一下白闪。
+# 这里对构建产物断言两件事，改回 <script>（非内联）或把脚本挪出 head 都会立刻挂：
+#   1. 每个页面 </head> 之前都有那段读 localStorage 的主题脚本；
+#   2. 承载它的 <script> 开标签是最朴素的 <script>，不带 type / src。
+theme_in_head_missing=0
+theme_tags=""
+while IFS= read -r file; do
+  # 用命令替换而不是 `sed | grep -q`：grep -q 命中即退出，会给 sed 一个 SIGPIPE，
+  # pipefail 下管道整体返回 141 —— 命中的页面反而会被判成「缺失」。
+  head_part=$(sed -n '1,/<\/head>/p' "$file")
+  [[ "$head_part" == *"localStorage.getItem('theme')"* ]] || {
+    echo "  ::error file=$file::<head> 里没有主题初始化内联脚本（RAY-557）"
+    theme_in_head_missing=$((theme_in_head_missing + 1))
+    continue
+  }
+  # 取出承载主题脚本的那个开标签。先把 head 压成一行：grep 是逐行匹配的，
+  # `<script>` 与 `localStorage` 之间正好有一个换行，不压平就匹配不到。
+  tag=$(printf '%s' "$head_part" | tr -d '\n' \
+    | grep -o "<script[^>]*>[^<]*localStorage.getItem('theme')" | sed 's/>.*//')
+  theme_tags="$theme_tags$tag"$'\n'
+done < <(find "$DIST_DIR" -name '*.html' -type f)
+[[ "$theme_in_head_missing" -eq 0 ]] \
+  || fail "有 $theme_in_head_missing 个页面的 <head> 里没有主题初始化脚本，跨页会闪白（RAY-557）"
+
+theme_tags=$(printf '%s\n' "$theme_tags" | sed '/^$/d' | sort -u)
+[[ -n "$theme_tags" ]] || fail "构建产物里找不到 head 主题内联脚本（RAY-557）"
+while IFS= read -r tag; do
+  [[ "$tag" == '<script' ]] \
+    || fail "主题初始化脚本的开标签是「$tag」而不是「<script>」：带 type=\"module\" / src 的脚本会延迟执行，首帧仍是浅色（RAY-557）"
+done <<<"$theme_tags"
+
 echo "  dist 体积 : $(du -sh "$DIST_DIR" | cut -f1)"
 echo "  HTML 页面 : $html_count"
 echo "  公众号图标: $wechat_pages 个页面，src=/images/wechat-icon.png"
 echo "  AI 声明区 : $ai_pages 个页面（源文件 $ai_src 篇），默认展开 + chevron"
 echo "  折叠区样式: 左对齐修正 + ::details-content 过渡 已在 $(basename "$ai_css")"
 echo "  字体栈顺序: Zhudou Sans → Roboto Flex Variable → MiSans（RAY-552）"
+echo "  主题初始化: <head> 内联经典脚本，产物中无 type=module / src（RAY-557）"
 echo "  词表逐行  : JT#04 中英词表逐行渲染（硬换行数 = 源文件行数 - 1）"
 echo "  images    : $(find "$DIST_DIR/images" -type f | wc -l) 个文件"
 echo "  fonts     : $(find "$DIST_DIR/fonts" -type f | wc -l) 个文件"
