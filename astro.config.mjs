@@ -1,8 +1,9 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import gfm from 'remark-gfm';
-import { visit } from 'unist-util-visit';
+import { visit, SKIP } from 'unist-util-visit';
 import { readFileSync } from 'node:fs';
+import { imageMetaFor } from './src/lib/blur-up.mjs';
 
 // 插件里用到的图标（RAY-472 的 reply、RAY-544 的 keyboard_arrow_down）：
 // 素材就是 src/icons 里注册的那两份，按路径读进来只取 path 的 d 值：
@@ -302,6 +303,69 @@ function rehypeAiDisclosure() {
   };
 }
 
+// RAY-608：正文图片统一改写成 blur-up 结构（模糊占位 → 高清淡入），作者侧 markdown
+// 写法一个字都不用动，仍是 `![alt](url)`。
+//
+// 选型：rehype 插件，而不是 Astro 内置 <Image>
+//   1. <Image> 要求图片能被 Vite 导入（src/ 下的资源）。本站封面都在 public/，
+//      而且 frontmatter 里的路径还被 OG / JSON-LD / 分享卡片直接当 URL 用；正文图更是
+//      外链图床（imgdb）。迁到 src/assets 等于挪文件 + 改 schema + 改 OG 生成逻辑。
+//   2. <Image> 也不会生成「24px 模糊占位」这种成品图：它输出的是 srcset 与宽高，
+//      blur-up 仍要自己解码一张缩略图，两头都要写插件，反而多一层。
+//   3. 插件在渲染层统一加壳，正文、脚注、后续新增文章全部自动覆盖，没有遗漏。
+//
+// 占位数据来自 src/data/image-meta.json（pnpm images:meta 生成、随代码入库）：
+// 构建期只查表，不联网、不解码图片，产物可复现。
+function rehypeBlurUpImages() {
+  return (tree) => {
+    visit(tree, 'element', (node, index, parent) => {
+      if (node.tagName !== 'img' || !parent || typeof index !== 'number') return;
+      const props = node.properties ?? (node.properties = {});
+      const src = typeof props.src === 'string' ? props.src : '';
+      if (!src || src.startsWith('data:')) return;
+      // 幂等：已是 blur-up 结构的不再套一层（插件可能被重复应用）
+      if (Array.isArray(props.className) && props.className.includes('blur-up__img')) return;
+
+      // 正文图一律懒加载：文章首屏的 LCP 是上面的封面（ArticlePage 里 eager），
+      // 正文第一张图通常在封面之下，抢带宽反而拖慢首屏。
+      props.loading = 'lazy';
+      props.decoding = 'async';
+
+      const meta = imageMetaFor(src);
+      if (!meta) return; // 没有占位数据：保留普通 <img>，至少还有懒加载
+
+      props.className = ['blur-up__img'];
+      props.width = meta.w;
+      props.height = meta.h;
+
+      parent.children[index] = {
+        type: 'element',
+        tagName: 'span',
+        // 用 <span> 而不是 <figure>：markdown 的图片多半独自包在 <p> 里，
+        // <figure> 属于流内容，塞进 <p> 会被浏览器拆包，结构直接变样。
+        properties: {
+          className: ['blur-up'],
+          style: `--blur-up-ratio: ${meta.w} / ${meta.h}; --blur-up-max-width: ${meta.w}px; --blur-up-lqip: url("${meta.lqip}")`
+        },
+        children: [
+          ...(meta.lqip
+            ? [
+                {
+                  type: 'element',
+                  tagName: 'span',
+                  properties: { className: ['blur-up__ph'], ariaHidden: 'true' },
+                  children: []
+                }
+              ]
+            : []),
+          node
+        ]
+      };
+      return SKIP; // 已经搬进新壳，别再往下走一遍
+    });
+  };
+}
+
 export default defineConfig({
   site: 'https://raysview.fun',
   base: '/',
@@ -323,7 +387,7 @@ export default defineConfig({
   markdown: {
     smartypants: false,
     remarkPlugins: [gfm],
-    rehypePlugins: [rehypeFootnoteLabel, rehypeAiDisclosure]
+    rehypePlugins: [rehypeFootnoteLabel, rehypeAiDisclosure, rehypeBlurUpImages]
   },
   vite: {
     build: {

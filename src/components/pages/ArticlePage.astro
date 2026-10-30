@@ -9,6 +9,7 @@
  * `<title>` / OG / JSON-LD 仍用 frontmatter 原标题（默认口径，可再调）。
  */
 import Base from '../../layouts/Base.astro';
+import BlurUpImage from '../BlurUpImage.astro';
 import { render, type CollectionEntry } from 'astro:content';
 import TableOfContents from '../TableOfContents.astro';
 import Icon from '../Icon.astro';
@@ -111,11 +112,14 @@ const articleLd = {
   </a>
 
   {post.data.banner && (
-    <img
+    /* RAY-608：封面是文章页首屏最大的图（LCP），保持 eager + 高优先级；
+       容器用图片自然比例撑开，慢网下不会先空白再撑高页面 */
+    <BlurUpImage
       src={post.data.banner}
       alt=""
-      data-zoomable
-      style="width: 100%; height: auto; display: block; margin-bottom: var(--space-5);"
+      eager
+      zoomable
+      style="margin-bottom: var(--space-5);"
     />
   )}
 

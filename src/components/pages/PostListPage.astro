@@ -8,6 +8,7 @@
  * RAY-545：每篇加 banner 封面（同系列页），标题去掉「 | 系列名 #NN」后缀，系列标签渲染成 pill。
  */
 import Base from '../../layouts/Base.astro';
+import BlurUpImage from '../BlurUpImage.astro';
 import Icon from '../Icon.astro';
 import SeriesPill from '../SeriesPill.astro';
 import { getCollection } from 'astro:content';
@@ -22,6 +23,10 @@ const t = useTranslations(lang);
 const posts = (await getCollection(lang === 'zh' ? 'posts' : 'postsEn')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
+
+// RAY-608：列表里第一张封面在首屏，保持 eager；其余懒加载（200px 高的卡片图 × 十几张，
+// 全部 eager 会把首屏带宽吃光）
+const firstCoverId = posts.find(post => post.data.listBanner ?? post.data.banner)?.id;
 
 // 分组标题：中文「2026年8月」走 .date-cjk（MiSans + ss04 齐线等宽），英文用 AUGUST 2026（同一套小号大写样式）
 const monthNames = [
@@ -69,11 +74,13 @@ const periodStyle =
                 class="list-cover" 是验收/监控断言的稳定钩子（样式仍按系列页的写法内联，两处观感一致）。 */}
             {(post.data.listBanner ?? post.data.banner) && (
               <a class="list-cover" href={hrefFor(`/posts/${post.id}/`, lang)} style="display: block; margin-bottom: var(--space-2); overflow: hidden; height: 200px;">
-                <img
-                  src={post.data.listBanner ?? post.data.banner}
+                <BlurUpImage
+                  src={post.data.listBanner ?? post.data.banner!}
                   alt=""
-                  style="width: 100%; height: 100%; object-fit: cover; display: block;"
-                  data-zoomable
+                  fill
+                  zoomable
+                  eager={post.id === firstCoverId}
+                  style="height: 100%;"
                 />
               </a>
             )}
