@@ -1,0 +1,58 @@
+---
+/**
+ * RAY-608：blur-up 图片 —— 先出模糊占位，高清图就绪后淡入。
+ *
+ * 属性与 `<img>` 基本一致（src / alt / class / style），另外多三个开关：
+ *   - `eager`：首屏图，`loading="eager"` + `fetchpriority="high"`；其余一律懒加载；
+ *   - `fill`：容器固定尺寸（列表卡片 200px 高），图片 `object-fit: cover` 裁切；
+ *   - `ratio`：覆盖容器宽高比，缺省用图片自然比例（`src/data/image-meta.json` 里的宽高）。
+ *
+ * 没有占位数据的图（例如刚加进 markdown、还没跑 `pnpm images:meta`）自动退化成普通
+ * `<img>`：照样有 `loading="lazy"` / `decoding="async"`，只是没有模糊层与固定比例。
+ */
+import { blurUpVars, imageMetaFor } from '../lib/blur-up.mjs';
+
+interface Props {
+  src: string;
+  alt?: string;
+  eager?: boolean;
+  fill?: boolean;
+  ratio?: string;
+  class?: string;
+  style?: string;
+  zoomable?: boolean;
+}
+
+const {
+  src,
+  alt = '',
+  eager = false,
+  fill = false,
+  ratio,
+  class: className,
+  style,
+  zoomable = false
+} = Astro.props;
+
+const meta = imageMetaFor(src);
+// 占位层与容器比例全靠这两个 CSS 变量，标签上不重复写 data URI（体积只算一次）
+const boxStyle = [blurUpVars(meta, ratio), style].filter(Boolean).join('; ');
+const imgAttrs = {
+  src,
+  alt,
+  loading: eager ? 'eager' : 'lazy',
+  decoding: 'async',
+  ...(eager ? { fetchpriority: 'high' } : {}),
+  // 灯箱（Base.astro 里的点击委托）靠 [data-zoomable] 认图，改造后语义不变
+  ...(zoomable ? { 'data-zoomable': true } : {})
+};
+---
+
+{meta ? (
+  <span class:list={['blur-up', fill && 'blur-up--fill', className]} style={boxStyle || undefined}>
+    {meta.lqip && <span class="blur-up__ph" aria-hidden="true"></span>}
+    <img class="blur-up__img" width={meta.w} height={meta.h} {...imgAttrs} />
+  </span>
+) : (
+  <img class={className} style={style} {...imgAttrs} />
+)}

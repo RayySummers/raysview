@@ -103,6 +103,54 @@ const defaultAlternate = hasAlternates
         }
       })();
     </script>
+    {/* RAY-608：blur-up 懒加载的 JS 增强 —— 同样是 head 内的经典内联脚本，
+        必须早于首帧：先给 <html> 打 has-js，CSS 才把高清图压到 opacity:0 再淡入。
+        没有这段脚本（禁用 JS / 脚本报错）时图片照常显示，只是少了过渡：
+        global.css 里另有一条 6s 兜底动画，保证占位层不会一直糊着。 */}
+    <script is:inline>
+      (function () {
+        document.documentElement.classList.add('has-js');
+
+        // 高清图就绪 → 淡入 + 收掉模糊占位层（模糊滤镜留在合成层上是有代价的）
+        function reveal(img) {
+          var box = img.parentElement;
+          if (!box || box.classList.contains('is-loaded')) return;
+          box.classList.add('is-loaded');
+          var ph = box.querySelector('.blur-up__ph');
+          if (!ph) return;
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            ph.remove();
+            return;
+          }
+          var drop = function () { ph.remove(); };
+          ph.addEventListener('transitionend', drop, { once: true });
+          // 兜底：过渡被浏览器取消（标签页不可见、元素被隐藏等）时也能收掉占位层
+          setTimeout(drop, 400);
+        }
+
+        function init() {
+          var imgs = document.querySelectorAll('img.blur-up__img');
+          for (var i = 0; i < imgs.length; i++) {
+            (function (img) {
+              // 缓存命中 / 已在脚本之前加载完的图不会再触发 load，直接进已加载态
+              if (img.complete && img.naturalWidth > 0) {
+                reveal(img);
+                return;
+              }
+              img.addEventListener('load', function () { reveal(img); }, { once: true });
+              // 加载失败也要收掉占位层，否则那张图会一直糊着
+              img.addEventListener('error', function () { reveal(img); }, { once: true });
+            })(imgs[i]);
+          }
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', init);
+        } else {
+          init();
+        }
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <title>{title}</title>
@@ -479,10 +527,12 @@ const defaultAlternate = hasAlternates
     </script>
   </head>
   <body>
+    {/* RAY-90：跳到正文，键盘用户不必 Tab 过整个顶栏 */}
+    <a class="skip-link" href="#main">跳到正文</a>
     {/* RAY-483：顶栏的底色渐隐 + 渐进模糊由这条固定带子统一提供（header 自身已无底色） */}
     <ProgressiveBlur />
     <Header lang={lang} languageLinks={languageLinks} />
-    <main style={`padding-left: var(--padding-x); padding-right: var(--padding-x); padding-top: var(--space-6); padding-bottom: var(--space-6); max-width: var(--max-width); margin: 0 auto; width: 100%;`}>
+    <main id="main" tabindex="-1" style={`padding-left: var(--padding-x); padding-right: var(--padding-x); padding-top: var(--space-6); padding-bottom: var(--space-6); max-width: var(--max-width); margin: 0 auto; width: 100%;`}>
       <slot />
     </main>
     <Footer lang={lang} />

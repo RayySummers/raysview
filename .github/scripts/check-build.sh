@@ -152,9 +152,57 @@ echo "  HTML 页面 : $html_count"
 echo "  公众号图标: $wechat_pages 个页面，src=/images/wechat-icon.png"
 echo "  AI 声明区 : $ai_pages 个页面（源文件 $ai_src 篇），默认展开 + chevron"
 echo "  折叠区样式: 左对齐修正 + ::details-content 过渡 已在 $(basename "$ai_css")"
+# RAY-608：图片 blur-up 懒加载。三条底线，任何一条回退，慢网下的「空白直出 / 撑高页面」
+# 就会回来：
+#   1. 站内图片统一走 blur-up 结构（页头 logo 与公众号图标除外），正文图都是
+#      loading="lazy" + decoding="async"；
+#   2. 每个 .blur-up 容器都带 --blur-up-ratio（先占位，防跳动）与 --blur-up-lqip（base64 模糊占位）；
+#   3. 首屏图保持 eager：文章封面带 fetchpriority="high"，列表页只有第一张封面 eager。
+blur_imgs=$(grep -rho '<img [^>]*class="blur-up__img"[^>]*>' "$DIST_DIR" --include='*.html' | wc -l)
+[[ "$blur_imgs" -ge 20 ]] || fail "带 blur-up 的图片只有 $blur_imgs 张，明显少于预期（RAY-608）"
+
+missing_async=$(grep -rho '<img [^>]*class="blur-up__img"[^>]*>' "$DIST_DIR" --include='*.html' | grep -v 'decoding="async"' | head -3 || true)
+[[ -z "$missing_async" ]] || fail "有 blur-up 图片没带 decoding=\"async\"（RAY-608）：$missing_async"
+
+missing_loading=$(grep -rho '<img [^>]*class="blur-up__img"[^>]*>' "$DIST_DIR" --include='*.html' | grep -vE 'loading="(lazy|eager)"' | head -3 || true)
+[[ -z "$missing_loading" ]] || fail "有 blur-up 图片没带 loading 属性（RAY-608）：$missing_loading"
+
+naked=$(grep -rho '<img [^>]*>' "$DIST_DIR" --include='*.html' | grep -v 'class="blur-up__img"' | grep -vE 'wechat-icon|class="logo"' | head -3 || true)
+[[ -z "$naked" ]] || fail "有图片没走 blur-up 结构（RAY-608）：$naked"
+
+blur_boxes=$(grep -rhoE '<span class="blur-up( |")' "$DIST_DIR" --include='*.html' | wc -l)
+[[ "$blur_boxes" -eq "$blur_imgs" ]] \
+  || fail "blur-up 容器 $blur_boxes 个、blur-up 图片 $blur_imgs 张，数量对不上（RAY-608）"
+
+missing_ratio=$(grep -rhoE '<span class="blur-up( |")[^>]*>' "$DIST_DIR" --include='*.html' | grep -v -e '--blur-up-ratio' | head -3 || true)
+[[ -z "$missing_ratio" ]] || fail "有 blur-up 容器没带 --blur-up-ratio，图片到达时会撑高页面（RAY-608）：$missing_ratio"
+
+missing_lqip=$(grep -rhoE '<span class="blur-up( |")[^>]*>' "$DIST_DIR" --include='*.html' | grep -v -e '--blur-up-lqip: url(' | head -3 || true)
+[[ -z "$missing_lqip" ]] || fail "有 blur-up 容器没带 --blur-up-lqip 占位图（RAY-608）：$missing_lqip"
+
+# 首屏：文章封面必须 eager + 高优先级（否则首屏最大的图被推迟）
+cover_tag=$(grep -o '<img [^>]*class="blur-up__img"[^>]*banner[^>]*>' "$DIST_DIR/posts/welcome/index.html" | head -1 || true)
+[[ -n "$cover_tag" ]] || fail "文章页找不到 blur-up 封面图（RAY-608）"
+[[ "$cover_tag" == *'loading="eager"'* ]] || fail "文章封面没有 loading=\"eager\"（RAY-608）：$cover_tag"
+[[ "$cover_tag" == *'fetchpriority="high"'* ]] || fail "文章封面没有 fetchpriority=\"high\"（RAY-608）：$cover_tag"
+
+# 列表页：只有第一张封面 eager，其余懒加载（全部 eager 会在 3G 下把首屏带宽吃光）
+list_eager=$(grep -o '<img [^>]*class="blur-up__img"[^>]*' "$DIST_DIR/posts/index.html" | grep -c 'loading="eager"' || true)
+[[ "$list_eager" -eq 1 ]] || fail "文章索引页应该有且只有第一张封面 eager，实际 $list_eager 张（RAY-608）"
+
+# 样式与脚本：占位层的模糊、减少动态偏好下的直切、以及「图片就绪 → 淡入并收掉占位」的脚本
+# 都可能被 minify / 改 CSS 吞掉，逐条对产物断言
+grep -q '\.blur-up{' "$ai_css" || fail "构建产物里没有 .blur-up 规则（RAY-608）"
+grep -q 'blur(12px)' "$ai_css" || fail "构建产物里没有占位层的 blur(12px)（RAY-608）"
+grep -qE 'prefers-reduced-motion:[[:space:]]*reduce' "$ai_css" \
+  || fail "构建产物里没有 prefers-reduced-motion 直切规则（RAY-608）"
+grep -q "classList.add('has-js')" "$DIST_DIR/index.html" \
+  || fail "构建产物里没有 blur-up 的 has-js 增强脚本（RAY-608）"
+
 echo "  字体栈顺序: Zhudou Sans → Roboto Flex Variable → MiSans（RAY-552）"
 echo "  主题初始化: <head> 内联经典脚本，产物中无 type=module / src（RAY-557）"
 echo "  词表逐行  : JT#04 中英词表逐行渲染（硬换行数 = 源文件行数 - 1）"
+echo "  图片懒加载: $blur_imgs 张 blur-up（ratio + lqip + lazy/eager），列表页首图 eager"
 echo "  images    : $(find "$DIST_DIR/images" -type f | wc -l) 个文件"
 echo "  fonts     : $(find "$DIST_DIR/fonts" -type f | wc -l) 个文件"
 echo "  assets    : $(find "$DIST_DIR/assets" -type f | wc -l) 个文件"

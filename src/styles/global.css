@@ -1052,3 +1052,121 @@ time.font-date,
 [data-theme="dark"] .ms-icon__layer--dark {
   display: block;
 }
+/* ==========================================================================
+   RAY-608：图片 blur-up 懒加载
+   --------------------------------------------------------------------------
+   结构（由 BlurUpImage.astro 组件或 astro.config.mjs 的 rehypeBlurUpImages 生成）：
+
+     <span class="blur-up" style="--blur-up-ratio:1600 / 681; --blur-up-lqip:url(data:…)">
+       <span class="blur-up__ph" aria-hidden="true"></span>   ← 24px 占位，blur(12px)
+       <img class="blur-up__img" …>                            ← 高清图，onload 后淡入
+     </span>
+
+   为什么占位层是独立元素而不是 <img> 的背景图：`filter: blur()` 会连高清图一起糊掉，
+   两层才能做到「占位模糊 → 高清淡入」。容器用 aspect-ratio 先占好位置，图片到达时不再
+   撑高页面（CLS）。
+   ========================================================================== */
+
+.blur-up {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  /* 宽高比来自 --blur-up-ratio（图片自然比例，列表卡片可覆盖）；兜底 auto 表示不撑高 */
+  aspect-ratio: var(--blur-up-ratio, auto);
+  /* 比正文栏还小的图按原生尺寸显示，不拉伸（与改造前 max-width:100% 的观感一致） */
+  max-width: var(--blur-up-max-width, none);
+  background-color: var(--color-bg);
+}
+
+/* --fill：容器高度由使用方给定（列表卡片 200px），比例交给 object-fit: cover；
+   同时取消原生宽度上限 —— 卡片图必须铺满整行 */
+.blur-up--fill {
+  aspect-ratio: auto;
+  max-width: none;
+}
+
+.blur-up__ph {
+  position: absolute;
+  /* 略微外扩：模糊会把边缘吃虚，留白边就露馅了 */
+  inset: -6%;
+  background-image: var(--blur-up-lqip, none);
+  background-position: center;
+  background-size: cover;
+  filter: blur(12px);
+  transform: scale(1.06);
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+
+/* 选择器刻意写成两段 class（0,2,0）：要压过 `article.heti img { height: auto }` 的 (0,1,2)，
+   否则绝对定位的高清图会被 heti 的 height:auto 拽成自然高度 */
+.blur-up > .blur-up__img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  max-width: none;
+  object-fit: cover;
+  transition: opacity var(--transition-base);
+}
+
+/* JS 增强：脚本跑起来（<html class="has-js">）才把高清图压到 0 再淡入。
+   没有 JS 时图片照常显示，效果退化成「占位在底下、图到了直接盖上」，功能不缺。
+   animation 是兜底：脚本若报错没打上 .is-loaded，6s 后直接把图放出来，不会一直空白。 */
+.has-js .blur-up > .blur-up__img {
+  opacity: 0;
+  animation: blur-up-reveal 1ms linear 6s forwards;
+}
+
+.has-js .blur-up.is-loaded > .blur-up__img {
+  opacity: 1;
+  animation: none;
+}
+
+.blur-up.is-loaded > .blur-up__ph {
+  opacity: 0;
+}
+
+@keyframes blur-up-reveal {
+  to {
+    opacity: 1;
+  }
+}
+
+/* 减少动态偏好：不加过渡，直接切换（占位层由脚本立即移除） */
+@media (prefers-reduced-motion: reduce) {
+  .blur-up > .blur-up__img,
+  .blur-up__ph {
+    transition: none;
+  }
+}
+
+/* RAY-90：跳到正文（skip link）
+   平时视觉隐藏，键盘聚焦时出现在左上角；不参与布局，不改变现有间距。 */
+.skip-link {
+  position: fixed;
+  top: 72px;             /* 让开顶栏时钟，聚焦时不遮住它 */
+  left: var(--space-3);
+  z-index: 1000;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 150ms ease-out;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--color-accent, currentColor);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link { transition: none; }
+}

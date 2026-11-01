@@ -6,6 +6,7 @@
  * 具体系列由页面文件通过 `series` 传入，文章由页面文件按语言取好。
  */
 import Base from '../../layouts/Base.astro';
+import BlurUpImage from '../BlurUpImage.astro';
 import Icon from '../Icon.astro';
 import { langFromPath, useTranslations } from '../../i18n';
 import { hrefFor } from '../../i18n/routes';
@@ -22,6 +23,9 @@ const t = useTranslations(lang);
 
 const name = t(`series.${series}.name`);
 const subtitle = t(`series.${series}.subtitle`);
+
+// RAY-608：系列页第一张封面在首屏，保持 eager；其余懒加载（与文章索引页同一口径）
+const firstCoverId = posts.find(post => post.data.listBanner ?? post.data.banner)?.id;
 ---
 
 <Base title={`${name} - ${t('site.name')}`}>
@@ -41,11 +45,13 @@ const subtitle = t(`series.${series}.subtitle`);
       <article style="margin-bottom: var(--space-4);">
         {(post.data.listBanner ?? post.data.banner) && (
           <a href={hrefFor(`/posts/${post.id}/`, lang)} style="display: block; margin-bottom: var(--space-2); overflow: hidden; height: 200px;">
-            <img
-              src={post.data.listBanner ?? post.data.banner}
+            <BlurUpImage
+              src={post.data.listBanner ?? post.data.banner!}
               alt=""
-              style="width: 100%; height: 100%; object-fit: cover; display: block;"
-              data-zoomable
+              fill
+              zoomable
+              eager={post.id === firstCoverId}
+              style="height: 100%;"
             />
           </a>
         )}
