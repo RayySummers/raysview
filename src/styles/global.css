@@ -1142,3 +1142,31 @@ time.font-date,
     transition: none;
   }
 }
+
+/* RAY-90：跳到正文（skip link）
+   平时视觉隐藏，键盘聚焦时出现在左上角；不参与布局，不改变现有间距。 */
+.skip-link {
+  position: fixed;
+  top: 72px;             /* 让开顶栏时钟，聚焦时不遮住它 */
+  left: var(--space-3);
+  z-index: 1000;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 150ms ease-out;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--color-accent, currentColor);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skip-link { transition: none; }
+}
