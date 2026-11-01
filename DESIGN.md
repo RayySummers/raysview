@@ -642,6 +642,48 @@ overflow-x: auto;
 
 ---
 
+## ♿ Accessibility
+
+> 无障碍不是附加项，是排版规则的一部分。以下四条是硬规则，新组件按此自检；对比度阈值见 §Color System（正文 AAA）。
+
+### 1. 名字（Name）
+
+- 图标按钮必须有 `aria-label`，写清楚动作（「关闭」「切换语言」），不写「按钮」「图标」。
+- 纯装饰图标一律 `aria-hidden="true"`，不要让它进无障碍树。
+- 两者不可同时缺：要么有可见文字，要么有 `aria-label`，要么明确装饰。
+- `aria-label` 与界面文案同等对待：要翻译、要通顺，不写英文缩写糊弄。
+
+### 2. 图片（Image）
+
+- 正文图 `alt` 写「这张图说明了什么」，不写文件名、不写「图片」。
+- 纯装饰图（分隔线、纹理、banner 背景）用 `alt=""`，并配 `aria-hidden="true"`。
+- 缩略图作为链接时，`alt` 用文章标题，不用文件名。
+- 构建时兜底：`alt` 为空则取所在小节标题；兜底不应是「无标题」。
+
+### 3. 焦点（Focus）
+
+- 全站统一 `:focus-visible`：2px outline、`outline-offset: 2px`、颜色取 `--rv-outline` 或主色，亮/暗两套都要可见。
+- 浮层与菜单要锁焦点：打开时焦点移入，Tab 循环不外溢，Esc 关闭后焦点回到触发元素。
+- 首个可聚焦元素是「跳到正文」链接，指向 `<main id="main">`；平时视觉隐藏，聚焦时出现在左上角。
+- 不用 `outline: none` 而不给替代样式。
+
+### 4. 动效（Motion）
+
+- 所有非必要动画（淡入、位移、视差）包在 `prefers-reduced-motion: no-preference` 里，或在该偏好开启时置为 `none`。
+- 该偏好开启时保留状态变化，去掉过渡时长。
+- 自动播放的循环动画必须提供停止方式。
+
+### Checklist（合并前逐条过）
+
+- [ ] 每个图标按钮都有 `aria-label`，装饰图标有 `aria-hidden`
+- [ ] 正文图有 `alt`；装饰图 `alt=""`
+- [ ] 键盘能走到所有交互点，焦点环可见
+- [ ] 浮层/菜单可 Esc 退出，焦点能回位
+- [ ] `prefers-reduced-motion` 下无位移动画
+- [ ] 正文与次要文字对比度达 AAA（见 §Color System）
+
+---
+
 ## 📱 Responsive Behavior
 
 ### Layout Strategy
