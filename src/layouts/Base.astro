@@ -527,10 +527,12 @@ const defaultAlternate = hasAlternates
     </script>
   </head>
   <body>
+    {/* RAY-90：跳到正文，键盘用户不必 Tab 过整个顶栏 */}
+    <a class="skip-link" href="#main">跳到正文</a>
     {/* RAY-483：顶栏的底色渐隐 + 渐进模糊由这条固定带子统一提供（header 自身已无底色） */}
     <ProgressiveBlur />
     <Header lang={lang} languageLinks={languageLinks} />
-    <main style={`padding-left: var(--padding-x); padding-right: var(--padding-x); padding-top: var(--space-6); padding-bottom: var(--space-6); max-width: var(--max-width); margin: 0 auto; width: 100%;`}>
+    <main id="main" tabindex="-1" style={`padding-left: var(--padding-x); padding-right: var(--padding-x); padding-top: var(--space-6); padding-bottom: var(--space-6); max-width: var(--max-width); margin: 0 auto; width: 100%;`}>
       <slot />
     </main>
     <Footer lang={lang} />
