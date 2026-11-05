@@ -1143,30 +1143,40 @@ time.font-date,
   }
 }
 
-/* RAY-90：跳到正文（skip link）
-   平时视觉隐藏，键盘聚焦时出现在左上角；不参与布局，不改变现有间距。 */
+/* RAY-90 / RAY-627：跳到正文（skip link）
+   平时用 visually-hidden 移出视觉区。原写法 top:72px + translateY(-200%) 的百分比
+   按元素自身高度计算，推完仍有一截露在视口里压住 header；改成不依赖 transform 的
+   visually-hidden 后，键盘聚焦时再完整出现在左上角。不参与布局，不改变现有间距。 */
 .skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  transition: none;       /* 隐藏/出现都不做过渡，reduced-motion 下自然也没有动画 */
+}
+
+.skip-link:focus {
   position: fixed;
   top: 72px;             /* 让开顶栏时钟，聚焦时不遮住它 */
   left: var(--space-3);
   z-index: 1000;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
   padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-surface);
   color: var(--color-text-primary);
-  border: 1px solid var(--color-border);
   font-size: var(--text-sm);
   text-decoration: none;
-  transform: translateY(-200%);
-  transition: transform 150ms ease-out;
-}
-
-.skip-link:focus-visible {
-  transform: translateY(0);
+  clip-path: none;
   outline: 2px solid var(--color-accent, currentColor);
   outline-offset: 2px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .skip-link { transition: none; }
 }
