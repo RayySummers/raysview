@@ -1,0 +1,196 @@
+{
+  "390_default": {
+    "rect": {
+      "x": -1,
+      "y": -1,
+      "w": 1,
+      "h": 1,
+      "top": -1,
+      "bottom": 0
+    },
+    "header": {
+      "top": 0,
+      "bottom": 48,
+      "height": 48
+    },
+    "clipPath": "inset(50%)",
+    "position": "absolute",
+    "overflow": "hidden",
+    "transitionDuration": "0s",
+    "animationName": "none",
+    "active": "",
+    "hits": [],
+    "scrollX": 0,
+    "scrollY": 0,
+    "viewport": {
+      "w": 390,
+      "h": 844
+    }
+  },
+  "390_focus": {
+    "rect": {
+      "x": 16,
+      "y": 72,
+      "w": 90,
+      "h": 43.1875,
+      "top": 72,
+      "bottom": 115.1875
+    },
+    "header": {
+      "top": 0,
+      "bottom": 48,
+      "height": 48
+    },
+    "clipPath": "none",
+    "position": "fixed",
+    "overflow": "visible",
+    "transitionDuration": "0s",
+    "animationName": "none",
+    "active": "skip-link",
+    "hits": [
+      [
+        20,
+        76,
+        "skip-link"
+      ],
+      [
+        20,
+        96,
+        "skip-link"
+      ],
+      [
+        40,
+        76,
+        "skip-link"
+      ],
+      [
+        40,
+        96,
+        "skip-link"
+      ],
+      [
+        80,
+        76,
+        "skip-link"
+      ],
+      [
+        80,
+        96,
+        "skip-link"
+      ]
+    ],
+    "scrollX": 0,
+    "scrollY": 0,
+    "viewport": {
+      "w": 390,
+      "h": 844
+    }
+  },
+  "390_enter": {
+    "hash": "#main",
+    "activeId": "main",
+    "activeTag": "MAIN",
+    "mainTop": 48
+  },
+  "390_click": {
+    "hash": "#main",
+    "activeId": "main",
+    "mainTop": 48
+  },
+  "old_style_exposed": {
+    "rect": {
+      "top": -21.59375,
+      "bottom": 25.203125,
+      "height": 46.796875
+    },
+    "headerBottom": 48,
+    "exposedPx": 25.203125
+  },
+  "reduced_motion": {
+    "rect": {
+      "x": 16,
+      "y": 72,
+      "w": 90,
+      "h": 43.1875,
+      "top": 72,
+      "bottom": 115.1875
+    },
+    "header": {
+      "top": 0,
+      "bottom": 48,
+      "height": 48
+    },
+    "clipPath": "none",
+    "position": "fixed",
+    "overflow": "visible",
+    "transitionDuration": "0s",
+    "animationName": "none",
+    "active": "skip-link",
+    "hits": [
+      [
+        20,
+        76,
+        "skip-link"
+      ],
+      [
+        20,
+        96,
+        "skip-link"
+      ],
+      [
+        40,
+        76,
+        "skip-link"
+      ],
+      [
+        40,
+        96,
+        "skip-link"
+      ],
+      [
+        80,
+        76,
+        "skip-link"
+      ],
+      [
+        80,
+        96,
+        "skip-link"
+      ]
+    ],
+    "scrollX": 0,
+    "scrollY": 0,
+    "viewport": {
+      "w": 390,
+      "h": 844
+    }
+  },
+  "1440_default": {
+    "rect": {
+      "x": -1,
+      "y": -1,
+      "w": 1,
+      "h": 1,
+      "top": -1,
+      "bottom": 0
+    },
+    "header": {
+      "top": 0,
+      "bottom": 48,
+      "height": 48
+    },
+    "clipPath": "inset(50%)",
+    "position": "absolute",
+    "overflow": "hidden",
+    "transitionDuration": "0s",
+    "animationName": "none",
+    "active": "",
+    "hits": [],
+    "scrollX": 0,
+    "scrollY": 0,
+    "viewport": {
+      "w": 1440,
+      "h": 900
+    }
+  }
+}
