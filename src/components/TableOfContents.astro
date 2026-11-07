@@ -15,28 +15,31 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
 
 {filteredHeadings.length > 0 && (
   <div class="toc-container">
-    <button id="toc-toggle" class="toc-btn" aria-label={t('toc.label')}>
+    {/* aria-controls 指向浮层；aria-expanded 由脚本随开关状态维护（RAY-632） */}
+    <button id="toc-toggle" class="toc-btn" aria-label={t('toc.label')} aria-expanded="false" aria-controls="toc-panel">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
     </button>
-    <div id="toc-panel" class="toc-panel" hidden>
+    {/* 导航语义放在浮层根节点上：屏幕阅读器读作「目录 导航区」（RAY-632） */}
+    <div id="toc-panel" class="toc-panel" role="navigation" aria-label={t('toc.label')} hidden>
       <div class="toc-header">
         <span>{t('toc.label')}</span>
         <button id="toc-close" class="toc-close" aria-label={t('toc.close')}>
           <Icon name="close" size={16} />
         </button>
       </div>
-      <nav class="toc-nav">
+      <div class="toc-nav">
         {filteredHeadings.map(h => (
           <a
             href={`#${h.slug}`}
             class={`toc-item depth-${h.depth}`}
+            data-toc-target={h.slug}
           >
             {h.text}
           </a>
         ))}
-      </nav>
+      </div>
     </div>
   </div>
 )}
@@ -144,6 +147,20 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
     color: var(--color-text-primary);
   }
 
+  /* 当前章节（RAY-632）：不只靠颜色区分——字重 + 左侧竖线一起标 */
+  .toc-item.is-active {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    box-shadow: inset 2px 0 0 var(--color-text-primary);
+  }
+
+  /* 减少动效偏好：高亮不过渡，直接切换（RAY-632） */
+  @media (prefers-reduced-motion: reduce) {
+    .toc-item {
+      transition: none;
+    }
+  }
+
   .toc-item.depth-3 {
     padding-left: calc(var(--space-3) + var(--space-4));
     font-size: var(--text-xs);
@@ -159,23 +176,43 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
   const panel = document.getElementById('toc-panel');
   const close = document.getElementById('toc-close');
 
+  // 开关收敛成两个函数：aria-expanded 必须和 hidden 同步（RAY-632）
+  function openPanel() {
+    if (!panel || !toggle) return;
+    panel.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    // 焦点移入面板第一项；preventScroll 避免元素聚焦把页面拽走（RAY-632）
+    (panel.querySelector<HTMLElement>('.toc-item'))?.focus({ preventScroll: true });
+  }
+
+  function closePanel(refocusToggle: boolean) {
+    if (!panel || !toggle) return;
+    if (panel.hidden) return;
+    panel.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+    if (refocusToggle) toggle.focus();
+  }
+
   toggle?.addEventListener('click', () => {
     if (panel) {
-      panel.hidden = !panel.hidden;
+      if (panel.hidden) openPanel(); else closePanel(false);
     }
   });
 
-  close?.addEventListener('click', () => {
-    if (panel) {
-      panel.hidden = true;
+  close?.addEventListener('click', () => closePanel(true));
+
+  // Esc 关闭浮层并把焦点还给触发按钮（RAY-632）
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && panel && !panel.hidden) {
+      closePanel(true);
     }
   });
 
-  // Close on outside click
+  // Close on outside click（焦点不动，留在用户点击的位置）
   document.addEventListener('click', (e) => {
     const container = document.querySelector('.toc-container');
-    if (container && !container.contains(e.target as Node) && panel) {
-      panel.hidden = true;
+    if (container && !container.contains(e.target as Node) && panel && !panel.hidden) {
+      closePanel(false);
     }
   });
 
@@ -199,6 +236,69 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
       }
     });
   });
+
+  // ===== 滚动高亮 scrollspy（RAY-632）：IntersectionObserver，无第三方依赖 =====
+  // 结构说明：rootMargin 顶部收掉 48px（导航高度，与上面的点击滚动偏移一致）、
+  // 底部收成一条 0 高的分隔线。标题穿过这条线才记为「当前章节」：
+  // 刚滚到某节开头（标题还在导航条下方）不会被误判成下一节；
+  // 标题离开分隔线后不清空高亮，因此滚到文末最后一节保持点亮。
+  if (panel) {
+    const links = Array.from(panel.querySelectorAll<HTMLAnchorElement>('.toc-item'));
+    const ACTIVE_OFFSET = 48; // 与点击滚动的 NAVBAR_HEIGHT 同源，勿单独改
+    let activeId = '';
+
+    const setActive = (id: string) => {
+      if (!id || id === activeId) return;
+      activeId = id;
+      links.forEach((link) => {
+        const isOn = link.dataset.tocTarget === id;
+        link.classList.toggle('is-active', isOn);
+        if (isOn) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    };
+
+    const headingEls = links
+      .map((link) => document.getElementById(link.dataset.tocTarget || ''))
+      .filter((el): el is HTMLElement => !!el);
+
+    if (headingEls.length > 0) {
+      // 按实际位置校对一次：取最后一个已越过分隔线的标题。
+      // 连续滚动由 IO 负责瞬时切换；这里是兜底——直接跳到底部、拖动滚动条、
+      // 点目录项这类「没有穿越过程」的移动，IO 不会回调，靠它补上（RAY-632）
+      let reconcileTimer = 0;
+      const reconcile = () => {
+        // +1px 容差：点目录项后标题正好停在 48px 线上，避免浮点误差判成「还没到」
+        const passed = headingEls.filter((el) => el.getBoundingClientRect().top <= ACTIVE_OFFSET + 1);
+        if (passed.length > 0) {
+          setActive(passed[passed.length - 1].id);
+        }
+      };
+
+      // 停稳后再算，避免和 IO 的回调互相抢（150ms ≈ 一次平滑滚动的收尾）
+      window.addEventListener('scroll', () => {
+        clearTimeout(reconcileTimer);
+        reconcileTimer = window.setTimeout(reconcile, 150);
+      }, { passive: true });
+
+      // 首屏就位：带 hash 打开或刷新回到文章中部时先算一次
+      reconcile();
+
+      const spy = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          // 只在「穿过分隔线」这一态点亮；离开线（向下滚）自然由下一节接管
+          if (entry.isIntersecting) {
+            setActive(entry.target.id);
+          }
+        }
+      }, { rootMargin: `-${ACTIVE_OFFSET}px 0px -100% 0px` });
+
+      headingEls.forEach((el) => spy.observe(el));
+    }
+  }
 
   // Footnote back-links with offset (avoid navbar)
   document.querySelectorAll('a[data-footnote-backref]').forEach(link => {

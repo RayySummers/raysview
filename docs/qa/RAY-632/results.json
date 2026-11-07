@@ -1,0 +1,82 @@
+{
+  "desktop": {
+    "shots": [
+      {
+        "heading": "emoji-与日本",
+        "active": "emoji-与日本",
+        "ariaCurrent": "true",
+        "activeCount": 1,
+        "screenshot": "desktop-spy-1.png"
+      },
+      {
+        "heading": "如何创造一个新的-emoji",
+        "active": "如何创造一个新的-emoji",
+        "ariaCurrent": "true",
+        "activeCount": 1,
+        "screenshot": "desktop-spy-2.png"
+      }
+    ],
+    "pageErrors": []
+  },
+  "mobile390": {
+    "shots": [
+      {
+        "heading": "emoji-与日本",
+        "active": "emoji-与日本",
+        "ariaCurrent": "true",
+        "activeCount": 1,
+        "screenshot": "mobile390-spy-1.png"
+      },
+      {
+        "heading": "如何创造一个新的-emoji",
+        "active": "如何创造一个新的-emoji",
+        "ariaCurrent": "true",
+        "activeCount": 1,
+        "screenshot": "mobile390-spy-2.png"
+      }
+    ],
+    "pageErrors": []
+  },
+  "keyboard": {
+    "tabReachedToggle": true,
+    "expandedBeforeOpen": "false",
+    "afterEnter": {
+      "expanded": "true",
+      "hidden": false,
+      "focusText": "什么是 emoji？",
+      "scrollY": 14733
+    },
+    "afterEscape": {
+      "expanded": "false",
+      "hidden": true,
+      "focusIsToggle": true,
+      "scrollY": 14733
+    },
+    "pageErrors": []
+  },
+  "ariaExpandedDom": {
+    "closed": "<button id=\"toc-toggle\" class=\"toc-btn\" aria-label=\"目录\" aria-expanded=\"false\" aria-controls=\"toc-panel\" data-astro-cid-xvrfupwn=\"\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"c",
+    "open": "<button id=\"toc-toggle\" class=\"toc-btn\" aria-label=\"目录\" aria-expanded=\"true\" aria-controls=\"toc-panel\" data-astro-cid-xvrfupwn=\"\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"cu"
+  },
+  "regression": {
+    "clickTocItem": {
+      "hash": "#emoji-%E4%B8%8E%E6%97%A5%E6%9C%AC",
+      "headingTop": 48,
+      "active": "emoji-与日本"
+    },
+    "outsideClick": {
+      "hidden": true,
+      "expanded": "false"
+    }
+  },
+  "endOfArticle": {
+    "active": "emojipedia",
+    "lastTocItem": "emojipedia",
+    "activeCount": 1
+  },
+  "darkReducedMotion": {
+    "active": "什么是-emoji",
+    "transition": "none 0s",
+    "pageErrors": []
+  }
+}
