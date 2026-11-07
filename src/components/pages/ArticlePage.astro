@@ -12,6 +12,7 @@ import Base from '../../layouts/Base.astro';
 import BlurUpImage from '../BlurUpImage.astro';
 import { render, type CollectionEntry } from 'astro:content';
 import TableOfContents from '../TableOfContents.astro';
+import ReadingProgress from '../ReadingProgress.astro';
 import Icon from '../Icon.astro';
 import SeriesPill from '../SeriesPill.astro';
 import { langFromPath, useTranslations } from '../../i18n';
@@ -107,6 +108,9 @@ const articleLd = {
   ogImage={ogCardImage}
   structuredData={articleLd}
 >
+  {/* RAY-634：顶部阅读进度条 + 移动端当前章节名（两条 fixed 装饰层，不占布局） */}
+  <ReadingProgress headings={headings} />
+
   <a href={hrefFor('/posts/', lang)} class="back-btn" aria-label={t('common.back')}>
     <Icon name="arrow_back" size={20} />
   </a>

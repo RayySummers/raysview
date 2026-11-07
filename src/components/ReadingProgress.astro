@@ -1,0 +1,248 @@
+---
+/**
+ * RAY-634：长文「读到哪了」的两条提示
+ *
+ * 1. 阅读进度条：贴在顶栏下沿（`top: var(--header-height)`）的 3px 细线，
+ *    宽度＝已读比例。用 `transform: scaleX()` 更新 —— 只动合成层，不触发布局，
+ *    滚动时不会引起重排；rAF 合帧，一个滚动帧最多写一次样式。
+ * 2. 移动端当前章节名（<768px）：浮在目录按钮左侧的胶囊，显示当前章节标题
+ *    （默认 h2；全篇没有 h2 时回退 h3，见下方 level），超长单行截断。
+ *    只做视觉提示，`aria-hidden` + `pointer-events: none`：
+ *    章节文字本来就在正文里，读屏不该在每次滚动时被重复播报。
+ *
+ * 分工：本组件只负责「进度 / 当前章节」这两条装饰层，不碰目录浮层本体
+ * （TableOfContents.astro 的开关、焦点与滚动高亮由 RAY-632 负责）。
+ * 章节判定自己算（`article.heti h2[id]` 的绝对纵坐标），不依赖浮层的 active class，
+ * 所以两单可以各自合并、互不覆盖。
+ *
+ * 颜色只用 `var(--color-accent)`（浅色黑 / 深色白）与现有 border / text token，
+ * 没有新增色值、没有新增依赖。
+ */
+interface Props {
+  headings: { depth: number; text: string; slug: string }[];
+}
+
+const { headings } = Astro.props;
+// 当前章节名默认只跟 h2（移动端一行放得下的大层级），h3 变化太碎。
+// 站内有文章通篇用 h3 分节、没有 h2（如 justthinking-01），这时回退到 h3 ——
+// 否则这类长文一条章节名都不会出现，功能等于没上。
+// 脚注区那个 h2（id=footnote-label）是附录，不算正文章节
+const structural = headings.filter(h => h.slug !== 'footnote-label');
+const level = structural.some(h => h.depth === 2) ? 2 : 3;
+const sections = structural.filter(h => h.depth === level);
+---
+
+<div class="reading-meter" aria-hidden="true" data-reading-level={level}>
+  <div class="reading-meter__fill" data-reading-fill></div>
+</div>
+
+{sections.length > 0 && (
+  <div class="reading-section" data-reading-section aria-hidden="true">
+    <span class="reading-section__text" data-reading-section-text></span>
+  </div>
+)}
+
+<style>
+  /* 进度条：不占布局，整条压在顶栏下方。z-index 101 才不会被 ProgressiveBlur 的
+     模糊带（99）糊掉；header 是 100，但两者纵向不重叠（48px 起）。 */
+  .reading-meter {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 101;
+    pointer-events: none;
+  }
+
+  .reading-meter__fill {
+    height: 100%;
+    background: var(--color-accent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    /* 补间只掩盖 rAF 帧之间的小台阶，滚动停下时不会回弹或闪一下 */
+    transition: transform 120ms linear;
+    will-change: transform;
+  }
+
+  /* 移动端当前章节名：贴在目录按钮左侧（按钮 48px + --space-2 间距），
+     底边与按钮对齐（--space-5）。不参与布局，也不接收任何点击。 */
+  .reading-section {
+    position: fixed;
+    right: calc(var(--space-5) + 48px + var(--space-2));
+    bottom: var(--space-5);
+    z-index: 90;
+    display: none;
+    align-items: center;
+    max-width: min(240px, calc(100vw - var(--space-5) * 2 - 48px - var(--space-2)));
+    height: 32px;
+    padding: 0 var(--space-3);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    /* 比目录按钮（80%）实得多：胶囊里是文字，压在正文上时必须读得清 */
+    background: color-mix(in srgb, var(--color-bg) 96%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+    pointer-events: none;
+  }
+
+  .reading-section.is-visible {
+    opacity: 1;
+  }
+
+  /* 滚到文末操作栏时让位：那里有「回到顶部」，两者不能叠在一起 */
+  .reading-section.is-suppressed {
+    opacity: 0;
+  }
+
+  .reading-section__text {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 767px) {
+    .reading-section {
+      display: inline-flex;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reading-meter__fill {
+      transition: none;
+    }
+
+    .reading-section {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const fill = document.querySelector<HTMLElement>('[data-reading-fill]');
+  const sectionBox = document.querySelector<HTMLElement>('[data-reading-section]');
+  const sectionText = document.querySelector<HTMLElement>('[data-reading-section-text]');
+  const meter = document.querySelector<HTMLElement>('[data-reading-level]');
+  // 章节层级由构建期决定（有 h2 跟 h2，全篇只有 h3 时跟 h3）
+  const level = meter?.dataset.readingLevel || '2';
+  const headingEls = Array.from(
+    document.querySelectorAll<HTMLElement>(
+      `article.heti h${level}[id]:not(#footnote-label)`
+    )
+  );
+
+  if (fill) {
+    const doc = document.documentElement;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // 顶栏高度从 token 读，别写死 —— --header-height 以后若调整，这里自动跟随
+    const headerHeight =
+      parseFloat(getComputedStyle(doc).getPropertyValue('--header-height')) || 48;
+
+    let tops: number[] = [];
+    let maxScroll = 1;
+    let activeIndex = -1;
+    let frame = 0;
+
+    // 量一次：每个 h2 在文档里的绝对纵坐标 + 可滚动总量。
+    // 只在布局真的变了（窗口尺寸 / 图片撑开 / 字体换入）时才重算，
+    // 滚动帧里只做减法比较，不读 DOM 几何。
+    function measure() {
+      const y = window.scrollY || doc.scrollTop;
+      tops = headingEls.map(el => el.getBoundingClientRect().top + y);
+      maxScroll = Math.max(1, doc.scrollHeight - window.innerHeight);
+    }
+
+    function paint() {
+      frame = 0;
+      const y = window.scrollY || doc.scrollTop;
+      const ratio = Math.min(1, Math.max(0, y / maxScroll));
+      fill!.style.transform = `scaleX(${ratio})`;
+
+      if (!sectionBox || !sectionText) return;
+
+      // 视觉判定线：顶栏下沿再加一点余量，标题刚滚到顶栏下方就算「读到这里」
+      const probe = y + headerHeight + 8;
+      let index = -1;
+      for (let i = 0; i < tops.length; i += 1) {
+        if (tops[i] <= probe) index = i;
+        else break;
+      }
+
+      if (index === activeIndex) return;
+      activeIndex = index;
+
+      if (index < 0) {
+        sectionBox.classList.remove('is-visible');
+        return;
+      }
+
+      sectionText.textContent = headingEls[index].textContent?.trim() ?? '';
+      sectionBox.classList.add('is-visible');
+      // 章节切换：淡入新标题；减少动效时直接替换（CSS 也不再做过渡）
+      if (!reduceMotion.matches) {
+        sectionBox.animate(
+          [
+            { opacity: 0, transform: 'translateY(2px)' },
+            { opacity: 1, transform: 'translateY(0)' }
+          ],
+          { duration: 180, easing: 'ease-out' }
+        );
+      }
+    }
+
+    function schedule() {
+      if (frame) return;
+      frame = requestAnimationFrame(paint);
+    }
+
+    // 滚动：rAF 合帧，一帧最多一次写入
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', () => {
+      measure();
+      schedule();
+    });
+    window.addEventListener('load', () => {
+      measure();
+      schedule();
+    });
+    // bfcache 回退（浏览器前进/后退）时重新量，避免拿到旧坐标
+    window.addEventListener('pageshow', () => {
+      measure();
+      schedule();
+    });
+
+    // 图片懒加载 / 字体换入会改文档高度 → 重新量。RO 只在尺寸真的变化时回调，
+    // 不是每帧都跑，滚动本身不会触发它。
+    if ('ResizeObserver' in window) {
+      const ro = new ResizeObserver(() => {
+        measure();
+        schedule();
+      });
+      ro.observe(document.body);
+    }
+    document.fonts?.ready.then(() => {
+      measure();
+      schedule();
+    });
+
+    // 文末操作栏（返回 / 回到顶部）进入视口时收起当前章节名，
+    // 避免和「回到顶部」按钮在同一角落叠在一起
+    const actions = document.querySelector<HTMLElement>('.post-actions');
+    if (actions && sectionBox && 'IntersectionObserver' in window) {
+      new IntersectionObserver(entries => {
+        sectionBox.classList.toggle('is-suppressed', entries[0].isIntersecting);
+      }).observe(actions);
+    }
+
+    measure();
+    paint();
+  }
+</script>
