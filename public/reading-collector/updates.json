@@ -1,0 +1,17 @@
+{
+  "addons": {
+    "reading-collector@raysview.fun": {
+      "updates": [
+        {
+          "version": "0.6.0",
+          "update_link": "https://raysview.fun/reading-collector/reading-collector.xpi",
+          "applications": {
+            "gecko": {
+              "strict_min_version": "140.0"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
