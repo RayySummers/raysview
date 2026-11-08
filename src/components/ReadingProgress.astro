@@ -2,7 +2,9 @@
 /**
  * RAY-634：长文「读到哪了」的两条提示
  *
- * 1. 阅读进度条：贴在顶栏下沿（`top: var(--header-height)`）的 3px 细线，
+ * 1. 阅读进度条：贴在**页面最顶部**（`top: 0`）的 3px 细线，压在 header 之上；
+ *    不放在 header 下沿，因为 header 下有 immersive progressive blur，细线卡在模糊带
+ *    下沿会显得突兀（2026-11-08 Ray 指定）。
  *    宽度＝已读比例。用 `transform: scaleX()` 更新 —— 只动合成层，不触发布局，
  *    滚动时不会引起重排；rAF 合帧，一个滚动帧最多写一次样式。
  * 2. 移动端当前章节名（<768px）：浮在目录按钮左侧的胶囊，显示当前章节标题
@@ -43,15 +45,15 @@ const sections = structural.filter(h => h.depth === level);
 )}
 
 <style>
-  /* 进度条：不占布局，整条压在顶栏下方。z-index 101 才不会被 ProgressiveBlur 的
-     模糊带（99）糊掉；header 是 100，但两者纵向不重叠（48px 起）。 */
+  /* 进度条：不占布局，贴在页面最顶部、压在 header 之上。
+     z-index 必须高于 header(100) 与 ProgressiveBlur 模糊带(99)，否则会被盖住。 */
   .reading-meter {
     position: fixed;
-    top: var(--header-height);
+    top: 0;
     left: 0;
     right: 0;
     height: 3px;
-    z-index: 101;
+    z-index: 102;
     pointer-events: none;
   }
 
