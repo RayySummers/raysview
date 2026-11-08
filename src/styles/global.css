@@ -363,23 +363,6 @@ article.heti h3 {
   text-wrap: balance;
 }
 
-/* RAY-609：中文正文试验按词组断行。
-   auto-phrase 由引擎做词组分析，避免把「薄荷是牙膏的」拆成「薄荷是牙膏 / 的」这种跨词断行。
-   **属性名是 `word-break` 不是 `line-break`**：CSS Text 4 只给 word-break 定义了 auto-phrase，
-   line-break 的取值是 auto / loose / normal / strict / anywhere（MDN 与 Chrome 157、Firefox 148
-   的 CSS.supports 都对 `line-break: auto-phrase` 返回 false）。写成 line-break 会是一条永远不生效的
-   死规则，@supports 也永远进不去 —— 所以这里用真正能命中的属性名。
-   浏览器现状：Chromium 119+ 已支持该值，但词组分析目前只覆盖日文，中文尚无词典
-   （Chrome 官方博客：plan to support Chinese in future）。所以中文目前是「加了规则、等引擎」：
-   @supports 兜住能力检测，不支持的引擎整块不解析，断行与改动前完全一致。
-   只作用于中文正文 p/li —— 英文正文没有词组切分需求。 */
-@supports (word-break: auto-phrase) {
-  article.heti p:lang(zh),
-  article.heti li:lang(zh) {
-    word-break: auto-phrase;
-  }
-}
-
 /* RAY-408 精确映射 + RAY-412 校正：中英文同名等重 — 按表 Roboto 400↔320/600↔520/800↔700（原 400↔330 校正为 320 实现视觉等重，-10 微调）
    - article.heti h1 700(Heavy) / h1-h6 520(SemiBold) 精确对应原 800/600 设计值（MiSans 700/520 vs Roboto 800/600）
    - 中文 CJK 走 MiSans VF fvar 150-700 全覆盖 150/200/250/320/380/520/630/700，拉丁走 Roboto Flex 100-1000 全覆盖
