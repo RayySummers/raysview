@@ -1,0 +1,604 @@
+{
+  "baseUrl": "http://127.0.0.1:44488",
+  "chrome": "/usr/bin/google-chrome",
+  "widths": {
+    "390": {
+      "viewport": {
+        "name": "390",
+        "width": 390,
+        "height": 1600,
+        "dpr": 2
+      },
+      "on": {
+        "articleHeight": 6793.2,
+        "articleWidth": 342,
+        "paragraphs": 21,
+        "orphan1": 0,
+        "orphan2": 0,
+        "orphan3": 3,
+        "meanFill": 0.534,
+        "multiLineHeadings": [],
+        "font": "18px / \"Zhudou Sans\"",
+        "computed": {
+          "pWrap": "pretty",
+          "pWordBreak": "auto-phrase",
+          "pLineBreak": "auto",
+          "hWrap": null
+        }
+      },
+      "off": {
+        "articleHeight": 6793.2,
+        "articleWidth": 342,
+        "paragraphs": 21,
+        "orphan1": 0,
+        "orphan2": 2,
+        "orphan3": 3,
+        "meanFill": 0.529,
+        "multiLineHeadings": [],
+        "font": "18px / \"Zhudou Sans\"",
+        "computed": {
+          "pWrap": "wrap",
+          "pWordBreak": "normal",
+          "pLineBreak": "auto",
+          "hWrap": null
+        }
+      },
+      "shot": {
+        "path": "docs/qa/RAY-609/zh-390.png",
+        "bytes": 765934
+      },
+      "consoleErrors": []
+    },
+    "768": {
+      "viewport": {
+        "name": "768",
+        "width": 768,
+        "height": 1600,
+        "dpr": 1
+      },
+      "on": {
+        "articleHeight": 4630.7,
+        "articleWidth": 584,
+        "paragraphs": 21,
+        "orphan1": 0,
+        "orphan2": 0,
+        "orphan3": 1,
+        "meanFill": 0.563,
+        "multiLineHeadings": [],
+        "font": "18px / \"Zhudou Sans\"",
+        "computed": {
+          "pWrap": "pretty",
+          "pWordBreak": "auto-phrase",
+          "pLineBreak": "auto",
+          "hWrap": null
+        }
+      },
+      "off": {
+        "articleHeight": 4630.7,
+        "articleWidth": 584,
+        "paragraphs": 21,
+        "orphan1": 0,
+        "orphan2": 1,
+        "orphan3": 1,
+        "meanFill": 0.562,
+        "multiLineHeadings": [],
+        "font": "18px / \"Zhudou Sans\"",
+        "computed": {
+          "pWrap": "wrap",
+          "pWordBreak": "normal",
+          "pLineBreak": "auto",
+          "hWrap": null
+        }
+      },
+      "shot": {
+        "path": "docs/qa/RAY-609/zh-768.png",
+        "bytes": 533319
+      },
+      "consoleErrors": []
+    },
+    "1440": {
+      "viewport": {
+        "name": "1440",
+        "width": 1440,
+        "height": 1600,
+        "dpr": 1
+      },
+      "on": {
+        "articleHeight": 4630.7,
+        "articleWidth": 584,
+        "paragraphs": 21,
+        "orphan1": 0,
+        "orphan2": 0,
+        "orphan3": 1,
+        "meanFill": 0.563,
+        "multiLineHeadings": [],
+        "font": "18px / \"Zhudou Sans\"",
+        "computed": {
+          "pWrap": "pretty",
+          "pWordBreak": "auto-phrase",
+          "pLineBreak": "auto",
+          "hWrap": null
+        }
+      },
+      "off": {
+        "articleHeight": 4630.7,
+        "articleWidth": 584,
+        "paragraphs": 21,
+        "orphan1": 0,
+        "orphan2": 1,
+        "orphan3": 1,
+        "meanFill": 0.562,
+        "multiLineHeadings": [],
+        "font": "18px / \"Zhudou Sans\"",
+        "computed": {
+          "pWrap": "wrap",
+          "pWordBreak": "normal",
+          "pLineBreak": "auto",
+          "hWrap": null
+        }
+      },
+      "shot": {
+        "path": "docs/qa/RAY-609/zh-1440.png",
+        "bytes": 556604
+      },
+      "consoleErrors": []
+    }
+  },
+  "headings390": {
+    "on": [
+      {
+        "tag": "h1",
+        "text": "一、AI 的说明书（4D 框架）",
+        "lines": 2,
+        "lastChars": 7,
+        "lastFill": 0.604,
+        "width": 342
+      },
+      {
+        "tag": "h1",
+        "text": "五、这周发生的有趣的事",
+        "lines": 2,
+        "lastChars": 6,
+        "lastFill": 0.561,
+        "width": 342
+      }
+    ],
+    "off": [
+      {
+        "tag": "h1",
+        "text": "一、AI 的说明书（4D 框架）",
+        "lines": 2,
+        "lastChars": 2,
+        "lastFill": 0.187,
+        "width": 342
+      },
+      {
+        "tag": "h1",
+        "text": "五、这周发生的有趣的事",
+        "lines": 2,
+        "lastChars": 1,
+        "lastFill": 0.094,
+        "width": 342
+      }
+    ],
+    "computed": {
+      "pWrap": "pretty",
+      "pWordBreak": "auto-phrase",
+      "pLineBreak": "auto",
+      "hWrap": "balance"
+    }
+  },
+  "controls": {
+    "paragraph": {
+      "samples": 21,
+      "narrowLastLine": [
+        {
+          "words": 27,
+          "normal": {
+            "value": "wrap",
+            "lineChars": [
+              22,
+              27,
+              24,
+              24,
+              23,
+              11
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.88,
+              0.83,
+              0.33
+            ]
+          },
+          "pretty": {
+            "value": "pretty",
+            "lineChars": [
+              22,
+              27,
+              24,
+              24,
+              23,
+              11
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.88,
+              0.83,
+              0.33
+            ]
+          }
+        },
+        {
+          "words": 26,
+          "normal": {
+            "value": "wrap",
+            "lineChars": [
+              22,
+              27,
+              24,
+              24,
+              23,
+              6
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.88,
+              0.83,
+              0.17
+            ]
+          },
+          "pretty": {
+            "value": "pretty",
+            "lineChars": [
+              22,
+              27,
+              18,
+              24,
+              25,
+              10
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.73,
+              0.86,
+              0.93,
+              0.29
+            ]
+          }
+        },
+        {
+          "words": 22,
+          "normal": {
+            "value": "wrap",
+            "lineChars": [
+              22,
+              27,
+              24,
+              24,
+              10
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.88,
+              0.37
+            ]
+          },
+          "pretty": {
+            "value": "pretty",
+            "lineChars": [
+              22,
+              27,
+              24,
+              24,
+              10
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.88,
+              0.37
+            ]
+          }
+        },
+        {
+          "words": 21,
+          "normal": {
+            "value": "wrap",
+            "lineChars": [
+              22,
+              27,
+              24,
+              24,
+              7
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.88,
+              0.26
+            ]
+          },
+          "pretty": {
+            "value": "pretty",
+            "lineChars": [
+              22,
+              27,
+              24,
+              24,
+              7
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.88,
+              0.26
+            ]
+          }
+        },
+        {
+          "words": 20,
+          "normal": {
+            "value": "wrap",
+            "lineChars": [
+              22,
+              27,
+              24,
+              24,
+              4
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.88,
+              0.16
+            ]
+          },
+          "pretty": {
+            "value": "pretty",
+            "lineChars": [
+              22,
+              27,
+              18,
+              24,
+              10
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.73,
+              0.86,
+              0.37
+            ]
+          }
+        },
+        {
+          "words": 16,
+          "normal": {
+            "value": "wrap",
+            "lineChars": [
+              22,
+              27,
+              24,
+              11
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.41
+            ]
+          },
+          "pretty": {
+            "value": "pretty",
+            "lineChars": [
+              22,
+              27,
+              24,
+              11
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.41
+            ]
+          }
+        },
+        {
+          "words": 15,
+          "normal": {
+            "value": "wrap",
+            "lineChars": [
+              22,
+              27,
+              24,
+              8
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.93,
+              0.28
+            ]
+          },
+          "pretty": {
+            "value": "pretty",
+            "lineChars": [
+              22,
+              27,
+              18,
+              14
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.73,
+              0.48
+            ]
+          }
+        },
+        {
+          "words": 10,
+          "normal": {
+            "value": "wrap",
+            "lineChars": [
+              22,
+              27,
+              7
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.26
+            ]
+          },
+          "pretty": {
+            "value": "pretty",
+            "lineChars": [
+              22,
+              27,
+              7
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.26
+            ]
+          }
+        },
+        {
+          "words": 9,
+          "normal": {
+            "value": "wrap",
+            "lineChars": [
+              22,
+              27,
+              4
+            ],
+            "fills": [
+              0.77,
+              0.89,
+              0.14
+            ]
+          },
+          "pretty": {
+            "value": "pretty",
+            "lineChars": [
+              22,
+              21,
+              10
+            ],
+            "fills": [
+              0.77,
+              0.68,
+              0.35
+            ]
+          }
+        }
+      ],
+      "changed": 4
+    },
+    "headings": [
+      {
+        "lang": "en",
+        "text": "Build Interfaces That Survive Translation And Still Read Well Everywhere",
+        "normal": {
+          "value": "wrap",
+          "lineChars": [
+            19,
+            21,
+            13,
+            10
+          ],
+          "fills": [
+            0.83,
+            0.94,
+            0.57,
+            0.47
+          ]
+        },
+        "balance": {
+          "value": "balance",
+          "lineChars": [
+            19,
+            18,
+            12,
+            14
+          ],
+          "fills": [
+            0.83,
+            0.76,
+            0.56,
+            0.67
+          ]
+        }
+      },
+      {
+        "lang": "zh",
+        "text": "薄荷是牙膏味的：一个关于颜色与语义的长期困惑",
+        "normal": {
+          "value": "wrap",
+          "lineChars": [
+            12,
+            10
+          ],
+          "fills": [
+            0.96,
+            0.8
+          ]
+        },
+        "balance": {
+          "value": "balance",
+          "lineChars": [
+            11,
+            11
+          ],
+          "fills": [
+            0.88,
+            0.88
+          ]
+        }
+      }
+    ]
+  },
+  "failures": [],
+  "imageWarnings": [
+    "1440: Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "768: Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "390: Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "390: Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "390: Failed to load resource: net::ERR_NETWORK_CHANGED",
+    "390: Failed to load resource: net::ERR_NETWORK_CHANGED"
+  ],
+  "featureSupport": {
+    "lineBreakAutoPhrase": false,
+    "wordBreakAutoPhrase": true,
+    "textWrapPretty": true,
+    "textWrapBalance": true
+  },
+  "firefox": {
+    "version": "Firefox/148.0",
+    "lineBreakAutoPhrase": false,
+    "wordBreakAutoPhrase": false,
+    "textWrapPretty": false,
+    "textWrapBalance": true,
+    "pWrap": "wrap",
+    "pWordBreak": "normal",
+    "pLineBreak": "auto",
+    "articleHeight": 4632
+  }
+}
