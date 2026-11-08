@@ -1,0 +1,270 @@
+{
+  "meter below header": {
+    "pass": true,
+    "detail": "bar.top=48 header.bottom=48"
+  },
+  "meter 2-3px": {
+    "pass": true,
+    "detail": "height=3px"
+  },
+  "meter full width": {
+    "pass": true,
+    "detail": "left=0 right=1440"
+  },
+  "section label hidden on desktop": {
+    "pass": true,
+    "detail": "display=none"
+  },
+  "desktop 25% scaleX": {
+    "pass": true,
+    "detail": "scaleX=0.2501 expected=0.2501"
+  },
+  "1440-25-shot": {
+    "scrollY": 970,
+    "scaleX": 0.250129
+  },
+  "desktop 50% scaleX": {
+    "pass": true,
+    "detail": "scaleX=0.5000 expected=0.5000"
+  },
+  "1440-50-shot": {
+    "scrollY": 1939,
+    "scaleX": 0.5
+  },
+  "desktop 90% scaleX": {
+    "pass": true,
+    "detail": "scaleX=0.8999 expected=0.8999"
+  },
+  "1440-90-shot": {
+    "scrollY": 3490,
+    "scaleX": 0.899948
+  },
+  "desktop bottom scaleX=1": {
+    "pass": true,
+    "detail": "scaleX=1"
+  },
+  "desktop accent colour": {
+    "pass": true,
+    "detail": "background=rgb(0, 0, 0)"
+  },
+  "desktop no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  },
+  "mobile label present": {
+    "pass": true,
+    "detail": "found [data-reading-section]"
+  },
+  "mobile label hidden before first section": {
+    "pass": true,
+    "detail": "opacity=0 text=''"
+  },
+  "mobile-shots": [
+    {
+      "shot": "390-a",
+      "text": "第二章：进度条为什么用 scaleX",
+      "opacity": 1,
+      "scaleX": 0.17994
+    },
+    {
+      "shot": "390-b",
+      "text": "第五章：移动端的一行标题",
+      "opacity": 1,
+      "scaleX": 0.449938
+    },
+    {
+      "shot": "390-c",
+      "text": "第八章：和目录浮层的分工",
+      "opacity": 1,
+      "scaleX": 0.719936
+    }
+  ],
+  "mobile label fades in": {
+    "pass": true,
+    "detail": "see mobile-shots"
+  },
+  "mobile section text switches": {
+    "pass": true,
+    "detail": "texts=['第二章：进度条为什么用 scaleX', '第五章：移动端的一行标题', '第八章：和目录浮层的分工']"
+  },
+  "mobile section text non-empty": {
+    "pass": true,
+    "detail": "texts=['第二章：进度条为什么用 scaleX', '第五章：移动端的一行标题', '第八章：和目录浮层的分工']"
+  },
+  "mobile label one line": {
+    "pass": true,
+    "detail": "heights=[32, 32, 32]"
+  },
+  "mobile label ellipsis": {
+    "pass": true,
+    "detail": "white-space/overflow checked"
+  },
+  "mobile label never overlaps TOC button": {
+    "pass": true,
+    "detail": "label.right=[302, 302, 302] toc.left=310"
+  },
+  "mobile label inside viewport": {
+    "pass": true,
+    "detail": "left=[96, 124, 124]"
+  },
+  "mobile label bottom-aligned with TOC button": {
+    "pass": true,
+    "detail": "label.bottom=[812, 812, 812] toc.bottom=812"
+  },
+  "mobile label not clickable": {
+    "pass": true,
+    "detail": "pointer-events=none"
+  },
+  "mobile label aria-hidden": {
+    "pass": true,
+    "detail": "aria-hidden=true"
+  },
+  "section label suppressed at article end": {
+    "pass": true,
+    "detail": "opacity=0 actionsTop=679.75"
+  },
+  "no overlap with scroll-top button": {
+    "pass": true,
+    "detail": "label.right=302 btn.left=68"
+  },
+  "overlay": {
+    "panelOpen": true,
+    "panel": {
+      "left": 78,
+      "right": 358,
+      "top": 352,
+      "bottom": 752
+    },
+    "bar": {
+      "top": 48,
+      "bottom": 51,
+      "pointerEvents": "none"
+    },
+    "section": {
+      "left": 124,
+      "right": 302,
+      "top": 780,
+      "bottom": 812,
+      "opacity": 1,
+      "pointerEvents": "none"
+    },
+    "hitBar": "H2.",
+    "hitSection": "P."
+  },
+  "TOC panel opened": {
+    "pass": true,
+    "detail": "panel visible"
+  },
+  "progress bar visible with panel open": {
+    "pass": true,
+    "detail": "bar has height"
+  },
+  "section label visible with panel open": {
+    "pass": true,
+    "detail": "opacity=1 text='第五章：移动端的一行标题'"
+  },
+  "label does not overlap panel": {
+    "pass": true,
+    "detail": "label.top=780 panel.bottom=752"
+  },
+  "bar does not overlap panel": {
+    "pass": true,
+    "detail": "bar.bottom=51 panel.top=352"
+  },
+  "decorative layers are not click targets": {
+    "pass": true,
+    "detail": "bar=none label=none"
+  },
+  "clicks pass through bar to content": {
+    "pass": true,
+    "detail": "elementFromPoint=H2."
+  },
+  "clicks pass through label": {
+    "pass": true,
+    "detail": "elementFromPoint=P."
+  },
+  "mobile no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  },
+  "reduced-motion": {
+    "matches": true,
+    "fillTransition": "none 0s",
+    "sectionTransition": "none 0s"
+  },
+  "reduced-motion detected": {
+    "pass": true,
+    "detail": "media query active"
+  },
+  "fill has no transition": {
+    "pass": true,
+    "detail": "transition=none 0s"
+  },
+  "section label has no transition": {
+    "pass": true,
+    "detail": "transition=none 0s"
+  },
+  "reduced-motion still updates progress": {
+    "pass": true,
+    "detail": "scaleX=0.800"
+  },
+  "reduced-motion still switches sections": {
+    "pass": true,
+    "detail": "texts=['第二章：进度条为什么用 scaleX', '第五章：移动端的一行标题', '第九章：不做点击目标']"
+  },
+  "reduced-motion no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  },
+  "dark": {
+    "theme": "dark",
+    "fill": "rgb(255, 255, 255)",
+    "labelBg": "color(srgb 0 0 0 / 0.96)",
+    "labelText": "rgb(198, 198, 198)",
+    "pageBg": "rgba(0, 0, 0, 0)"
+  },
+  "dark: theme applied": {
+    "pass": true,
+    "detail": "data-theme=dark"
+  },
+  "dark: progress bar uses accent": {
+    "pass": true,
+    "detail": "background=rgb(255, 255, 255)"
+  },
+  "dark: no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  },
+  "short (4 h2): section level": {
+    "pass": true,
+    "detail": "data-reading-level=2"
+  },
+  "short (4 h2): progress tracks scroll": {
+    "pass": true,
+    "detail": "scaleX=0.600 scrollY=8117"
+  },
+  "short (4 h2): section label works": {
+    "pass": true,
+    "detail": "text='III. 鉴别（Discernment）' opacity=1"
+  },
+  "short (4 h2): no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  },
+  "h3-only article: section level": {
+    "pass": true,
+    "detail": "data-reading-level=3"
+  },
+  "h3-only article: progress tracks scroll": {
+    "pass": true,
+    "detail": "scaleX=0.600 scrollY=5245"
+  },
+  "h3-only article: section label works": {
+    "pass": true,
+    "detail": "text='可能三：建立信用机制' opacity=1"
+  },
+  "h3-only article: no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  }
+}

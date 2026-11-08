@@ -1,0 +1,277 @@
+{
+  "meter below header": {
+    "pass": true,
+    "detail": "bar.top=48 header.bottom=48"
+  },
+  "meter 2-3px": {
+    "pass": true,
+    "detail": "height=3px"
+  },
+  "meter full width": {
+    "pass": true,
+    "detail": "left=0 right=1440"
+  },
+  "section label hidden on desktop": {
+    "pass": true,
+    "detail": "display=none"
+  },
+  "desktop 25% scaleX": {
+    "pass": true,
+    "detail": "scaleX=0.2500 expected=0.2500"
+  },
+  "1440-25-shot": {
+    "scrollY": 3382,
+    "scaleX": 0.25
+  },
+  "desktop 50% scaleX": {
+    "pass": true,
+    "detail": "scaleX=0.5000 expected=0.5000"
+  },
+  "1440-50-shot": {
+    "scrollY": 6764,
+    "scaleX": 0.5
+  },
+  "desktop 90% scaleX": {
+    "pass": true,
+    "detail": "scaleX=0.9000 expected=0.9000"
+  },
+  "1440-90-shot": {
+    "scrollY": 12175,
+    "scaleX": 0.899985
+  },
+  "desktop bottom scaleX=1": {
+    "pass": true,
+    "detail": "scaleX=1"
+  },
+  "desktop accent colour": {
+    "pass": true,
+    "detail": "background=rgb(0, 0, 0)"
+  },
+  "desktop no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  },
+  "mobile label present": {
+    "pass": true,
+    "detail": "found [data-reading-section]"
+  },
+  "mobile label hidden before first section": {
+    "pass": true,
+    "detail": "opacity=0 text=''"
+  },
+  "mobile headings found": {
+    "pass": true,
+    "detail": "count=4"
+  },
+  "mobile-shots": [
+    {
+      "shot": "390-a",
+      "expected": "I. 委派（Delegation）",
+      "text": "I. 委派（Delegation）",
+      "opacity": 1,
+      "scaleX": 0.201305
+    },
+    {
+      "shot": "390-b",
+      "expected": "III. 鉴别（Discernment）",
+      "text": "III. 鉴别（Discernment）",
+      "opacity": 1,
+      "scaleX": 0.582691
+    },
+    {
+      "shot": "390-c",
+      "expected": "IV. 尽责（Diligence）",
+      "text": "IV. 尽责（Diligence）",
+      "opacity": 1,
+      "scaleX": 0.61979
+    }
+  ],
+  "mobile section text switches": {
+    "pass": true,
+    "detail": "texts=['I. 委派（Delegation）', 'III. 鉴别（Discernment）', 'IV. 尽责（Diligence）']"
+  },
+  "mobile section text matches heading": {
+    "pass": true,
+    "detail": "texts=['I. 委派（Delegation）', 'III. 鉴别（Discernment）', 'IV. 尽责（Diligence）'] expected=['I. 委派（Delegation）', 'III. 鉴别（Discernment）', 'IV. 尽责（Diligence）']"
+  },
+  "mobile label opaque after fade-in": {
+    "pass": true,
+    "detail": "opacity=[1, 1, 1]"
+  },
+  "mobile label one line": {
+    "pass": true,
+    "detail": "heights=[32, 32, 32]"
+  },
+  "mobile label ellipsis": {
+    "pass": true,
+    "detail": "white-space/overflow checked"
+  },
+  "mobile label never overlaps TOC button": {
+    "pass": true,
+    "detail": "label.right=[302, 302, 302] toc.left=310"
+  },
+  "mobile label inside viewport": {
+    "pass": true,
+    "detail": "left=[150, 133, 151]"
+  },
+  "mobile label bottom-aligned with TOC button": {
+    "pass": true,
+    "detail": "label.bottom=[812, 812, 812] toc.bottom=812"
+  },
+  "mobile label not clickable": {
+    "pass": true,
+    "detail": "pointer-events=none"
+  },
+  "mobile label aria-hidden": {
+    "pass": true,
+    "detail": "aria-hidden=true"
+  },
+  "section label suppressed at article end": {
+    "pass": true,
+    "detail": "opacity=0 actionsTop=668.484375"
+  },
+  "no overlap with scroll-top button": {
+    "pass": true,
+    "detail": "label.right=302 btn.left=68"
+  },
+  "overlay": {
+    "panelOpen": true,
+    "panel": {
+      "left": 78,
+      "right": 358,
+      "top": 352,
+      "bottom": 752
+    },
+    "bar": {
+      "top": 48,
+      "bottom": 51,
+      "pointerEvents": "none"
+    },
+    "section": {
+      "left": 150,
+      "right": 302,
+      "top": 780,
+      "bottom": 812,
+      "opacity": 1,
+      "pointerEvents": "none"
+    },
+    "hitBar": "P.",
+    "hitSection": "SPAN."
+  },
+  "TOC panel opened": {
+    "pass": true,
+    "detail": "panel visible"
+  },
+  "progress bar visible with panel open": {
+    "pass": true,
+    "detail": "bar has height"
+  },
+  "section label visible with panel open": {
+    "pass": true,
+    "detail": "opacity=1 text='I. 委派（Delegation）'"
+  },
+  "label does not overlap panel": {
+    "pass": true,
+    "detail": "label.top=780 panel.bottom=752"
+  },
+  "bar does not overlap panel": {
+    "pass": true,
+    "detail": "bar.bottom=51 panel.top=352"
+  },
+  "decorative layers are not click targets": {
+    "pass": true,
+    "detail": "bar=none label=none"
+  },
+  "clicks pass through bar to content": {
+    "pass": true,
+    "detail": "elementFromPoint=P."
+  },
+  "clicks pass through label": {
+    "pass": true,
+    "detail": "elementFromPoint=SPAN."
+  },
+  "mobile no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=['Failed to load resource: net::ERR_NETWORK_CHANGED', 'Failed to load resource: net::ERR_NETWORK_CHANGED', 'Failed to load resource: net::ERR_NETWORK_CHANGED', 'Heti is not defined', 'Failed to load resource: net::ERR_NETWORK_CHANGED', 'Failed to load resource: net::ERR_NETWORK_CHANGED', 'Failed to load resource: net::ERR_NETWORK_CHANGED'])"
+  },
+  "reduced-motion": {
+    "matches": true,
+    "fillTransition": "none 0s",
+    "sectionTransition": "none 0s"
+  },
+  "reduced-motion detected": {
+    "pass": true,
+    "detail": "media query active"
+  },
+  "fill has no transition": {
+    "pass": true,
+    "detail": "transition=none 0s"
+  },
+  "section label has no transition": {
+    "pass": true,
+    "detail": "transition=none 0s"
+  },
+  "reduced-motion still updates progress": {
+    "pass": true,
+    "detail": "scaleX=0.800"
+  },
+  "reduced-motion still switches sections": {
+    "pass": true,
+    "detail": "texts=['I. 委派（Delegation）', 'II. 描述（Description）', 'IV. 尽责（Diligence）']"
+  },
+  "reduced-motion no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  },
+  "dark": {
+    "theme": "dark",
+    "fill": "rgb(255, 255, 255)",
+    "labelBg": "color(srgb 0 0 0 / 0.96)",
+    "labelText": "rgb(198, 198, 198)",
+    "pageBg": "rgba(0, 0, 0, 0)"
+  },
+  "dark: theme applied": {
+    "pass": true,
+    "detail": "data-theme=dark"
+  },
+  "dark: progress bar uses accent": {
+    "pass": true,
+    "detail": "background=rgb(255, 255, 255)"
+  },
+  "dark: no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  },
+  "short (4 h2): section level": {
+    "pass": true,
+    "detail": "data-reading-level=2"
+  },
+  "short (4 h2): progress tracks scroll": {
+    "pass": true,
+    "detail": "scaleX=0.600 scrollY=8117"
+  },
+  "short (4 h2): section label works": {
+    "pass": true,
+    "detail": "text='III. 鉴别（Discernment）' opacity=1"
+  },
+  "short (4 h2): no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  },
+  "h3-only article: section level": {
+    "pass": true,
+    "detail": "data-reading-level=3"
+  },
+  "h3-only article: progress tracks scroll": {
+    "pass": true,
+    "detail": "scaleX=0.600 scrollY=5245"
+  },
+  "h3-only article: section label works": {
+    "pass": true,
+    "detail": "text='可能三：建立信用机制' opacity=1"
+  },
+  "h3-only article: no console errors": {
+    "pass": true,
+    "detail": "errors=[] (raw=[])"
+  }
+}
