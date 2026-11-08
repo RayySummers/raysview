@@ -68,11 +68,11 @@ ai_chevrons=$(grep -rho 'class="ms-icon ai-disclosure__chevron"' "$DIST_DIR" --i
 # RAY-549：折叠区的左对齐修正与平滑开合都在 CSS 里，构建产物必须带上（minify / @supports 都可能吞规则）：
 #   1. summary 的 padding-inline-start:0（覆盖 heti.min.css 的 summary{padding-inline-start:1em}，18px 缩进）；
 #   2. ::details-content 的 block-size 过渡（平滑开合；兜底脚本见 ArticlePage.astro）。
-ai_css=$(find "$DIST_DIR/assets" -name '*.css' -type f | head -1)
-[[ -n "$ai_css" ]] || fail "构建产物里找不到 CSS 资源（RAY-549）"
-grep -qE '\.ai-disclosure__summary\{[^}]*padding-inline-start:0' "$ai_css" \
+# 注意：Astro 会按组件拆出多个 CSS 文件（RAY-632/634 之后 assets 下不止一个），
+# 所以必须扫整个 assets 目录，不能只取 head -1 —— 否则规则可能落在另一个 chunk 里。
+grep -rqE '\.ai-disclosure__summary\{[^}]*padding-inline-start:0' "$DIST_DIR/assets" --include='*.css' \
   || fail "构建产物里的折叠区 summary 没有 padding-inline-start:0，左对齐修正丢了（RAY-549）"
-grep -q 'ai-disclosure::details-content' "$ai_css" \
+grep -rq 'ai-disclosure::details-content' "$DIST_DIR/assets" --include='*.css' \
   || fail "构建产物里没有 ::details-content 过渡规则，平滑开合 CSS 丢了（RAY-549）"
 
 # RAY-552：字体栈顺序必须是 Zhudou Sans → Roboto Flex Variable → MiSans。
@@ -151,7 +151,7 @@ echo "  dist 体积 : $(du -sh "$DIST_DIR" | cut -f1)"
 echo "  HTML 页面 : $html_count"
 echo "  公众号图标: $wechat_pages 个页面，src=/images/wechat-icon.png"
 echo "  AI 声明区 : $ai_pages 个页面（源文件 $ai_src 篇），默认展开 + chevron"
-echo "  折叠区样式: 左对齐修正 + ::details-content 过渡 已在 $(basename "$ai_css")"
+echo "  折叠区样式: 左对齐修正 + ::details-content 过渡 已在 assets/*.css"
 # RAY-608：图片 blur-up 懒加载。三条底线，任何一条回退，慢网下的「空白直出 / 撑高页面」
 # 就会回来：
 #   1. 站内图片统一走 blur-up 结构（页头 logo 与公众号图标除外），正文图都是
@@ -192,9 +192,9 @@ list_eager=$(grep -o '<img [^>]*class="blur-up__img"[^>]*' "$DIST_DIR/posts/inde
 
 # 样式与脚本：占位层的模糊、减少动态偏好下的直切、以及「图片就绪 → 淡入并收掉占位」的脚本
 # 都可能被 minify / 改 CSS 吞掉，逐条对产物断言
-grep -q '\.blur-up{' "$ai_css" || fail "构建产物里没有 .blur-up 规则（RAY-608）"
-grep -q 'blur(12px)' "$ai_css" || fail "构建产物里没有占位层的 blur(12px)（RAY-608）"
-grep -qE 'prefers-reduced-motion:[[:space:]]*reduce' "$ai_css" \
+grep -rq '\.blur-up{' "$DIST_DIR/assets" --include='*.css' || fail "构建产物里没有 .blur-up 规则（RAY-608）"
+grep -rq 'blur(12px)' "$DIST_DIR/assets" --include='*.css' || fail "构建产物里没有占位层的 blur(12px)（RAY-608）"
+grep -rqE 'prefers-reduced-motion:[[:space:]]*reduce' "$DIST_DIR/assets" --include='*.css' \
   || fail "构建产物里没有 prefers-reduced-motion 直切规则（RAY-608）"
 grep -q "classList.add('has-js')" "$DIST_DIR/index.html" \
   || fail "构建产物里没有 blur-up 的 has-js 增强脚本（RAY-608）"
