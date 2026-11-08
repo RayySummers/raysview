@@ -30,10 +30,6 @@ const t = useTranslations(lang);
 
 const { Content, headings } = await render(post);
 
-// RAY-633：有目录才排两栏。英文译文与少数短文没有任何 h1–h3，目录组件会整体不渲染；
-// 这类页面必须维持原来的单栏（否则右栏会空出一块，正文也被挤窄）。
-const hasToc = headings.some(h => h.depth >= 1 && h.depth <= 3);
-
 // 静态资源（public/ 下的文件）不走 hrefFor/localizePath：那两个是页面路由函数，
 // 会加语言前缀和尾斜杠，当 img src 用会 404（RAY-467）。base 前缀单独拼，
 // 写法与 Header 的 logo、Base 的 favicon 一致。
@@ -115,89 +111,79 @@ const articleLd = {
   {/* RAY-634：顶部阅读进度条 + 移动端当前章节名（两条 fixed 装饰层，不占布局） */}
   <ReadingProgress headings={headings} />
 
-  {/* RAY-633：≥1200px 时这一层是两栏 grid（正文 + 常驻目录）；窄屏保持普通块级流，
-      目录组件回到右下浮层形态 —— DOM 只有一份，形态全由 CSS 断点决定 */}
-  <div class={`post-layout${hasToc ? ' post-layout--has-toc' : ''}`}>
-    <div class="post-layout__main">
-      {/* RAY-633：返回键放进正文列，宽屏时与正文左缘对齐（留在 main 里会停在旧的
-          584px 内容盒边缘，比正文右移 132px） */}
-      <a href={hrefFor('/posts/', lang)} class="back-btn" aria-label={t('common.back')}>
+  <a href={hrefFor('/posts/', lang)} class="back-btn" aria-label={t('common.back')}>
+    <Icon name="arrow_back" size={20} />
+  </a>
+
+  {post.data.banner && (
+    /* RAY-608：封面是文章页首屏最大的图（LCP），保持 eager + 高优先级；
+       容器用图片自然比例撑开，慢网下不会先空白再撑高页面 */
+    <BlurUpImage
+      src={post.data.banner}
+      alt=""
+      eager
+      zoomable
+      style="margin-bottom: var(--space-5);"
+    />
+  )}
+
+  <h1 class="post-title" style="font-size: var(--post-title-size); font-weight: 620; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-3); line-height: 1.1; font-family: var(--font-sans); font-optical-sizing: auto;">
+    {displayPostTitle(post.data.title)}
+  </h1>
+
+  <div style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-5);">
+    <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
+    {tagsInLang(post.data.tags, lang).length > 0 && (
+      <span style="margin-left: var(--space-2);">
+        {displayTags(tagsInLang(post.data.tags, lang)).map((entry, i) => (
+          <>
+            {i > 0 && ' '}
+            {entry.series ? (
+              <SeriesPill series={entry.series} />
+            ) : (
+              <a href={hrefFor(`/tags/${entry.tag}/`, lang)} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">#{entry.tag}</a>
+            )}
+          </>
+        ))}
+      </span>
+    )}
+  </div>
+
+  <div style="max-width: var(--reading-width);">
+    <article class="heti" style="font-size: var(--text-lg); line-height: 1.65;">
+      <Content />
+    </article>
+  </div>
+
+  <TableOfContents headings={headings} />
+
+  <div class="post-actions">
+    <div class="post-actions__group">
+      <button id="back-btn-bottom" class="back-btn" aria-label={t('post.backToPrevious')}>
         <Icon name="arrow_back" size={20} />
-      </a>
-
-      {post.data.banner && (
-        /* RAY-608：封面是文章页首屏最大的图（LCP），保持 eager + 高优先级；
-           容器用图片自然比例撑开，慢网下不会先空白再撑高页面 */
-        <BlurUpImage
-          src={post.data.banner}
-          alt=""
-          eager
-          zoomable
-          style="margin-bottom: var(--space-5);"
-        />
-      )}
-
-      <h1 class="post-title" style="font-size: var(--post-title-size); font-weight: 620; letter-spacing: var(--tracking-tight); margin-bottom: var(--space-3); line-height: 1.1; font-family: var(--font-sans); font-optical-sizing: auto;">
-        {displayPostTitle(post.data.title)}
-      </h1>
-
-      <div style="font-size: var(--text-sm); color: var(--color-text-secondary); margin-bottom: var(--space-5);">
-        <time datetime={post.data.date.toISOString()}>{post.data.date.toISOString().split('T')[0]}</time>
-        {tagsInLang(post.data.tags, lang).length > 0 && (
-          <span style="margin-left: var(--space-2);">
-            {displayTags(tagsInLang(post.data.tags, lang)).map((entry, i) => (
-              <>
-                {i > 0 && ' '}
-                {entry.series ? (
-                  <SeriesPill series={entry.series} />
-                ) : (
-                  <a href={hrefFor(`/tags/${entry.tag}/`, lang)} style="color: var(--color-text-secondary); text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 3px; transition: text-decoration-color var(--transition-fast);">#{entry.tag}</a>
-                )}
-              </>
-            ))}
-          </span>
-        )}
-      </div>
-
-      <div style="max-width: var(--reading-width);">
-        <article class="heti" style="font-size: var(--text-lg); line-height: 1.65;">
-          <Content />
-        </article>
-      </div>
-
-      <div class="post-actions">
-        <div class="post-actions__group">
-          <button id="back-btn-bottom" class="back-btn" aria-label={t('post.backToPrevious')}>
-            <Icon name="arrow_back" size={20} />
-          </button>
-          <button id="scroll-top-btn" class="back-btn" aria-label={t('post.scrollTop')}>
-            <Icon name="arrow_upward" size={20} />
-          </button>
-        </div>
-
-        {post.data.wechatUrl && (
-          <a
-            class="wechat-link"
-            href={post.data.wechatUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src={wechatIconSrc}
-              alt={t('post.wechat')}
-              width="19"
-              height="16"
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-        )}
-      </div>
+      </button>
+      <button id="scroll-top-btn" class="back-btn" aria-label={t('post.scrollTop')}>
+        <Icon name="arrow_upward" size={20} />
+      </button>
     </div>
 
-    {/* RAY-633：目录是 grid 的第二列。窄屏时它退回 position: fixed 的右下浮层，
-        不占布局；两种形态共用这一份 DOM，不存在两个 nav 同时可读的问题 */}
-    <TableOfContents headings={headings} />
+    {post.data.wechatUrl && (
+      <a
+        class="wechat-link"
+        href={post.data.wechatUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          src={wechatIconSrc}
+          alt={t('post.wechat')}
+          width="19"
+          height="16"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+    )}
   </div>
 </Base>
 
@@ -258,35 +244,6 @@ const articleLd = {
        视觉上与 20px 的线框图标等重（实心色块的光学重量更大）。
        素材 142×120（比例 1.1833），16px 高对应 19px 宽，占位属性同步。 */
     height: 16px;
-  }
-
-  /* RAY-633：桌面宽屏（≥1200px）改成「正文 + 常驻目录」两栏。
-     窄屏 .post-layout 不设 grid，保持原来的单栏流；目录组件自己回到右下浮层，
-     所以这里不需要任何 JS 参与排版，断点切换是纯 CSS 的瞬时动作。
-
-     宽度算法：正文列固定 584px —— 正好等于窄屏时改用前的正文宽度
-     （Base 的 main 上限 680 − 左右内边距各 48）。跨 1200 断点时正文、封面、
-     标题的宽度一个像素都不变，只有右侧多出目录栏，不会因重新折行而上下跳。
-     两栏总宽 584 + gap 32 + 232 = 848px；main 本身仍按 680px 居中，
-     这里用对称负外边距把 grid 从正文盒里「撑」出来：左右各
-     (584 − 848) / 2 = −132px，几何上仍以页面中线为中心。
-     只对真有目录的文章（.post-layout--has-toc）生效 —— 英文译文等无目录页面
-     保持原来的单栏，不预留空的右栏。 */
-  @media (min-width: 1200px) {
-    .post-layout--has-toc {
-      width: 848px;
-      margin-inline: calc((100% - 848px) / 2);
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 232px; /* 右栏 232px，落在 220–240 区间 */
-      gap: var(--space-5);
-      /* 两列都从顶部开始：目录不用被拉到与正文等高 */
-      align-items: start;
-    }
-
-    .post-layout__main {
-      /* 防止长代码块 / 大图把 1fr 撑破（grid 子项的默认 min-width 是 auto） */
-      min-width: 0;
-    }
   }
 </style>
 

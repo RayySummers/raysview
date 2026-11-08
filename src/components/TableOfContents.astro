@@ -170,86 +170,75 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
     padding-left: var(--space-4);
   }
 
-  /* ===== 桌面常驻侧栏（RAY-633）=====
-     同一套 DOM、同一份 <nav>：这里只把浮层容器从 fixed 改成 sticky 侧栏，收起开关按钮，
-     让目录本体直接展开。窄屏规则一条没动，也不存在「两份目录」。 */
+  /* ===== 桌面（PC UA）左下角常驻面板（RAY-641）=====
+     不参与布局：position:fixed 贴在左下角，正文保持原来的居中宽度（RAY-633 的
+     两栏 grid 会把正文整体挤左，已回退）。窄屏仍然走右下浮层那一套。
+     不用 hover/pointer 判定：触屏笔记本与部分浏览器会把 pointer 报成 coarse，
+     会把 PC 误判成手机（实测 headless Chrome 就不匹配）。 */
   @media (min-width: 1200px) {
     .toc-container {
-      position: sticky;
-      top: calc(var(--header-height) + var(--space-4));
+      position: fixed;
+      left: var(--space-4);
+      bottom: var(--space-4);
       right: auto;
-      bottom: auto;
-      z-index: 1;
+      top: auto;
+      z-index: 90;
       display: flex;
       flex-direction: column;
-      /* 视口矮时封顶；超高只让目录本体滚动，正文照常滚动不受牵连 */
-      max-height: calc(100vh - var(--header-height) - var(--space-4) - var(--space-6));
-      min-height: 0;
+      align-items: flex-start;
     }
 
-    .toc-btn {
-      display: none;
-    }
+    .toc-btn { display: none; }
 
-    /* 桌面形态不依赖脚本：即使 JS 没跑，目录也以侧栏出现（脚本只负责同步 hidden，
-       让辅助技术也读到这个 nav）。 */
     .toc-panel {
-      display: block; /* 覆盖 [hidden] 的用户代理样式 display:none */
+      display: block;
       position: static;
-      width: auto;
-      max-height: none;
-      min-height: 0;
+      width: 208px;
+      max-height: min(58vh, 520px);
       overflow-y: auto;
       overscroll-behavior: contain;
-      background: none;
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-      border: none;
-      border-radius: 0;
-      box-shadow: none;
+      padding: var(--space-3);
+      background: color-mix(in srgb, var(--color-bg) 94%, transparent);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md, 12px);
+      box-shadow: 0 8px 28px rgb(0 0 0 / 8%);
       animation: none;
     }
 
     .toc-header {
       position: sticky;
-      top: 0;
+      top: calc(var(--space-3) * -1);
       z-index: 1;
-      padding: 0 0 var(--space-2);
-      border-bottom: none;
+      padding: var(--space-2) 0 var(--space-2);
+      margin: calc(var(--space-3) * -1) calc(var(--space-3) * -1) 0;
+      padding-left: var(--space-3);
+      padding-right: var(--space-3);
+      border-bottom: 1px solid var(--color-border);
       background: var(--color-bg);
       font-size: var(--text-xs);
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       color: var(--color-text-secondary);
     }
 
-    .toc-close {
-      display: none;
-    }
+    .toc-close { display: none; }
 
     .toc-nav {
-      padding: 0;
-      gap: 0;
-      border-left: 1px solid var(--color-border);
+      padding: var(--space-2) 0 0;
+      border-left: none;
     }
 
     .toc-item {
-      padding: var(--space-1) var(--space-3);
-      margin-left: -1px; /* 压在竖线上：active 的 2px 才与线重合，不产生 1px 错位 */
-      border-left: 2px solid transparent;
-      border-radius: 0;
+      border-radius: var(--radius-sm, 6px);
+      padding: var(--space-1) var(--space-2);
+      margin-left: 0;
       line-height: 1.45;
     }
 
-    .toc-item:hover {
-      background: none;
-      color: var(--color-text-primary);
-    }
-
     .toc-item.is-active {
-      /* 侧栏里用 2px 竖线代替浮层的 inset 阴影，视觉上贴着目录导轨 */
-      box-shadow: none;
-      border-left-color: var(--color-text-primary);
-      background: none;
+      box-shadow: inset 2px 0 0 var(--color-text-primary);
+      background: color-mix(in srgb, var(--color-text-primary) 6%, transparent);
     }
   }
 </style>
@@ -259,8 +248,8 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
   const panel = document.getElementById('toc-panel');
   const close = document.getElementById('toc-close');
 
-  // RAY-633：≥1200px 时目录是常驻侧栏，不再是「点开才出现」的浮层。
-  // 断点值必须和 <style> 里的 @media (min-width: 1200px) 保持一致。
+  // RAY-641：PC（宽屏 + 精确指针）下目录是左下角常驻面板，不再是「点开才出现」的浮层。
+  // 断点条件必须和 <style> 里的 @media (min-width:1200px) 一致。
   const wideQuery = window.matchMedia('(min-width: 1200px)');
   const isWide = () => wideQuery.matches;
 
@@ -399,7 +388,7 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
       // 停稳后再算，避免和 IO 的回调互相抢（150ms ≈ 一次平滑滚动的收尾）
       window.addEventListener('scroll', () => {
         clearTimeout(reconcileTimer);
-        reconcileTimer = window.setTimeout(reconcile, 150);
+        reconcileTimer = window.setTimeout(reconcile, 60);
       }, { passive: true });
 
       // 首屏就位：带 hash 打开或刷新回到文章中部时先算一次
@@ -415,6 +404,12 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
       }, { rootMargin: `-${ACTIVE_OFFSET}px 0px -100% 0px` });
 
       headingEls.forEach((el) => spy.observe(el));
+
+      // RAY-641：点目录项立刻高亮，不等平滑滚动结束（之前要等 ~1s，因为
+      // reconcile 是 150ms 防抖、且要等 lenis 滚完才触发）。
+      links.forEach((link) => {
+        link.addEventListener('click', () => setActive(link.dataset.tocTarget || ''));
+      });
 
       // 断点切换：同步 hidden / aria-expanded，并在进入侧栏形态后按当前滚动位置补算高亮
       wideQuery.addEventListener('change', () => {
