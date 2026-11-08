@@ -85,6 +85,18 @@ font_sans=$(grep -rho -e '--font-sans:[^;}]*' "$DIST_DIR/assets" --include='*.cs
 [[ "$font_sans" == *'"Zhudou Sans"'*'"Roboto Flex Variable"'*'"MiSans"'* ]] \
   || fail "--font-sans 顺序不是 Zhudou Sans → Roboto Flex Variable → MiSans（RAY-552）：$font_sans"
 
+# RAY-609：正文断行规则。三条都只活在 CSS 里、页面上没有可见标记，改回去没人看得出来，
+# 而且 auto-phrase 还包在 @supports 里 —— minify 或 @supports 处理出错都会静默吞掉。
+# 直接对产物断言「选择器 + 声明」成对存在，而不是只 grep 属性名（别的规则也可能带同名声明）。
+grep -rqE 'article\.heti p\{[^}]*text-wrap:pretty' "$DIST_DIR/assets" --include='*.css' \
+  || fail "构建产物里 article.heti p 没有 text-wrap:pretty（RAY-609）"
+grep -rq 'article.heti h3{text-wrap:balance}' "$DIST_DIR/assets" --include='*.css' \
+  || fail "构建产物里 article.heti h1/h2/h3 没有 text-wrap:balance（RAY-609）"
+grep -rq '@supports (word-break: auto-phrase)' "$DIST_DIR/assets" --include='*.css' \
+  || fail "构建产物里没有 word-break:auto-phrase 的 @supports 能力检测（RAY-609）"
+grep -rq 'p:lang(zh),article.heti li:lang(zh){word-break:auto-phrase}' "$DIST_DIR/assets" --include='*.css' \
+  || fail "构建产物里中文正文没有 word-break:auto-phrase（RAY-609）"
+
 # RAY-547：JT#04《广州地铁志愿有感》的中英对照词表必须逐行渲染。
 # 词表在源文件里是同一个段落里的连续多行，靠行尾两个空格（CommonMark 硬换行）分行；
 # 行尾空格一旦被删掉（或被编辑器 trim），Markdown 会把整块并成一个段落 ——
@@ -200,6 +212,7 @@ grep -q "classList.add('has-js')" "$DIST_DIR/index.html" \
   || fail "构建产物里没有 blur-up 的 has-js 增强脚本（RAY-608）"
 
 echo "  字体栈顺序: Zhudou Sans → Roboto Flex Variable → MiSans（RAY-552）"
+echo "  正文断行  : text-wrap pretty/balance + word-break auto-phrase（RAY-609）"
 echo "  主题初始化: <head> 内联经典脚本，产物中无 type=module / src（RAY-557）"
 echo "  词表逐行  : JT#04 中英词表逐行渲染（硬换行数 = 源文件行数 - 1）"
 echo "  图片懒加载: $blur_imgs 张 blur-up（ratio + lqip + lazy/eager），列表页首图 eager"

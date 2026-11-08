@@ -397,6 +397,26 @@ article.heti .ai-disclosure__summary:lang(en) { line-height: 1.4; }
   由 `heti.min.css`（CDN，固定 px）与本仓库既有规则接管，本单不动；逐档实测表见 `docs/qa/RAY-550/`（英文 1.4）
   、`docs/qa/RAY-530/`（中文 1.8 重校）与 `docs/qa/RAY-528/`（1.6 基线）。
 
+**断行（RAY-609，2026-11-08）**：
+
+```css
+article.heti p { text-wrap: pretty; }   /* 段末孤字：末行只剩 1–2 字时回退调整断点 */
+article.heti h1,
+article.heti h2,
+article.heti h3 { text-wrap: balance; } /* 标题几行长度摊平 */
+
+@supports (word-break: auto-phrase) {   /* 中文按词组断行，能力检测兜底 */
+  article.heti p:lang(zh),
+  article.heti li:lang(zh) { word-break: auto-phrase; }
+}
+```
+
+- **属性名**：CSS Text 4 只给 `word-break` 定义了 `auto-phrase`；`line-break: auto-phrase` 不是合法值
+  （Chrome 157 / Firefox 148 的 `CSS.supports` 都返回 false），按字面写会是一条永远不生效的死规则。
+- **现状**：Chromium 119+ 已支持 `word-break: auto-phrase`，但词组分析目前只覆盖日文，中文等引擎补词典；
+  `text-wrap: pretty` 在 Chrome 157 的中文正文已能把「末行 1–2 字」的段落降到 0（1440 / 768 / 390 实测）。
+- 只改断行，不改字号 / 行高 / 对齐 / 代码块；逐段读数与降级行为见 `docs/qa/RAY-609/README.md`。
+
 ---
 
 ## 🧩 Components
@@ -930,6 +950,23 @@ margin-right: auto;
   **逐字节相同**；无横向溢出、0 JS 报错；`pnpm build` + `.github/scripts/check-build.sh` 通过。
 - **Status**: In review（RAY-550）
 - **Refs**: `src/styles/global.css`；逐档行高表、before/after 读数与明暗截图见 `docs/qa/RAY-550/README.md`
+
+### 2026-11-08 (RAY-609): 中文正文断行 —— pretty / balance / auto-phrase
+- **Decision**: `src/styles/global.css` 里 `article.heti p` 加 **`text-wrap: pretty`**；
+  新增 `article.heti h1/h2/h3 { text-wrap: balance }`；新增
+  `@supports (word-break: auto-phrase)` 块，中文正文 `p`/`li` 加 **`word-break: auto-phrase`**。
+  字号、行高（中文 1.8 / 英文 1.4）、对齐、字体栈、`pre` 的 `word-break: break-word` 一律不动。
+- **Rationale**: Ray 要「减少段末孤字、标题行长度更均匀，并试验按词组断行」。
+  实测（Chrome 157，`docs/qa/RAY-609/readings.json`）：三档宽度（1440 / 768 / 390）下「末行只剩 1–2 字」
+  的正文段落从 **1 / 1 / 2 段降到 0 / 0 / 0**，末行填充率 0.562 → 0.563（1440、768）、0.529 → 0.534（390），
+  段落行数与正文总高度不变；390 宽的两条长标题末行字数 **2 → 7**、**1 → 6**（末行填充率 0.187 → 0.604、0.094 → 0.561）。
+  控制实验（同引擎英文段落/中英标题）确认 `pretty`、`balance` 本身会改写断点，避免「规则写了但没生效」的假结论。
+- **Note**: issue 原文写的是 `line-break: auto-phrase`，但 CSS Text 4 只给 `word-break` 定义该值
+  （Chrome 157 / Firefox 148 的 `CSS.supports('line-break','auto-phrase')` 均为 false）；按 `word-break` 实现，
+  `@supports` 兜住不支持的环境。Chromium 119+ 已支持该值，但词组分析目前只覆盖日文，中文暂无可见变化。
+- **Status**: In review（RAY-609）
+- **Refs**: `src/styles/global.css`、`docs/qa/RAY-609/README.md`（三档截图 + 逐段读数）、
+  `.github/scripts/check-build.sh` 的 4 条产物断言
 
 ---
 

@@ -344,9 +344,40 @@ article.heti li:lang(en) {
   line-height: 1.4;
 }
 
+/* RAY-609 断行策略：段末不留孤字。
+   `text-wrap: pretty` 让引擎在段末少留一个孤字/孤词时回退调整前面几行的断点
+   （Chrome 117+ / Safari 17.5+；不支持的引擎直接忽略，断行保持默认 wrap）。
+   与下面的 justify/left 无关，只影响「行怎么断」，不改字号、行高、对齐。 */
 article.heti p {
   margin-bottom: 1.2em;
   text-align: left;
+  text-wrap: pretty;
+}
+
+/* RAY-609：标题行长度更均匀。`balance` 会把标题的几行摊平，避免最后一行只剩一两个字。
+   只挂 h1/h2/h3（正文实际用到的层级）；h4-h6 在文章里几乎不出现，不动。
+   Chrome 对 balance 有行数上限（约 4 行），超长标题会退回默认 wrap —— 正是想要的降级。 */
+article.heti h1,
+article.heti h2,
+article.heti h3 {
+  text-wrap: balance;
+}
+
+/* RAY-609：中文正文试验按词组断行。
+   auto-phrase 由引擎做词组分析，避免把「薄荷是牙膏的」拆成「薄荷是牙膏 / 的」这种跨词断行。
+   **属性名是 `word-break` 不是 `line-break`**：CSS Text 4 只给 word-break 定义了 auto-phrase，
+   line-break 的取值是 auto / loose / normal / strict / anywhere（MDN 与 Chrome 157、Firefox 148
+   的 CSS.supports 都对 `line-break: auto-phrase` 返回 false）。写成 line-break 会是一条永远不生效的
+   死规则，@supports 也永远进不去 —— 所以这里用真正能命中的属性名。
+   浏览器现状：Chromium 119+ 已支持该值，但词组分析目前只覆盖日文，中文尚无词典
+   （Chrome 官方博客：plan to support Chinese in future）。所以中文目前是「加了规则、等引擎」：
+   @supports 兜住能力检测，不支持的引擎整块不解析，断行与改动前完全一致。
+   只作用于中文正文 p/li —— 英文正文没有词组切分需求。 */
+@supports (word-break: auto-phrase) {
+  article.heti p:lang(zh),
+  article.heti li:lang(zh) {
+    word-break: auto-phrase;
+  }
 }
 
 /* RAY-408 精确映射 + RAY-412 校正：中英文同名等重 — 按表 Roboto 400↔320/600↔520/800↔700（原 400↔330 校正为 320 实现视觉等重，-10 微调）
