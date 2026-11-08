@@ -1,0 +1,357 @@
+[
+  {
+    "name": "A1 1400 两栏 grid",
+    "ok": true,
+    "detail": "grid"
+  },
+  {
+    "name": "A2 右栏 232px（220–240）",
+    "ok": true,
+    "detail": "584px 232px"
+  },
+  {
+    "name": "A3 gap 用 --space-5 = 32px",
+    "ok": true,
+    "detail": "32px"
+  },
+  {
+    "name": "A4 目录 sticky",
+    "ok": true,
+    "detail": "sticky"
+  },
+  {
+    "name": "A5 目录宽 232",
+    "ok": true,
+    "detail": "232"
+  },
+  {
+    "name": "A6 正文列宽与窄屏一致（584）",
+    "ok": true,
+    "detail": "584"
+  },
+  {
+    "name": "A7 开关按钮在侧栏形态隐藏",
+    "ok": true,
+    "detail": "none"
+  },
+  {
+    "name": "A8 目录面板展开（无 hidden）",
+    "ok": true,
+    "detail": "hidden=False display=block"
+  },
+  {
+    "name": "A9 全页只有一个目录 nav",
+    "ok": true,
+    "detail": "nav=1 toc=1"
+  },
+  {
+    "name": "A10 nav 可读名称 = 目录",
+    "ok": true,
+    "detail": "目录"
+  },
+  {
+    "name": "A11 无横向溢出",
+    "ok": true,
+    "detail": "1400<=1400"
+  },
+  {
+    "name": "A12 标题字号未变（40px）",
+    "ok": true,
+    "detail": "40px"
+  },
+  {
+    "name": "A13 blur-up 图片仍在",
+    "ok": true,
+    "detail": "5"
+  },
+  {
+    "name": "A14 脚注区仍在",
+    "ok": true,
+    "detail": "1"
+  },
+  {
+    "name": "A22 点正文不收起侧栏",
+    "ok": true,
+    "detail": "False"
+  },
+  {
+    "name": "A23 Esc 不收起侧栏",
+    "ok": true,
+    "detail": "False"
+  },
+  {
+    "name": "A15 第 2 节高亮",
+    "ok": true,
+    "detail": "active=i-委派delegation want=i-委派delegation"
+  },
+  {
+    "name": "A16 aria-current 唯一且命中",
+    "ok": true,
+    "detail": "n=1 target=i-委派delegation"
+  },
+  {
+    "name": "A17 sticky 顶部 = 48 + 24 = 72",
+    "ok": true,
+    "detail": "72"
+  },
+  {
+    "name": "A18 侧栏不越过视口底部",
+    "ok": true,
+    "detail": "384.5625"
+  },
+  {
+    "name": "A19 第 3 节高亮",
+    "ok": true,
+    "detail": "active=ii-描述description want=ii-描述description"
+  },
+  {
+    "name": "A20 高亮项随滚动移动",
+    "ok": true,
+    "detail": "i-委派delegation → ii-描述description"
+  },
+  {
+    "name": "A21 文末仍保持某节高亮",
+    "ok": true,
+    "detail": "五这周发生的有趣的事"
+  },
+  {
+    "name": "B1 1100 单栏（非 grid）",
+    "ok": true,
+    "detail": "block"
+  },
+  {
+    "name": "B2 目录回到 fixed 浮层",
+    "ok": true,
+    "detail": "fixed"
+  },
+  {
+    "name": "B3 浮层默认收起",
+    "ok": true,
+    "detail": "True"
+  },
+  {
+    "name": "B4 开关按钮可见",
+    "ok": true,
+    "detail": "flex"
+  },
+  {
+    "name": "B5 aria-expanded 初始 false",
+    "ok": true,
+    "detail": "false"
+  },
+  {
+    "name": "B6 aria-controls 指向浮层",
+    "ok": true,
+    "detail": "toc-panel"
+  },
+  {
+    "name": "B7 正文宽度仍是 584",
+    "ok": true,
+    "detail": "584"
+  },
+  {
+    "name": "B8 单个目录 nav",
+    "ok": true,
+    "detail": "1"
+  },
+  {
+    "name": "B9 点开浮层可见",
+    "ok": true,
+    "detail": "hidden=False display=block"
+  },
+  {
+    "name": "B10 打开后 aria-expanded true",
+    "ok": true,
+    "detail": "true"
+  },
+  {
+    "name": "B11 浮层在视口内",
+    "ok": true,
+    "detail": "top=820 bottom=868"
+  },
+  {
+    "name": "B12 Esc 关闭且回焦按钮",
+    "ok": true,
+    "detail": "hidden=True expanded=false"
+  },
+  {
+    "name": "B13 Esc 后焦点回到开关",
+    "ok": true,
+    "detail": "toc-toggle"
+  },
+  {
+    "name": "C1 390 单栏",
+    "ok": true,
+    "detail": "block"
+  },
+  {
+    "name": "C2 390 浮层 fixed",
+    "ok": true,
+    "detail": "fixed"
+  },
+  {
+    "name": "C3 390 无横向溢出",
+    "ok": true,
+    "detail": "390<=390"
+  },
+  {
+    "name": "C4 390 浮层可打开",
+    "ok": true,
+    "detail": "False"
+  },
+  {
+    "name": "C5 浮层不超出视口",
+    "ok": true,
+    "detail": "box=(310,764)-(358,812)"
+  },
+  {
+    "name": "C6 单一目录 nav",
+    "ok": true,
+    "detail": "1"
+  },
+  {
+    "name": "D1199 只有一个目录 nav / 一个目录容器",
+    "ok": true,
+    "detail": "nav=1 toc=1"
+  },
+  {
+    "name": "D1199 可见目录面板只有 1 个",
+    "ok": true,
+    "detail": "0"
+  },
+  {
+    "name": "D1199 滚动位置不丢",
+    "ok": true,
+    "detail": "6589 → 6589"
+  },
+  {
+    "name": "D1199 章节不上下跳（≤1px）",
+    "ok": true,
+    "detail": "47.70 → 47.70"
+  },
+  {
+    "name": "D1199 正文列宽不变",
+    "ok": true,
+    "detail": "584"
+  },
+  {
+    "name": "D1199 当前节仍高亮",
+    "ok": true,
+    "detail": "active=ii-描述description want=ii-描述description"
+  },
+  {
+    "name": "D1199 回到 fixed 浮层",
+    "ok": true,
+    "detail": "fixed"
+  },
+  {
+    "name": "D1200 只有一个目录 nav / 一个目录容器",
+    "ok": true,
+    "detail": "nav=1 toc=1"
+  },
+  {
+    "name": "D1200 可见目录面板只有 1 个",
+    "ok": true,
+    "detail": "1"
+  },
+  {
+    "name": "D1200 滚动位置不丢",
+    "ok": true,
+    "detail": "6589 → 6589"
+  },
+  {
+    "name": "D1200 章节不上下跳（≤1px）",
+    "ok": true,
+    "detail": "47.70 → 47.70"
+  },
+  {
+    "name": "D1200 正文列宽不变",
+    "ok": true,
+    "detail": "584"
+  },
+  {
+    "name": "D1200 当前节仍高亮",
+    "ok": true,
+    "detail": "active=ii-描述description want=ii-描述description"
+  },
+  {
+    "name": "D1200 回到 sticky 侧栏",
+    "ok": true,
+    "detail": "sticky"
+  },
+  {
+    "name": "D1100→ 反向切回浮层默认收起",
+    "ok": true,
+    "detail": "pos=fixed hidden=True"
+  },
+  {
+    "name": "D1100→ 反向切换后仍只有一个 nav",
+    "ok": true,
+    "detail": "1"
+  },
+  {
+    "name": "E1 /en 页正常渲染",
+    "ok": true,
+    "detail": "1"
+  },
+  {
+    "name": "E2 /en 无目录时保持单栏",
+    "ok": true,
+    "detail": "block"
+  },
+  {
+    "name": "E3 /en 正文宽度不被右栏挤窄",
+    "ok": true,
+    "detail": "584"
+  },
+  {
+    "name": "E4 /en 没有空目录 nav",
+    "ok": true,
+    "detail": "0"
+  },
+  {
+    "name": "E5 /en 无横向溢出",
+    "ok": true,
+    "detail": "1400<=1400"
+  },
+  {
+    "name": "E6 标签页正常",
+    "ok": true,
+    "detail": "标签: JustThinking"
+  },
+  {
+    "name": "E7 标签页无溢出 / 无目录",
+    "ok": true,
+    "detail": "scrollW=1400 toc=0"
+  },
+  {
+    "name": "E8 标签页 390 无溢出",
+    "ok": true,
+    "detail": "390"
+  },
+  {
+    "name": "F1 fixture 侧栏出现",
+    "ok": true,
+    "detail": "sticky"
+  },
+  {
+    "name": "F2 目录内容高于视口 → 自身可滚",
+    "ok": true,
+    "detail": "539 > 440"
+  },
+  {
+    "name": "F3 面板 overflow-y auto",
+    "ok": true,
+    "detail": "auto"
+  },
+  {
+    "name": "F4 滚目录不带动正文",
+    "ok": true,
+    "detail": "panelTop=99 pageY=300→300"
+  },
+  {
+    "name": "F5 长目录里高亮项被滚进可视区",
+    "ok": true,
+    "detail": "active=第-17-节侧栏高度压力测试 inside=True scrollTop=79"
+  }
+]

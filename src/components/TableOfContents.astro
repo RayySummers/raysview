@@ -169,12 +169,100 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
   .toc-item.depth-2 {
     padding-left: var(--space-4);
   }
+
+  /* ===== 桌面常驻侧栏（RAY-633）=====
+     同一套 DOM、同一份 <nav>：这里只把浮层容器从 fixed 改成 sticky 侧栏，收起开关按钮，
+     让目录本体直接展开。窄屏规则一条没动，也不存在「两份目录」。 */
+  @media (min-width: 1200px) {
+    .toc-container {
+      position: sticky;
+      top: calc(var(--header-height) + var(--space-4));
+      right: auto;
+      bottom: auto;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      /* 视口矮时封顶；超高只让目录本体滚动，正文照常滚动不受牵连 */
+      max-height: calc(100vh - var(--header-height) - var(--space-4) - var(--space-6));
+      min-height: 0;
+    }
+
+    .toc-btn {
+      display: none;
+    }
+
+    /* 桌面形态不依赖脚本：即使 JS 没跑，目录也以侧栏出现（脚本只负责同步 hidden，
+       让辅助技术也读到这个 nav）。 */
+    .toc-panel {
+      display: block; /* 覆盖 [hidden] 的用户代理样式 display:none */
+      position: static;
+      width: auto;
+      max-height: none;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      background: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      animation: none;
+    }
+
+    .toc-header {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      padding: 0 0 var(--space-2);
+      border-bottom: none;
+      background: var(--color-bg);
+      font-size: var(--text-xs);
+      letter-spacing: 0.08em;
+      color: var(--color-text-secondary);
+    }
+
+    .toc-close {
+      display: none;
+    }
+
+    .toc-nav {
+      padding: 0;
+      gap: 0;
+      border-left: 1px solid var(--color-border);
+    }
+
+    .toc-item {
+      padding: var(--space-1) var(--space-3);
+      margin-left: -1px; /* 压在竖线上：active 的 2px 才与线重合，不产生 1px 错位 */
+      border-left: 2px solid transparent;
+      border-radius: 0;
+      line-height: 1.45;
+    }
+
+    .toc-item:hover {
+      background: none;
+      color: var(--color-text-primary);
+    }
+
+    .toc-item.is-active {
+      /* 侧栏里用 2px 竖线代替浮层的 inset 阴影，视觉上贴着目录导轨 */
+      box-shadow: none;
+      border-left-color: var(--color-text-primary);
+      background: none;
+    }
+  }
 </style>
 
 <script>
   const toggle = document.getElementById('toc-toggle');
   const panel = document.getElementById('toc-panel');
   const close = document.getElementById('toc-close');
+
+  // RAY-633：≥1200px 时目录是常驻侧栏，不再是「点开才出现」的浮层。
+  // 断点值必须和 <style> 里的 @media (min-width: 1200px) 保持一致。
+  const wideQuery = window.matchMedia('(min-width: 1200px)');
+  const isWide = () => wideQuery.matches;
 
   // 开关收敛成两个函数：aria-expanded 必须和 hidden 同步（RAY-632）
   function openPanel() {
@@ -193,6 +281,21 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
     if (refocusToggle) toggle.focus();
   }
 
+  // 断点形态同步：宽屏把面板从「隐藏的浮层」改成「展开的侧栏」。
+  // hidden 是给辅助技术的开关（CSS 在宽屏也会强制显示，脚本没跑起来时侧栏照样在）。
+  function applyMode() {
+    if (!panel || !toggle) return;
+    if (isWide()) {
+      panel.hidden = false;
+      toggle.setAttribute('aria-expanded', 'true');
+    } else {
+      panel.hidden = true;
+      toggle.setAttribute('aria-expanded', 'false');
+      panel.scrollTop = 0;
+    }
+  }
+  applyMode();
+
   toggle?.addEventListener('click', () => {
     if (panel) {
       if (panel.hidden) openPanel(); else closePanel(false);
@@ -203,6 +306,8 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
 
   // Esc 关闭浮层并把焦点还给触发按钮（RAY-632）
   document.addEventListener('keydown', (e) => {
+    // 侧栏常驻形态下没有「关闭」语义：Esc 不能把目录关掉（RAY-633）
+    if (isWide()) return;
     if (e.key === 'Escape' && panel && !panel.hidden) {
       closePanel(true);
     }
@@ -210,6 +315,8 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
 
   // Close on outside click（焦点不动，留在用户点击的位置）
   document.addEventListener('click', (e) => {
+    // 侧栏形态同理：点正文不算「点外面」，否则滚一下就把目录点没了（RAY-633）
+    if (isWide()) return;
     const container = document.querySelector('.toc-container');
     if (container && !container.contains(e.target as Node) && panel && !panel.hidden) {
       closePanel(false);
@@ -255,6 +362,17 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
         link.classList.toggle('is-active', isOn);
         if (isOn) {
           link.setAttribute('aria-current', 'true');
+          // 侧栏目录自身可滚动：高亮项被滚出可视区时把它带回来（RAY-633）
+          if (isWide() && panel.scrollHeight > panel.clientHeight + 1) {
+            const box = panel.getBoundingClientRect();
+            const item = link.getBoundingClientRect();
+            const topMargin = 32; // 让开 sticky 的「目录」标题
+            if (item.top < box.top + topMargin) {
+              panel.scrollTop -= box.top + topMargin - item.top;
+            } else if (item.bottom > box.bottom - 8) {
+              panel.scrollTop += item.bottom - (box.bottom - 8);
+            }
+          }
         } else {
           link.removeAttribute('aria-current');
         }
@@ -297,6 +415,12 @@ const t = useTranslations(langFromPath(Astro.url.pathname));
       }, { rootMargin: `-${ACTIVE_OFFSET}px 0px -100% 0px` });
 
       headingEls.forEach((el) => spy.observe(el));
+
+      // 断点切换：同步 hidden / aria-expanded，并在进入侧栏形态后按当前滚动位置补算高亮
+      wideQuery.addEventListener('change', () => {
+        applyMode();
+        if (isWide()) requestAnimationFrame(reconcile);
+      });
     }
   }
 
