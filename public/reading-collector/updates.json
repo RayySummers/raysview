@@ -3,7 +3,7 @@
     "reading-collector@raysview.fun": {
       "updates": [
         {
-          "version": "0.7.0",
+          "version": "0.8.4",
           "update_link": "https://raysview.fun/reading-collector/reading-collector.xpi",
           "applications": {
             "gecko": {
