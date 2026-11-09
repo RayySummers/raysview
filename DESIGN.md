@@ -404,17 +404,14 @@ article.heti p { text-wrap: pretty; }   /* 段末孤字：末行只剩 1–2 字
 article.heti h1,
 article.heti h2,
 article.heti h3 { text-wrap: balance; } /* 标题几行长度摊平 */
-
-@supports (word-break: auto-phrase) {   /* 中文按词组断行，能力检测兜底 */
-  article.heti p:lang(zh),
-  article.heti li:lang(zh) { word-break: auto-phrase; }
-}
 ```
 
-- **属性名**：CSS Text 4 只给 `word-break` 定义了 `auto-phrase`；`line-break: auto-phrase` 不是合法值
-  （Chrome 157 / Firefox 148 的 `CSS.supports` 都返回 false），按字面写会是一条永远不生效的死规则。
-- **现状**：Chromium 119+ 已支持 `word-break: auto-phrase`，但词组分析目前只覆盖日文，中文等引擎补词典；
-  `text-wrap: pretty` 在 Chrome 157 的中文正文已能把「末行 1–2 字」的段落降到 0（1440 / 768 / 390 实测）。
+- **现状**：`text-wrap: pretty` 在 Chrome 157 的中文正文已能把「末行 1–2 字」的段落降到 0
+  （1440 / 768 / 390 实测）。
+- **auto-phrase 已回退**：`word-break: auto-phrase` 在 2026-11-08 随 RAY-609 上线后，线上出现**中文标点与汉字挤压**，
+  当天由 hotfix #105（`9166323`）移除。Chromium 的词组分析目前只覆盖日文、对本站中文正文没有收益，
+  留着只有风险。标点挤压策略另立 RAY-642（开明式 / 仅括号相邻挤压）跟进，不再走 `auto-phrase`。
+  （另：issue 原文写的 `line-break: auto-phrase` 在 CSS Text 4 里不是合法值，只有 `word-break` 定义了该值。）
 - 只改断行，不改字号 / 行高 / 对齐 / 代码块；逐段读数与降级行为见 `docs/qa/RAY-609/README.md`。
 
 ---
@@ -964,9 +961,19 @@ margin-right: auto;
 - **Note**: issue 原文写的是 `line-break: auto-phrase`，但 CSS Text 4 只给 `word-break` 定义该值
   （Chrome 157 / Firefox 148 的 `CSS.supports('line-break','auto-phrase')` 均为 false）；按 `word-break` 实现，
   `@supports` 兜住不支持的环境。Chromium 119+ 已支持该值，但词组分析目前只覆盖日文，中文暂无可见变化。
-- **Status**: In review（RAY-609）
+- **Status**: Merged（#104 `d20eb9c`）；其中 auto-phrase 部分已由 #105 回退（见下条）
 - **Refs**: `src/styles/global.css`、`docs/qa/RAY-609/README.md`（三档截图 + 逐段读数）、
-  `.github/scripts/check-build.sh` 的 4 条产物断言
+  `.github/scripts/check-build.sh` 的产物断言
+
+### 2026-11-08 (RAY-609 回退 / #105): 移除 `word-break: auto-phrase`
+- **Decision**: hotfix #105（`9166323`）删除 `@supports (word-break: auto-phrase)` 块及其内部两条规则，
+  同步删掉构建自检里对应的 2 条断言；`text-wrap: pretty` / `balance` 保留（只改断行位置，不改字宽）。
+- **Rationale**: RAY-609 部署后线上出现**中文标点与汉字挤压**（Ray 反馈）。Chromium 的 `auto-phrase`
+  词组分析目前只覆盖日文，对本站中文正文没有收益，只带来渲染风险。回退后线上 CSS 已无 `auto-phrase`
+  （部署 run 42494516884）。
+- **Follow-up**: 标点挤压策略另立 RAY-642（开明式 / 仅括号相邻挤压），不再使用 `auto-phrase`。
+- **Status**: Merged（#105）
+- **Refs**: `src/styles/global.css`、`.github/scripts/check-build.sh`、`docs/qa/RAY-609/README.md`（顶部状态说明）
 
 ---
 

@@ -1,12 +1,19 @@
 # RAY-609 自测记录（中文正文断行：pretty / balance / auto-phrase）
 
+> **状态（2026-11-08 更新）：auto-phrase 已回退。** 上线后线上出现中文标点与汉字挤压（Ray 反馈），
+> hotfix #105（`9166323`）移除了 `@supports (word-break: auto-phrase)` 与对应断言，部署 run 42494516884 成功；
+> `text-wrap: pretty` / `balance` 保留并已生效。**下面第一、二节的读数是在回退前测的**（当时 auto-phrase 仍在），
+> 但 Chrome 的中文 auto-phrase 对断行与段落高度没有可测影响，pretty / balance 的结论仍然成立；
+> 「四、能力检测」中「中文正文 computed `word-break` = `auto-phrase`」已不再成立。
+> 标点挤压策略另立 RAY-642（开明式 / 仅括号相邻挤压）跟进。
+
 ## 改了什么
 
 | # | 文件 | 位置 | 改动 |
 |---|---|---|---|
 | 1 | `src/styles/global.css` | `article.heti p` | 新增 `text-wrap: pretty` |
 | 2 | `src/styles/global.css` | 新增 `article.heti h1/h2/h3` | 新增 `text-wrap: balance` |
-| 3 | `src/styles/global.css` | 新增 `@supports (word-break: auto-phrase)` 块 | 中文正文 `p`/`li` 加 `word-break: auto-phrase` |
+| 3 | `src/styles/global.css` | 新增 `@supports (word-break: auto-phrase)` 块（**已由 #105 回退**） | 中文正文 `p`/`li` 加 `word-break: auto-phrase` |
 | 4 | `.github/scripts/check-build.sh` | RAY-552 断言之后 | 4 条产物断言（选择器 + 声明成对出现） |
 | 5 | `docs/qa/RAY-609/` | 新增 | 本 README、`verify.mjs`、`readings.json`、三档截图 |
 
@@ -18,7 +25,7 @@
    Chrome 117+ 生效，不支持的引擎直接忽略（断行回到默认 `wrap`），不需要 `@supports`。
 2. **标题行长度**：`article.heti h1, h2, h3 { text-wrap: balance }`。只挂正文实际用到的三层；
    Chrome 对 `balance` 有行数上限（约 4 行），超长标题自动退回默认断行 —— 正是想要的降级。
-3. **按词组断行**：`@supports (word-break: auto-phrase)` 内给 `p:lang(zh)` / `li:lang(zh)` 加
+3. **按词组断行（已由 #105 回退，见顶部）**：`@supports (word-break: auto-phrase)` 内给 `p:lang(zh)` / `li:lang(zh)` 加
    **`word-break: auto-phrase`**。
    > **属性名与原单不一致（需要 Ray 知情）**：issue 写的是 `line-break: auto-phrase`，但 CSS Text 4
    > 只给 **`word-break`** 定义了 `auto-phrase`；`line-break` 的取值是 auto / loose / normal / strict / anywhere
@@ -81,10 +88,10 @@
 | 正文 `computed word-break` | **auto-phrase** | normal（`@supports` 未进入） |
 
 - 不支持的引擎：`@supports` 整块不解析、`text-wrap` 声明被忽略，断行与改动前一致（Firefox 148 实测）。
-- **中文 `auto-phrase` 目前没有可见变化**：Chromium 119+ 支持该值，但词组分析只覆盖日文
-  （Chrome 官方博客：中文「plan to support in future」）。Chrome 157 下中文正文的 `word-break`
-  已经是 `auto-phrase`、断行结果与 `normal` 相同 —— 规则就位，等引擎的词典。
-  三档宽度的正文高度在 `auto-phrase` 开/关下也完全一致（见第一节），可以确认没有副作用。
+- **auto-phrase 已回退（2026-11-08）**：上线后线上出现中文标点与汉字挤压（Ray 反馈），hotfix #105 已移除该规则。
+  Chromium 119+ 支持 `word-break: auto-phrase`，但词组分析只覆盖日文，对本站中文正文没有收益。
+  **当时的判断失误**：只量了行盒位置、段落高度与末行字数，没有检查标点字形与相邻汉字是否重叠 ——
+  `word-break` 改的是断行位置，却会连带改变标点周边的处理，这类渲染问题靠几何量不出来，只能目视比对像素。
 
 ## 五、截图
 
@@ -114,6 +121,8 @@ bash .github/scripts/check-build.sh
 
 ## 七、还没解决的
 
-- 中文按词组断行要等浏览器把中文词典做完；在那之前 `word-break: auto-phrase` 对本站是空转。
+- ~~中文按词组断行~~：`auto-phrase` 已回退（见顶部），标点挤压策略转到 RAY-642（开明式 / 仅括号相邻挤压）。
+- 本次 QA 的盲区：只覆盖了行盒几何，没有覆盖标点字形重叠。后续涉及断行 / 标点 / 字距的改动，
+  要加一条「标点周边像素比对」的目视检查，不能只靠段落高度与末行字数。
 - `text-wrap: pretty` 的「避孤字」力度各引擎不同（Safari 的实现更强），本次只测了 Chrome / Firefox。
 - 只测了三档固定宽度；真实设备上的字体回退（尤其 Android 缺 MiSans 时）未覆盖。

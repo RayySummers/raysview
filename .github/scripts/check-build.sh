@@ -85,9 +85,10 @@ font_sans=$(grep -rho -e '--font-sans:[^;}]*' "$DIST_DIR/assets" --include='*.cs
 [[ "$font_sans" == *'"Zhudou Sans"'*'"Roboto Flex Variable"'*'"MiSans"'* ]] \
   || fail "--font-sans 顺序不是 Zhudou Sans → Roboto Flex Variable → MiSans（RAY-552）：$font_sans"
 
-# RAY-609：正文断行规则。三条都只活在 CSS 里、页面上没有可见标记，改回去没人看得出来，
-# 而且 auto-phrase 还包在 @supports 里 —— minify 或 @supports 处理出错都会静默吞掉。
+# RAY-609：正文断行规则（text-wrap pretty / balance）。这两条只活在 CSS 里、页面上没有可见标记，
+# 改回去没人看得出来，minify 处理出错也会静默吞掉。
 # 直接对产物断言「选择器 + 声明」成对存在，而不是只 grep 属性名（别的规则也可能带同名声明）。
+# auto-phrase 已由 #105 回退（线上标点挤压），对应断言一并移除，不要加回来。
 grep -rqE 'article\.heti p\{[^}]*text-wrap:pretty' "$DIST_DIR/assets" --include='*.css' \
   || fail "构建产物里 article.heti p 没有 text-wrap:pretty（RAY-609）"
 grep -rq 'article.heti h3{text-wrap:balance}' "$DIST_DIR/assets" --include='*.css' \
